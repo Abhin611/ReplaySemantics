@@ -46,18 +46,41 @@ def test_known_rich_target_hits_max_events(vbfa_graph):
     # This object's backward traversal discovers a cross-object link into a
     # Delivery document's own event history at hop 1 (real multi-hop
     # object-centric behavior), yielding far more than max_events candidates
-    # -> the bound should saturate at exactly max_events.
+    # -> the bound should saturate at exactly max_events. All 8 kept
+    # candidates happen to come from the later (hop-2) Delivery-side batch,
+    # so the algorithm correctly warns that their hop-1 connecting events
+    # were pruned by the recency cutoff (see test_disconnection_is_flagged
+    # below for a dedicated check of that warning).
     result = extract_candidate_events(
         vbfa_graph, KNOWN_RICH_TARGET, max_events=8, min_events=3, max_hops=3
     )
     assert len(result.candidate_events) == 8
     assert result.hops_used == 3
-    assert result.warnings == []
+
+
+def test_disconnection_from_target_is_flagged(vbfa_graph):
+    result = extract_candidate_events(
+        vbfa_graph, KNOWN_RICH_TARGET, max_events=8, min_events=3, max_hops=3
+    )
+    assert any("lost their connecting path" in w for w in result.warnings)
+    # raising max_events should recover the connecting (hop-1) events and
+    # remove the disconnection warning
+    fuller = extract_candidate_events(
+        vbfa_graph, KNOWN_RICH_TARGET, max_events=20, min_events=3, max_hops=3
+    )
+    assert not any("lost their connecting path" in w for w in fuller.warnings)
 
 
 def test_target_event_not_included_in_candidates(vbfa_graph):
     result = extract_candidate_events(vbfa_graph, KNOWN_RICH_TARGET, max_events=8)
     assert KNOWN_RICH_TARGET not in result.event_ids()
+
+
+def test_event_hops_recorded_for_every_candidate(vbfa_graph):
+    result = extract_candidate_events(vbfa_graph, KNOWN_RICH_TARGET, max_events=8)
+    for e in result.candidate_events:
+        assert e.event_id in result.event_hops
+        assert result.event_hops[e.event_id] >= 1
 
 
 def test_smaller_max_events_still_picks_most_recent(vbfa_graph):

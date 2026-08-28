@@ -86,6 +86,7 @@
       <h1>Replay Console</h1>
       <div class="subtitle">Select a case, then Run Replay to execute the real Month 1-2 backend.</div>
       <select id="case-select"><option>Loading cases…</option></select>
+      <input type="number" id="max-events-input" value="8" min="3" max="30" style="width:60px;padding:8px;border-radius:7px;border:1px solid var(--border);margin-left:8px;" title="max_events">
       <button onclick="runReplay()">▶ Run Replay</button>
 
       <div class="stepper" id="stepper"></div>
@@ -102,10 +103,21 @@
         <h2>Stages 3-5 — Confluence Checks / Policy Resolution / Verdict <span class="pill not_implemented">not yet built</span></h2>
         <div id="stage345-content" class="hint"></div>
       </div>
+
+      <div class="panel" id="graph-panel" style="display:none">
+        <h2>Replay Graph <span class="hint" style="font-weight:400">(real traversal, ungraded — verdict colors arrive with Month 4)</span></h2>
+        <div id="graph-warning" class="hint" style="color:#a15c1f;margin-bottom:8px;"></div>
+        <div id="network-graph" style="height:420px;border:1px solid var(--border);border-radius:8px;"></div>
+        <div style="margin-top:10px;font-size:12px;display:flex;gap:18px;">
+          <span><span style="color:#8a96a0;">●</span> Idle (current state — no verdict yet)</span>
+          <span style="opacity:.4">● Candidate &nbsp; ● Conflict &nbsp; ● Resolved &nbsp; ● Blocked &nbsp; (arrive with Month 3-4)</span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
+<script src="https://unpkg.com/vis-network@9/standalone/umd/vis-network.min.js"></script>
 <script>
 const API = "/api";
 
@@ -158,8 +170,9 @@ function stepperHtml(activeStage){
 
 async function runReplay(){
   const id = document.getElementById("case-select").value;
+  const maxEvents = document.getElementById("max-events-input").value || 8;
   document.getElementById("stepper").innerHTML = stepperHtml(0);
-  const data = await (await fetch(`${API}/cases/${id}/replay`)).json();
+  const data = await (await fetch(`${API}/cases/${id}/replay?max_events=${maxEvents}`)).json();
 
   document.getElementById("stepper").innerHTML = stepperHtml(2);
 
@@ -198,6 +211,55 @@ async function runReplay(){
     <b>Policy Resolution:</b> ${data.stage_4_policy_resolution.message}<br><br>
     <b>Verdict:</b> ${data.stage_5_verdict.message}
   `;
+
+  renderReplayGraph(data.replay_graph, s2.warnings);
+}
+
+let network = null;
+function shortLabel(activity){
+  // "Create Goods Movement (from Delivery)" -> "Goods\nMovement"
+  const m = activity.match(/^Create (.+?) \(from/);
+  const core = m ? m[1] : activity;
+  const words = core.split(" ");
+  return words.length > 1 ? words[0] + "\n" + words.slice(1).join(" ") : core;
+}
+
+function renderReplayGraph(graphData, warnings){
+  document.getElementById("graph-panel").style.display = "block";
+  const disconnectWarning = warnings.find(w => w.includes("lost their connecting path"));
+  document.getElementById("graph-warning").innerHTML = disconnectWarning
+    ? "⚠ " + disconnectWarning
+    : "";
+
+  const nodes = new vis.DataSet(graphData.nodes.map(n => ({
+    id: n.id,
+    label: (n.is_target ? "★ " : "") + n.id + "\n" + shortLabel(n.activity),
+    shape: "ellipse",
+    color: {
+      background: n.is_target ? "#fde8d8" : (n.connected_to_target ? "#eef1f3" : "#fbeaea"),
+      border: n.is_target ? "#e07a3f" : (n.connected_to_target ? "#aab5bd" : "#c96a6a"),
+    },
+    font: { size: 12, multi: false, align: "center" },
+    title: `${n.id} — ${n.activity}\nValue: €${n.value_eur?.toLocaleString() ?? '-'}\n${n.connected_to_target ? '' : '(not connected within current bound)'}`,
+  })));
+
+  const edges = new vis.DataSet(graphData.edges.map(e => ({
+    from: e.source, to: e.target,
+    arrows: "to",
+    color: { color: "#c3ccd3" },
+    label: e.shared_objects.length === 1 ? "" : `shared: ${e.shared_objects.length} objs`,
+    font: { size: 10, color: "#d4af37" },
+  })));
+
+  const container = document.getElementById("network-graph");
+  const options = {
+    layout: { hierarchical: { direction: "LR", sortMethod: "directed", levelSeparation: 140, nodeSpacing: 70 } },
+    physics: false,
+    interaction: { hover: true },
+    nodes: { borderWidth: 1.5, widthConstraint: { minimum: 90, maximum: 130 } },
+  };
+  if (network) network.destroy();
+  network = new vis.Network(container, { nodes, edges }, options);
 }
 
 loadDashboard();

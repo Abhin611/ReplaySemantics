@@ -34,6 +34,23 @@ lets you pick a case and click **Run Replay** — it actually calls
 
 Try case `e34` (a real €802,800 / ~₹7.4 Cr invoice line) for a rich example.
 
+### Replay Graph — the actual node-link diagram from your Figma design
+
+The Replay Console renders a real graph (via vis-network), matching your
+Figma's E1→E2→E4→E7-style layout, built from `discovered_via` parent-links
+recorded during backward traversal (not a generic "these-happen-to-share-
+an-object" pairing). Every node ships as "idle" (grey) since verdict
+coloring is Month-4 confluence-checker output that doesn't exist yet.
+
+**A real finding surfaced while building this:** with the default
+`max_events=8`, case `e977`'s graph comes back fully disconnected from the
+target — all 8 kept candidates are from a later traversal hop, and the
+hop-1 events that actually linked them back to the target got pruned by
+the recency cutoff. The pipeline detects and reports this honestly (see
+`result.warnings`) rather than drawing a fabricated edge. Raise
+`max_events` (there's a field for it in the UI, next to Run Replay) to see
+the full connected tree — try `e977` with `max_events=20`.
+
 Bringing this into your actual Figma-designed UI (once Confluence Checks /
 Policy Resolution exist) means either: (a) exporting/rebuilding the Figma
 screens as React components that fetch from this same API, or (b) keeping

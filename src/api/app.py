@@ -37,7 +37,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from replay_core.candidate_extraction import extract_candidate_events
+from replay_core.candidate_extraction import CandidateExtractionResult, extract_candidate_events
 from replay_core.graph import ObjectCentricGraph
 from replay_core.ingestion import load_ocel
 
@@ -46,6 +46,55 @@ OCEL_PATH = REPO_ROOT / "data" / "raw" / "vbfa_o2c_2019_2021_eur.jsonocel"
 WEBAPP_DIR = REPO_ROOT / "webapp"
 
 app = FastAPI(title="ReplaySemantics API", version="0.1.0 (Month 1-2)")
+
+
+def build_case_graph(graph: ObjectCentricGraph, target, result: CandidateExtractionResult) -> dict:
+    """
+    Shapes the real candidate set into a node-link graph for the Replay
+    Graph screen: one node per event (target + candidates), one edge per
+    actual backward-traversal discovery link (which event's object led to
+    which other event, per `result.discovered_via`) -- this is the real
+    causal-ish parent/child structure of the traversal, not a generic
+    "these two happen to share an object" pairing.
+
+    Verdict coloring (PASS/POLICY-ORDERED/BLOCKED) is intentionally absent
+    here -- that's Month 4 (confluence checker) output, which doesn't
+    exist yet. Every node ships as "idle" so the frontend renders it
+    exactly like the ungraded state in your Figma design.
+
+    Note: because the candidate set is bounded to max_events by recency,
+    a kept event's discovering (parent) event can itself have been pruned.
+    Such nodes are marked "connected_to_target": false rather than being
+    silently wired to the target with a fabricated edge -- see
+    result.warnings for when this happens.
+    """
+    all_events = {e.event_id: e for e in result.candidate_events}
+    all_events[target.event_id] = target
+
+    nodes = []
+    for eid, e in sorted(all_events.items(), key=lambda kv: kv[1].timestamp):
+        parent_id = result.discovered_via.get(eid, (None, None))[0]
+        connected = (eid == target.event_id) or (parent_id in all_events)
+        nodes.append(
+            {
+                "id": e.event_id,
+                "activity": e.activity,
+                "timestamp": e.timestamp.isoformat(),
+                "value_eur": e.attributes.get("value"),
+                "hop": result.event_hops.get(e.event_id),  # None for the target
+                "is_target": e.event_id == target.event_id,
+                "connected_to_target": connected,
+                "status": "idle",  # verdict coloring arrives with the Month 4 confluence checker
+            }
+        )
+
+    edges = [
+        {"source": parent_id, "target": eid, "shared_objects": [shared_obj]}
+        for eid, (parent_id, shared_obj) in result.discovered_via.items()
+        if parent_id in all_events
+    ]
+
+    return {"nodes": nodes, "edges": edges}
 
 
 @lru_cache(maxsize=1)
@@ -146,6 +195,8 @@ def run_replay(case_id: str, max_events: int = 8, min_events: int = 3, max_hops:
             "objects": sorted(e.object_ids()),
         }
 
+    graph_view = build_case_graph(graph, target, result)
+
     return {
         "case_id": case_id,
         "stage_1_extraction": {
@@ -161,6 +212,7 @@ def run_replay(case_id: str, max_events: int = 8, min_events: int = 3, max_hops:
             "candidates": [event_payload(e) for e in result.candidate_events],
             "warnings": result.warnings,
         },
+        "replay_graph": graph_view,
         "stage_3_confluence_checks": {
             "status": "not_implemented",
             "message": "Scheduled for Month 4 (Member 1). PASS / POLICY-ORDERED / "

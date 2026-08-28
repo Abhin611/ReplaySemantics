@@ -60,6 +60,12 @@ class CandidateExtractionResult:
     candidate_events: list[OCELEvent]
     touched_objects: set[str]
     hops_used: int
+    event_hops: dict[str, int] = field(default_factory=dict)
+    # event_id -> (discovering_event_id, shared_object_id): the actual
+    # backward-traversal parent link that found this event, i.e. which
+    # already-visited event's object led here. The target event is its
+    # own hop-1 candidates' parent.
+    discovered_via: dict[str, tuple[str, str]] = field(default_factory=dict)
     warnings: list[str] = field(default_factory=list)
 
     def event_ids(self) -> list[str]:
@@ -123,17 +129,27 @@ def extract_candidate_events(
     visited_events: set[str] = {target_event_id}
     visited_objects: set[str] = set()
     found: dict[str, OCELEvent] = {}
+    found_at_hop: dict[str, int] = {}
+    discovered_via: dict[str, tuple[str, str]] = {}
+    # which event's traversal caused each object to enter the frontier --
+    # used to attribute each newly-found event to the real parent event
+    # that led to it, not just "some event N hops back".
+    object_origin: dict[str, str] = {
+        oid: target_event_id for oid in graph.objects_of_event(target_event_id)
+    }
 
-    frontier_objects = set(graph.objects_of_event(target_event_id))
+    frontier_objects = set(object_origin.keys())
     hop = 0
 
     while frontier_objects and hop < max_hops:
         next_frontier_objects: set[str] = set()
+        current_hop_number = hop + 1  # hop 1 = the target's own objects' prior events
 
         for oid in frontier_objects:
             if oid in visited_objects:
                 continue
             visited_objects.add(oid)
+            parent_event_id = object_origin[oid]
 
             for eid in graph.events_before(oid, before_ts=target_ts, strict=True):
                 if eid in visited_events:
@@ -141,13 +157,22 @@ def extract_candidate_events(
                 visited_events.add(eid)
                 event = graph.get_event(eid)
                 found[eid] = event
-                next_frontier_objects.update(graph.objects_of_event(eid))
+                found_at_hop[eid] = current_hop_number
+                discovered_via[eid] = (parent_event_id, oid)
+                for new_oid in graph.objects_of_event(eid):
+                    next_frontier_objects.add(new_oid)
+                    object_origin.setdefault(new_oid, eid)
 
         frontier_objects = next_frontier_objects - visited_objects
         hop += 1
 
     candidates = rank_candidates(target, list(found.values()))[:max_events]
     candidates.sort(key=lambda e: e.timestamp)  # chronological order for readability
+    event_hops = {e.event_id: found_at_hop[e.event_id] for e in candidates}
+    kept_ids = {e.event_id for e in candidates} | {target_event_id}
+    kept_discovery = {
+        eid: parent for eid, parent in discovered_via.items() if eid in kept_ids
+    }
 
     warnings: list[str] = []
     if len(candidates) < min_events:
@@ -155,6 +180,19 @@ def extract_candidate_events(
             f"Only {len(candidates)} candidate event(s) found within {hop} hop(s); "
             f"fewer than the configured minimum of {min_events}. Consider raising "
             f"max_hops, or this case may be genuinely single-event."
+        )
+        logger.warning(warnings[-1])
+
+    disconnected = [
+        eid for eid, (parent, _) in kept_discovery.items() if parent not in kept_ids
+    ]
+    if disconnected:
+        warnings.append(
+            f"{len(disconnected)} candidate(s) {disconnected} lost their connecting path "
+            f"to the target because the intermediate event(s) that discovered them fell "
+            f"outside the top-{max_events} recency cutoff. They are still valid candidates "
+            f"(found via real backward traversal), just not graph-connected to the target "
+            f"in this bounded view. Raise max_events to see the full connected path."
         )
         logger.warning(warnings[-1])
 
@@ -167,6 +205,8 @@ def extract_candidate_events(
         candidate_events=candidates,
         touched_objects=touched_objects,
         hops_used=hop,
+        event_hops=event_hops,
+        discovered_via=kept_discovery,
         warnings=warnings,
     )
 
