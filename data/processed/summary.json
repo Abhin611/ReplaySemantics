@@ -1,0 +1,41 @@
+{
+  "source_path": "data/raw/ocel20_example.jsonocel",
+  "num_events": 13,
+  "num_objects": 9,
+  "object_types": [
+    "Invoice",
+    "Payment",
+    "Purchase Order",
+    "Purchase Requisition"
+  ],
+  "event_types": [
+    "Approve Purchase Requisition",
+    "Change PO Quantity",
+    "Create Purchase Order",
+    "Create Purchase Requisition",
+    "Insert Invoice",
+    "Insert Payment",
+    "Remove Payment Block",
+    "Set Payment Block"
+  ],
+  "activity_counts": {
+    "Create Purchase Requisition": 1,
+    "Approve Purchase Requisition": 1,
+    "Create Purchase Order": 2,
+    "Change PO Quantity": 1,
+    "Insert Invoice": 3,
+    "Insert Payment": 3,
+    "Set Payment Block": 1,
+    "Remove Payment Block": 1
+  },
+  "object_type_counts": {
+    "Invoice": 3,
+    "Payment": 3,
+    "Purchase Order": 2,
+    "Purchase Requisition": 1
+  },
+  "time_span": {
+    "start": "2022-01-09T14:00:00+00:00",
+    "end": "2022-02-28T22:00:00+00:00"
+  }
+}

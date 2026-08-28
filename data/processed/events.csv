@@ -1,0 +1,14 @@
+event_id,activity,timestamp,object_ids,attr__pr_creator,attr__pr_approver,attr__po_creator,attr__po_editor,attr__invoice_inserter,attr__payment_inserter,attr__invoice_blocker,attr__invoice_block_rem
+e1,Create Purchase Requisition,2022-01-09T14:00:00+00:00,PR1,Mike,,,,,,,
+e2,Approve Purchase Requisition,2022-01-09T15:30:00+00:00,PR1,,Tania,,,,,,
+e3,Create Purchase Order,2022-01-10T08:15:00+00:00,PO1;PR1,,,Mike,,,,,
+e4,Change PO Quantity,2022-01-13T11:00:00+00:00,PO1,,,,Mike,,,,
+e5,Insert Invoice,2022-01-14T11:00:00+00:00,PO1;R1,,,,,Luke,,,
+e6,Insert Invoice,2022-01-16T10:00:00+00:00,PO1;R2,,,,,Luke,,,
+e7,Insert Payment,2022-01-30T22:00:00+00:00,P1;R1,,,,,,Robot,,
+e8,Insert Payment,2022-01-31T21:00:00+00:00,P2;R2,,,,,,Robot,,
+e9,Insert Invoice,2022-02-02T08:00:00+00:00,R3,,,,,Mario,,,
+e10,Create Purchase Order,2022-02-02T16:00:00+00:00,PO2;R3,,,Mario,,,,,
+e11,Set Payment Block,2022-02-03T06:30:00+00:00,R3,,,,,,,Mario,
+e12,Remove Payment Block,2022-02-03T22:30:00+00:00,R3,,,,,,,,Mario
+e13,Insert Payment,2022-02-28T22:00:00+00:00,P3;R3,,,,,,Robot,,

@@ -1,0 +1,59 @@
+{
+  "source_path": "data/raw/vbfa_o2c_2019_2021_eur.jsonocel",
+  "num_events": 4811,
+  "num_objects": 3787,
+  "object_types": [
+    "Credit Memo Request",
+    "Delivery",
+    "Delivery / Shipping Notification",
+    "Goods Movement",
+    "Inquiry",
+    "Invoice",
+    "Order",
+    "Other Document (p)",
+    "Purchase Order",
+    "Quotation"
+  ],
+  "event_types": [
+    "Create Credit Memo Request (from Order)",
+    "Create Goods Movement (from Delivery / Shipping Notification)",
+    "Create Goods Movement (from Delivery)",
+    "Create Goods Movement (from Order)",
+    "Create Invoice (from Delivery)",
+    "Create Invoice (from Order)",
+    "Create Order (from Inquiry)",
+    "Create Order (from Quotation)",
+    "Create Other Document (p) (from Delivery / Shipping Notification)",
+    "Create Purchase Order (from Order)",
+    "Create Quotation (from Inquiry)"
+  ],
+  "activity_counts": {
+    "Create Goods Movement (from Order)": 1053,
+    "Create Goods Movement (from Delivery)": 1057,
+    "Create Invoice (from Order)": 1051,
+    "Create Invoice (from Delivery)": 1051,
+    "Create Order (from Quotation)": 257,
+    "Create Quotation (from Inquiry)": 332,
+    "Create Order (from Inquiry)": 1,
+    "Create Purchase Order (from Order)": 1,
+    "Create Other Document (p) (from Delivery / Shipping Notification)": 3,
+    "Create Goods Movement (from Delivery / Shipping Notification)": 3,
+    "Create Credit Memo Request (from Order)": 2
+  },
+  "object_type_counts": {
+    "Order": 729,
+    "Invoice": 649,
+    "Delivery": 661,
+    "Goods Movement": 1051,
+    "Inquiry": 320,
+    "Quotation": 370,
+    "Purchase Order": 1,
+    "Delivery / Shipping Notification": 2,
+    "Other Document (p)": 3,
+    "Credit Memo Request": 1
+  },
+  "time_span": {
+    "start": "2020-03-26T08:12:48+00:00",
+    "end": "2021-11-13T00:50:20+00:00"
+  }
+}

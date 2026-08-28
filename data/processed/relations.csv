@@ -1,0 +1,21 @@
+event_id,object_id,qualifier
+e1,PR1,Regular placement of PR
+e2,PR1,Regular approval of PR
+e3,PO1,Created order with identifier
+e3,PR1,Created order from PR
+e4,PO1,Change of quantity
+e5,PO1,Invoice created starting from the PO
+e5,R1,Invoice created with identifier
+e6,PO1,Invoice created starting from the PO
+e6,R2,Invoice created with identifier
+e7,R1,Payment for the invoice
+e7,P1,Payment inserted with identifier
+e8,P2,Payment created with identifier
+e8,R2,Payment for the invoice
+e9,R3,Invoice created with identifier
+e10,PO2,Purhcase order created with identifier
+e10,R3,Purchase order created with maverick buying from
+e11,R3,Payment block due to unethical maverick buying
+e12,R3,Payment block removed ...
+e13,P3,Payment inserted with identifier
+e13,R3,Payment for the invoice

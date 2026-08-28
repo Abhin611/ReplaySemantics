@@ -1,0 +1,6 @@
+pm4py>=2.7.23
+pandas>=2.0
+networkx>=3.0
+pytest>=8.0
+fastapi>=0.110
+uvicorn>=0.29

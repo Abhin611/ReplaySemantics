@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ReplaySemantics — Live Demo (Month 1-2)</title>
+<style>
+  :root{
+    --navy:#0a1e33; --navy2:#0f2a44; --teal:#2a9d8f; --gold:#d4af37;
+    --ink:#1a1a1a; --ink-dim:#6b7a86; --border:#e3e8ec; --bg:#f5f7f8;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);}
+  .app{display:flex;min-height:100vh;}
+  .sidebar{width:220px;flex:0 0 220px;background:var(--navy);color:#cfe0e8;padding:20px 0;}
+  .brand{display:flex;align-items:center;gap:10px;padding:0 20px 20px;font-weight:700;font-size:16px;color:#fff;border-bottom:1px solid #1c3a52;margin-bottom:16px;}
+  .brand .icon{width:28px;height:28px;background:var(--teal);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;}
+  .nav-label{font-size:10px;letter-spacing:2px;color:#5f7a8c;padding:6px 20px;text-transform:uppercase;}
+  .nav-item{padding:11px 20px;font-size:14px;cursor:pointer;color:#b9cbd6;}
+  .nav-item.active{background:var(--navy2);color:#fff;border-left:3px solid var(--teal);}
+  .nav-item:hover:not(.active){color:#fff;}
+  .badge{display:inline-block;font-size:10px;background:#e07a3f;color:#fff;padding:1px 6px;border-radius:4px;margin-left:6px;}
+  .main{flex:1;padding:28px 32px;overflow-x:auto;}
+  h1{font-size:22px;margin:0 0 6px;}
+  .subtitle{color:var(--ink-dim);font-size:13px;margin-bottom:24px;}
+  .stat-row{display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap;}
+  .stat-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px;min-width:150px;flex:1;}
+  .stat-card .label{font-size:12px;color:var(--ink-dim);margin-bottom:6px;}
+  .stat-card .value{font-size:24px;font-weight:700;}
+  .panel{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:20px;}
+  .panel h2{font-size:15px;margin:0 0 14px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{text-align:left;color:var(--ink-dim);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;padding:8px;border-bottom:1px solid var(--border);}
+  td{padding:10px 8px;border-bottom:1px solid var(--border);}
+  tr:hover td{background:#fafcfd;}
+  .case-row{cursor:pointer;}
+  .stepper{display:flex;gap:0;margin-bottom:20px;background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;}
+  .step{display:flex;align-items:center;gap:8px;padding-right:24px;font-size:13px;color:var(--ink-dim);}
+  .step .n{width:22px;height:22px;border-radius:50%;background:#eef1f3;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
+  .step.done{color:var(--ink);}
+  .step.done .n{background:var(--teal);color:#fff;}
+  .step.pending .n{background:#eef1f3;color:#aab5bd;}
+  button{background:var(--navy2);color:#fff;border:none;padding:9px 18px;border-radius:7px;font-size:13px;cursor:pointer;}
+  button:hover{background:var(--navy);}
+  .pill{font-size:10px;font-weight:700;letter-spacing:0.5px;padding:3px 8px;border-radius:5px;}
+  .pill.complete{background:#e3f5f0;color:#1a7a63;}
+  .pill.not_implemented{background:#f4f1e6;color:#8a6d1f;}
+  code{background:#f0f3f5;padding:1px 5px;border-radius:4px;font-size:12px;}
+  .node-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+  .node{background:#f7f9fa;border:1px solid var(--border);border-radius:8px;padding:10px 12px;min-width:150px;font-size:12px;}
+  .node .eid{font-weight:700;color:var(--navy2);}
+  .node .val{color:#1a7a63;font-weight:600;}
+  .hint{color:var(--ink-dim);font-size:12px;}
+  select{padding:8px;border-radius:7px;border:1px solid var(--border);font-size:13px;margin-bottom:14px;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="sidebar">
+    <div class="brand"><span class="icon">⇄</span> ReplaySemantics</div>
+    <div class="nav-label">Analysis</div>
+    <div class="nav-item active" onclick="showView('dashboard')">Dashboard</div>
+    <div class="nav-item active" onclick="showView('cases')">Cases</div>
+    <div class="nav-item active" onclick="showView('console')">Replay Console</div>
+    <div class="nav-item" style="opacity:.4">Replay Graph <span class="badge">M4</span></div>
+    <div class="nav-item" style="opacity:.4">Attribution <span class="badge">M2-3</span></div>
+  </div>
+  <div class="main">
+    <div id="view-dashboard">
+      <h1>Dashboard</h1>
+      <div class="subtitle">Real numbers, computed live from the Month 1-2 pipeline (not mock data).</div>
+      <div class="stat-row" id="stat-row"><div class="hint">Loading…</div></div>
+    </div>
+
+    <div id="view-cases" style="display:none">
+      <h1>Cases</h1>
+      <div class="subtitle">Real invoice-line events from the ingested VBFA→OCEL2 log. Click one to run the pipeline.</div>
+      <div class="panel">
+        <table>
+          <tr><th>Case ID</th><th>Activity</th><th>Value (EUR)</th><th>~₹ Crore</th><th>Timestamp</th></tr>
+          <tbody id="cases-body"><tr><td colspan="5" class="hint">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="view-console" style="display:none">
+      <h1>Replay Console</h1>
+      <div class="subtitle">Select a case, then Run Replay to execute the real Month 1-2 backend.</div>
+      <select id="case-select"><option>Loading cases…</option></select>
+      <button onclick="runReplay()">▶ Run Replay</button>
+
+      <div class="stepper" id="stepper"></div>
+
+      <div class="panel" id="stage1-panel" style="display:none">
+        <h2>Stage 1 — Extraction <span class="pill complete">complete</span></h2>
+        <div id="stage1-content"></div>
+      </div>
+      <div class="panel" id="stage2-panel" style="display:none">
+        <h2>Stage 2 — Candidate Identification <span class="pill complete">complete</span></h2>
+        <div id="stage2-content"></div>
+      </div>
+      <div class="panel" id="stage345-panel" style="display:none">
+        <h2>Stages 3-5 — Confluence Checks / Policy Resolution / Verdict <span class="pill not_implemented">not yet built</span></h2>
+        <div id="stage345-content" class="hint"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = "/api";
+
+function showView(name){
+  ["dashboard","cases","console"].forEach(v=>{
+    document.getElementById("view-"+v).style.display = (v===name)?"block":"none";
+  });
+}
+
+async function loadDashboard(){
+  const d = await (await fetch(`${API}/dashboard`)).json();
+  document.getElementById("stat-row").innerHTML = `
+    <div class="stat-card"><div class="label">Events in Log</div><div class="value">${d.total_events_in_log.toLocaleString()}</div></div>
+    <div class="stat-card"><div class="label">Objects in Log</div><div class="value">${d.total_objects_in_log.toLocaleString()}</div></div>
+    <div class="stat-card"><div class="label">Available Cases</div><div class="value">${d.available_cases}</div></div>
+    <div class="stat-card"><div class="label">Total Case Value</div><div class="value">₹${d.total_case_value_inr_cr} Cr</div></div>
+  `;
+}
+
+let casesCache = [];
+async function loadCases(){
+  const r = await (await fetch(`${API}/cases`)).json();
+  casesCache = r.cases;
+  document.getElementById("cases-body").innerHTML = casesCache.map(c => `
+    <tr class="case-row" onclick="openCase('${c.case_id}')">
+      <td><code>${c.case_id}</code></td>
+      <td>${c.activity}</td>
+      <td>€${c.value_eur.toLocaleString()}</td>
+      <td>₹${c.value_inr_cr} Cr</td>
+      <td>${new Date(c.timestamp).toLocaleString()}</td>
+    </tr>`).join("");
+  document.getElementById("case-select").innerHTML = casesCache.map(c =>
+    `<option value="${c.case_id}">${c.case_id} — €${c.value_eur.toLocaleString()} (₹${c.value_inr_cr} Cr)</option>`
+  ).join("");
+}
+
+function openCase(id){
+  showView("console");
+  document.getElementById("case-select").value = id;
+  runReplay();
+}
+
+function stepperHtml(activeStage){
+  const steps = ["Extraction","Candidate Identification","Confluence Checks","Policy Resolution","Verdict"];
+  return steps.map((s,i)=>{
+    const done = i < activeStage;
+    return `<div class="step ${done?'done':'pending'}"><span class="n">${i+1}</span> ${s}</div>`;
+  }).join("");
+}
+
+async function runReplay(){
+  const id = document.getElementById("case-select").value;
+  document.getElementById("stepper").innerHTML = stepperHtml(0);
+  const data = await (await fetch(`${API}/cases/${id}/replay`)).json();
+
+  document.getElementById("stepper").innerHTML = stepperHtml(2);
+
+  const t = data.stage_1_extraction.target_event;
+  document.getElementById("stage1-panel").style.display = "block";
+  document.getElementById("stage1-content").innerHTML = `
+    <div class="node-row">
+      <div class="node"><div class="eid">${t.event_id}</div>${t.activity}<br>
+        <span class="val">€${t.value_eur?.toLocaleString() ?? '-'}</span><br>
+        ${new Date(t.timestamp).toLocaleString()}<br>
+        objects: ${t.objects.join(", ")}
+      </div>
+      <div class="node"><b>Graph context</b><br>
+        ${data.stage_1_extraction.graph_context.num_event_nodes.toLocaleString()} events<br>
+        ${data.stage_1_extraction.graph_context.num_object_nodes.toLocaleString()} objects<br>
+        ${data.stage_1_extraction.graph_context.num_edges.toLocaleString()} E2O edges
+      </div>
+    </div>`;
+
+  const s2 = data.stage_2_candidate_identification;
+  document.getElementById("stage2-panel").style.display = "block";
+  document.getElementById("stage2-content").innerHTML = `
+    <div class="hint">${s2.num_candidates} candidate event(s) found, ${s2.hops_used} hop(s) of backward traversal across ${s2.touched_objects.length} touched objects.
+    ${s2.warnings.length ? '<br><b>Warning:</b> '+s2.warnings.join(' ') : ''}</div>
+    <div class="node-row">
+      ${s2.candidates.map(c => `
+        <div class="node"><div class="eid">${c.event_id}</div>${c.activity}<br>
+          <span class="val">€${c.value_eur?.toLocaleString() ?? '-'}</span><br>
+          ${new Date(c.timestamp).toLocaleTimeString()}
+        </div>`).join("")}
+    </div>`;
+
+  document.getElementById("stage345-panel").style.display = "block";
+  document.getElementById("stage345-content").innerHTML = `
+    <b>Confluence Checks:</b> ${data.stage_3_confluence_checks.message}<br><br>
+    <b>Policy Resolution:</b> ${data.stage_4_policy_resolution.message}<br><br>
+    <b>Verdict:</b> ${data.stage_5_verdict.message}
+  `;
+}
+
+loadDashboard();
+loadCases();
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+object_id,object_type,attr__is_blocked,attr__po_product,attr__po_quantity,attr__pr_product,attr__pr_quantity
+R1,Invoice,No,,,,
+R2,Invoice,No,,,,
+R3,Invoice,No,,,,
+P1,Payment,,,,,
+P2,Payment,,,,,
+P3,Payment,,,,,
+PO1,Purchase Order,,Cows,500,,
+PO2,Purchase Order,,Notebooks,1,,
+PR1,Purchase Requisition,,,,Cows,500
