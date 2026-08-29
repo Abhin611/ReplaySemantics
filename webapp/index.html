@@ -85,9 +85,14 @@
     <div id="view-console" style="display:none">
       <h1>Replay Console</h1>
       <div class="subtitle">Select a case, then Run Replay to execute the real Month 1-2 backend.</div>
-      <select id="case-select"><option>Loading cases…</option></select>
-      <input type="number" id="max-events-input" value="8" min="3" max="30" style="width:60px;padding:8px;border-radius:7px;border:1px solid var(--border);margin-left:8px;" title="max_events">
-      <button onclick="runReplay()">▶ Run Replay</button>
+      <select id="case-select" onchange="updateMaxCandidatesHint()"><option>Loading cases…</option></select>
+      <input type="text" id="manual-case-id" placeholder="or type any event id, e.g. e977" style="width:200px;padding:8px;border-radius:7px;border:1px solid var(--border);margin-left:8px;">
+      <label style="margin-left:12px;font-size:12px;color:var(--ink-dim);">max_events</label>
+      <input type="number" id="max-events-input" value="8" min="1" max="30" style="width:55px;padding:8px;border-radius:7px;border:1px solid var(--border);margin-left:4px;">
+      <label style="margin-left:8px;font-size:12px;color:var(--ink-dim);">max_hops</label>
+      <input type="number" id="max-hops-input" value="3" min="1" max="6" style="width:50px;padding:8px;border-radius:7px;border:1px solid var(--border);margin-left:4px;">
+      <button onclick="runReplay()" style="margin-left:8px;">▶ Run Replay</button>
+      <div id="max-candidates-hint" class="hint" style="margin-top:8px;"></div>
 
       <div class="stepper" id="stepper"></div>
 
@@ -106,8 +111,16 @@
 
       <div class="panel" id="graph-panel" style="display:none">
         <h2>Replay Graph <span class="hint" style="font-weight:400">(real traversal, ungraded — verdict colors arrive with Month 4)</span></h2>
-        <div id="graph-warning" class="hint" style="color:#a15c1f;margin-bottom:8px;"></div>
-        <div id="network-graph" style="height:420px;border:1px solid var(--border);border-radius:8px;"></div>
+        <div id="graph-warning-banner" style="display:none;background:#fdecea;border:1px solid #e6a4a0;color:#8a2a22;padding:10px 14px;border-radius:8px;margin-bottom:10px;font-size:13px;">
+          <span id="graph-warning-text"></span>
+          <button id="graph-fix-btn" style="margin-left:10px;background:#8a2a22;padding:5px 12px;font-size:12px;">Show full connected graph</button>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:8px;">
+          <button onclick="graphZoom(1.3)" title="Zoom in" style="padding:5px 12px;">+</button>
+          <button onclick="graphZoom(0.77)" title="Zoom out" style="padding:5px 12px;">–</button>
+          <button onclick="graphFit()" title="Fit to screen" style="padding:5px 12px;">Fit</button>
+        </div>
+        <div id="network-graph" style="height:480px;border:1px solid var(--border);border-radius:8px;"></div>
         <div style="margin-top:10px;font-size:12px;display:flex;gap:18px;">
           <span><span style="color:#8a96a0;">●</span> Idle (current state — no verdict yet)</span>
           <span style="opacity:.4">● Candidate &nbsp; ● Conflict &nbsp; ● Resolved &nbsp; ● Blocked &nbsp; (arrive with Month 3-4)</span>
@@ -150,13 +163,23 @@ async function loadCases(){
       <td>${new Date(c.timestamp).toLocaleString()}</td>
     </tr>`).join("");
   document.getElementById("case-select").innerHTML = casesCache.map(c =>
-    `<option value="${c.case_id}">${c.case_id} — €${c.value_eur.toLocaleString()} (₹${c.value_inr_cr} Cr)</option>`
+    `<option value="${c.case_id}">${c.case_id} — €${c.value_eur.toLocaleString()} — ${c.note}</option>`
   ).join("");
+  updateMaxCandidatesHint();
+}
+
+function updateMaxCandidatesHint(){
+  const id = document.getElementById("case-select").value;
+  const c = casesCache.find(c => c.case_id === id);
+  const hint = document.getElementById("max-candidates-hint");
+  if (!c) { hint.textContent = ""; return; }
+  hint.textContent = `This case has ${c.max_candidates_at_default_hops} candidate event(s) reachable at max_hops=3 — raising max_events past that has no further effect. (Manually-typed event ids show this after Run Replay.)`;
 }
 
 function openCase(id){
   showView("console");
   document.getElementById("case-select").value = id;
+  updateMaxCandidatesHint();
   runReplay();
 }
 
@@ -169,12 +192,27 @@ function stepperHtml(activeStage){
 }
 
 async function runReplay(){
-  const id = document.getElementById("case-select").value;
+  const manual = document.getElementById("manual-case-id").value.trim();
+  const id = manual || document.getElementById("case-select").value;
   const maxEvents = document.getElementById("max-events-input").value || 8;
+  const maxHops = document.getElementById("max-hops-input").value || 3;
   document.getElementById("stepper").innerHTML = stepperHtml(0);
-  const data = await (await fetch(`${API}/cases/${id}/replay?max_events=${maxEvents}`)).json();
+  const resp = await fetch(`${API}/cases/${id}/replay?max_events=${maxEvents}&max_hops=${maxHops}`);
+  if (!resp.ok) {
+    document.getElementById("stage1-panel").style.display = "block";
+    document.getElementById("stage1-content").innerHTML = `<span style="color:#c0392b">Error: ${resp.status} — unknown event id "${id}"? Try one from the dropdown, or a real event id like e977, e34.</span>`;
+    document.getElementById("stage2-panel").style.display = "none";
+    document.getElementById("graph-panel").style.display = "none";
+    document.getElementById("stage345-panel").style.display = "none";
+    return;
+  }
+  const data = await resp.json();
 
   document.getElementById("stepper").innerHTML = stepperHtml(2);
+
+  const s2early = data.stage_2_candidate_identification;
+  document.getElementById("max-candidates-hint").textContent =
+    `This case has ${s2early.total_discovered} candidate event(s) reachable at max_hops=${maxHops} — raising max_events past that has no further effect.`;
 
   const t = data.stage_1_extraction.target_event;
   document.getElementById("stage1-panel").style.display = "block";
@@ -217,50 +255,84 @@ async function runReplay(){
 
 let network = null;
 function shortLabel(activity){
-  // "Create Goods Movement (from Delivery)" -> "Goods\nMovement"
-  const m = activity.match(/^Create (.+?) \(from/);
-  const core = m ? m[1] : activity;
-  const words = core.split(" ");
-  return words.length > 1 ? words[0] + "\n" + words.slice(1).join(" ") : core;
+  // "Create Goods Movement (from Delivery)" -> {main:"Goods Movement", from:"Delivery"}
+  const m = activity.match(/^Create (.+?) \(from (.+?)\)/);
+  return m ? { main: m[1], from: m[2] } : { main: activity, from: "" };
 }
 
 function renderReplayGraph(graphData, warnings){
   document.getElementById("graph-panel").style.display = "block";
   const disconnectWarning = warnings.find(w => w.includes("lost their connecting path"));
-  document.getElementById("graph-warning").innerHTML = disconnectWarning
-    ? "⚠ " + disconnectWarning
-    : "";
+  const banner = document.getElementById("graph-warning-banner");
+  if (disconnectWarning){
+    banner.style.display = "block";
+    document.getElementById("graph-warning-text").innerHTML =
+      "⚠ Some nodes below have no arrows connecting them to the target (★). " +
+      "The event that actually linked them was pruned by the current max_events bound — " +
+      "not a rendering bug, a real traversal-vs-bounding tradeoff (see README).";
+  } else {
+    banner.style.display = "none";
+  }
 
-  const nodes = new vis.DataSet(graphData.nodes.map(n => ({
-    id: n.id,
-    label: (n.is_target ? "★ " : "") + n.id + "\n" + shortLabel(n.activity),
-    shape: "ellipse",
-    color: {
-      background: n.is_target ? "#fde8d8" : (n.connected_to_target ? "#eef1f3" : "#fbeaea"),
-      border: n.is_target ? "#e07a3f" : (n.connected_to_target ? "#aab5bd" : "#c96a6a"),
-    },
-    font: { size: 12, multi: false, align: "center" },
-    title: `${n.id} — ${n.activity}\nValue: €${n.value_eur?.toLocaleString() ?? '-'}\n${n.connected_to_target ? '' : '(not connected within current bound)'}`,
-  })));
+  const nodes = new vis.DataSet(graphData.nodes.map(n => {
+    const parts = shortLabel(n.activity);
+    const valueStr = n.value_eur ? `€${n.value_eur.toLocaleString()}` : "no value";
+    const timeStr = new Date(n.timestamp).toLocaleString(undefined, {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+    const label = `${n.is_target ? "★ " : ""}${n.id}\n${parts.main}${parts.from ? "\n(from " + parts.from + ")" : ""}\n${valueStr}\n${timeStr}`;
+    return {
+      id: n.id,
+      label,
+      shape: "box",
+      margin: 10,
+      color: {
+        background: n.is_target ? "#fde8d8" : (n.connected_to_target ? "#eef1f3" : "#fbeaea"),
+        border: n.is_target ? "#e07a3f" : (n.connected_to_target ? "#aab5bd" : "#c96a6a"),
+      },
+      font: { size: 11, multi: false, align: "center" },
+      title: `${n.id} — ${n.activity}\nValue: ${valueStr}\nHop: ${n.hop ?? '(target)'}\n${n.connected_to_target ? '' : '⚠ not connected to target within current max_events bound'}`,
+    };
+  }));
 
   const edges = new vis.DataSet(graphData.edges.map(e => ({
     from: e.source, to: e.target,
     arrows: "to",
-    color: { color: "#c3ccd3" },
+    color: { color: "#8fa0ab" },
+    width: 1.5,
+    smooth: { type: "cubicBezier", forceDirection: "horizontal", roundness: 0.4 },
     label: e.shared_objects.length === 1 ? "" : `shared: ${e.shared_objects.length} objs`,
-    font: { size: 10, color: "#d4af37" },
+    font: { size: 10, color: "#a1791f", strokeWidth: 3, strokeColor: "#ffffff" },
   })));
 
   const container = document.getElementById("network-graph");
   const options = {
-    layout: { hierarchical: { direction: "LR", sortMethod: "directed", levelSeparation: 140, nodeSpacing: 70 } },
+    layout: { hierarchical: { direction: "LR", sortMethod: "directed", levelSeparation: 190, nodeSpacing: 90 } },
     physics: false,
-    interaction: { hover: true },
-    nodes: { borderWidth: 1.5, widthConstraint: { minimum: 90, maximum: 130 } },
+    interaction: { hover: true, zoomView: true, dragView: true, zoomSpeed: 0.4 },
+    nodes: { borderWidth: 1.5, widthConstraint: { minimum: 110, maximum: 150 } },
+    edges: { arrowStrikethrough: false },
   };
   if (network) network.destroy();
   network = new vis.Network(container, { nodes, edges }, options);
+  network.once("afterDrawing", () => network.fit({ animation: false }));
 }
+
+function graphZoom(factor){
+  if (!network) return;
+  const currentScale = network.getScale();
+  const viewPos = network.getViewPosition();
+  network.moveTo({ scale: currentScale * factor, position: viewPos, animation: { duration: 200 } });
+}
+
+function graphFit(){
+  if (!network) return;
+  network.fit({ animation: { duration: 300 } });
+}
+
+document.getElementById("graph-fix-btn").addEventListener("click", () => {
+  const current = parseInt(document.getElementById("max-events-input").value || "8", 10);
+  document.getElementById("max-events-input").value = Math.max(current + 15, 25);
+  runReplay();
+});
 
 loadDashboard();
 loadCases();

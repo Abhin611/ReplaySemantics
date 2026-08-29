@@ -107,11 +107,16 @@ def get_graph() -> ObjectCentricGraph:
 @lru_cache(maxsize=1)
 def get_case_list() -> list[dict]:
     """
-    Curated 'cases' for the demo: real invoice-line events with a nonzero
-    value, taken from the actual ingested log. In the finished system,
-    'case' will mean something Member 2/3-defined (a validated, attributed
-    realized loss) -- for now it's simply "an event you can run the
-    Month 1-2 pipeline against."
+    Curated 'cases' for the demo, from the actual ingested log. In the
+    finished system, 'case' will mean something Member 2/3-defined (a
+    validated, attributed realized loss) -- for now it's simply "an event
+    you can run the Month 1-2 pipeline against."
+
+    Mixed by two criteria, since they pull in opposite directions in this
+    dataset: the highest-value invoice lines turn out to be structurally
+    the simplest (few/no prior events), while the richest multi-hop
+    traversal examples (like e977) are comparatively low-value. Showing
+    only top-by-value would hide every interesting graph.
     """
     graph = get_graph()
     log = graph.log
@@ -119,21 +124,46 @@ def get_case_list() -> list[dict]:
         e for e in log.events
         if e.activity.startswith("Create Invoice") and (e.attributes.get("value") or 0) > 0
     ]
-    invoices.sort(key=lambda e: e.attributes.get("value", 0), reverse=True)
 
-    cases = []
-    for e in invoices[:25]:
-        cases.append(
-            {
-                "case_id": e.event_id,
-                "activity": e.activity,
-                "timestamp": e.timestamp.isoformat(),
-                "value_eur": e.attributes.get("value"),
-                "value_inr_cr": round((e.attributes.get("value") or 0) * 92 / 1e7, 3),
-                "objects": sorted(e.object_ids()),
-            }
-        )
-    return cases
+    def to_case(e, note, max_candidates):
+        return {
+            "case_id": e.event_id,
+            "activity": e.activity,
+            "timestamp": e.timestamp.isoformat(),
+            "value_eur": e.attributes.get("value"),
+            "value_inr_cr": round((e.attributes.get("value") or 0) * 92 / 1e7, 3),
+            "objects": sorted(e.object_ids()),
+            "note": note,
+            "max_candidates_at_default_hops": max_candidates,
+        }
+
+    # total_discovered (not the truncated candidate count) is the true
+    # ceiling: how many candidates exist for this case at max_hops=3,
+    # before any max_events cap trims them.
+    discovered_counts: dict[str, int] = {}
+    for e in invoices:
+        r = extract_candidate_events(graph, e.event_id, max_events=1, min_events=3, max_hops=3)
+        discovered_counts[e.event_id] = r.total_discovered
+
+    by_value = sorted(invoices, key=lambda e: e.attributes.get("value", 0), reverse=True)
+    top_value_cases = [
+        to_case(e, "top value", discovered_counts[e.event_id]) for e in by_value[:15]
+    ]
+
+    richness = [(e, discovered_counts[e.event_id]) for e in invoices]
+    richness.sort(key=lambda pair: pair[1], reverse=True)
+
+    seen_ids = {c["case_id"] for c in top_value_cases}
+    rich_cases = []
+    for e, n in richness:
+        if e.event_id in seen_ids:
+            continue
+        rich_cases.append(to_case(e, f"rich traversal ({n} candidates)", n))
+        seen_ids.add(e.event_id)
+        if len(rich_cases) >= 10:
+            break
+
+    return top_value_cases + rich_cases
 
 
 @app.get("/api/health")
@@ -207,6 +237,7 @@ def run_replay(case_id: str, max_events: int = 8, min_events: int = 3, max_hops:
         "stage_2_candidate_identification": {
             "status": "complete",
             "num_candidates": len(result.candidate_events),
+            "total_discovered": result.total_discovered,
             "hops_used": result.hops_used,
             "touched_objects": sorted(result.touched_objects),
             "candidates": [event_payload(e) for e in result.candidate_events],

@@ -66,6 +66,10 @@ class CandidateExtractionResult:
     # already-visited event's object led here. The target event is its
     # own hop-1 candidates' parent.
     discovered_via: dict[str, tuple[str, str]] = field(default_factory=dict)
+    # total events found by the traversal within max_hops, BEFORE the
+    # max_events cap trimmed them down -- i.e. "how many candidates exist
+    # at this max_hops setting". Raising max_events past this has no effect.
+    total_discovered: int = 0
     warnings: list[str] = field(default_factory=list)
 
     def event_ids(self) -> list[str]:
@@ -84,17 +88,28 @@ class CandidateExtractionResult:
         }
 
 
-def rank_candidates(target: OCELEvent, candidates: list[OCELEvent]) -> list[OCELEvent]:
-    """Default ranking: most recent first (closest in time to the target,
-    i.e. the most causally-proximate events).
-
-    Tie-break: SAP-style batch commits routinely stamp many events with the
-    exact same timestamp (e.g. all line items of one document posted in a
-    single transaction) -- ranking must still be deterministic in that case,
-    so ties are broken by event_id. Swap this function out for a
-    policy-aware scorer once correction-function metadata exists.
+def rank_candidates(
+    target: OCELEvent, candidates: list[OCELEvent], hops: dict[str, int]
+) -> list[OCELEvent]:
     """
-    return sorted(candidates, key=lambda e: (e.timestamp, e.event_id), reverse=True)
+    Ranking, most-causally-proximate first:
+      1. Lower hop distance from the target wins (a hop-1 event -- directly
+         on one of the target's own objects -- outranks a hop-2 event
+         reached only via an intermediate object). This is the primary
+         criterion, and it also guarantees connectivity: hop-1 events'
+         discovery parent is always the target itself, so bounding to the
+         top N by this ranking can never orphan a kept event the way a
+         pure-recency ranking could (see the module-level note on the
+         disconnection this replaced).
+      2. Within the same hop, most recent first (closest in time).
+      3. Final tie-break: event_id, since SAP-style batch commits routinely
+         stamp many same-hop events with the identical timestamp.
+
+    Swap this out for a policy-aware scorer once correction-function
+    metadata exists.
+    """
+    by_recency = sorted(candidates, key=lambda e: (e.timestamp, e.event_id), reverse=True)
+    return sorted(by_recency, key=lambda e: hops[e.event_id])  # stable: preserves recency order
 
 
 def extract_candidate_events(
@@ -166,13 +181,14 @@ def extract_candidate_events(
         frontier_objects = next_frontier_objects - visited_objects
         hop += 1
 
-    candidates = rank_candidates(target, list(found.values()))[:max_events]
+    candidates = rank_candidates(target, list(found.values()), found_at_hop)[:max_events]
     candidates.sort(key=lambda e: e.timestamp)  # chronological order for readability
     event_hops = {e.event_id: found_at_hop[e.event_id] for e in candidates}
     kept_ids = {e.event_id for e in candidates} | {target_event_id}
     kept_discovery = {
         eid: parent for eid, parent in discovered_via.items() if eid in kept_ids
     }
+    total_discovered = len(found)
 
     warnings: list[str] = []
     if len(candidates) < min_events:
@@ -207,6 +223,7 @@ def extract_candidate_events(
         hops_used=hop,
         event_hops=event_hops,
         discovered_via=kept_discovery,
+        total_discovered=total_discovered,
         warnings=warnings,
     )
 

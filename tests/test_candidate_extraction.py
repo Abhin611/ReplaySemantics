@@ -44,13 +44,12 @@ def test_candidates_are_chronologically_sorted(vbfa_graph):
 
 def test_known_rich_target_hits_max_events(vbfa_graph):
     # This object's backward traversal discovers a cross-object link into a
-    # Delivery document's own event history at hop 1 (real multi-hop
-    # object-centric behavior), yielding far more than max_events candidates
-    # -> the bound should saturate at exactly max_events. All 8 kept
-    # candidates happen to come from the later (hop-2) Delivery-side batch,
-    # so the algorithm correctly warns that their hop-1 connecting events
-    # were pruned by the recency cutoff (see test_disconnection_is_flagged
-    # below for a dedicated check of that warning).
+    # Delivery document's own event history (real multi-hop object-centric
+    # behavior), yielding far more than max_events candidates total ->
+    # the bound should saturate at exactly max_events. Ranking prioritizes
+    # hop distance first, so the 8 kept candidates are the hop-1 events
+    # (directly connected to the target) -- see
+    # test_hop_priority_ranking_avoids_disconnection for that guarantee.
     result = extract_candidate_events(
         vbfa_graph, KNOWN_RICH_TARGET, max_events=8, min_events=3, max_hops=3
     )
@@ -58,17 +57,19 @@ def test_known_rich_target_hits_max_events(vbfa_graph):
     assert result.hops_used == 3
 
 
-def test_disconnection_from_target_is_flagged(vbfa_graph):
+def test_hop_priority_ranking_avoids_disconnection(vbfa_graph):
+    # e977's traversal previously demonstrated a real disconnection bug: a
+    # pure-recency ranking could keep events whose connecting (parent)
+    # event got pruned. Ranking now prioritizes hop distance first (lower
+    # hop = more causally proximate = ranked higher), which guarantees
+    # every hop-1 event's parent is the target itself -- so bounding to
+    # max_events can no longer orphan a kept event this way.
     result = extract_candidate_events(
         vbfa_graph, KNOWN_RICH_TARGET, max_events=8, min_events=3, max_hops=3
     )
-    assert any("lost their connecting path" in w for w in result.warnings)
-    # raising max_events should recover the connecting (hop-1) events and
-    # remove the disconnection warning
-    fuller = extract_candidate_events(
-        vbfa_graph, KNOWN_RICH_TARGET, max_events=20, min_events=3, max_hops=3
-    )
-    assert not any("lost their connecting path" in w for w in fuller.warnings)
+    assert all(h == 1 for h in result.event_hops.values())
+    assert not any("lost their connecting path" in w for w in result.warnings)
+    assert result.total_discovered == 20  # full pool found within max_hops=3
 
 
 def test_target_event_not_included_in_candidates(vbfa_graph):
