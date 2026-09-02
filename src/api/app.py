@@ -34,6 +34,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -46,6 +47,14 @@ OCEL_PATH = REPO_ROOT / "data" / "raw" / "vbfa_o2c_2019_2021_eur.jsonocel"
 WEBAPP_DIR = REPO_ROOT / "webapp"
 
 app = FastAPI(title="ReplaySemantics API", version="0.1.0 (Month 1-2)")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Vite dev server
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def build_case_graph(graph: ObjectCentricGraph, target, result: CandidateExtractionResult) -> dict:
