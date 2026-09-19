@@ -9,14 +9,19 @@ import Card from '../components/Card'
 import StatusBadge from '../components/StatusBadge'
 import PreviewTag from '../components/PreviewTag'
 import EventNode from '../components/graph/EventNode'
+import ConstraintSummaryCard from '../components/ConstraintSummaryCard'
+import ConstraintExplanationList from '../components/ConstraintExplanationList'
+import PaymentRoutesCard from '../components/PaymentRoutesCard'
 import { LoadingState, ErrorState } from '../components/StatusStates'
 import { formatEur, formatDateTime } from '../lib/format'
+import { computePaymentRoutes } from '../lib/paymentRoutes'
 
 const NODE_TYPES = { event: EventNode }
 
 const STAGES = [
   { key: 'stage_1_extraction', label: 'Extraction' },
   { key: 'stage_2_candidate_identification', label: 'Candidate Identification' },
+  { key: 'stage_2b_constraint_extraction', label: 'Order Constraints' },
   { key: 'stage_3_confluence_checks', label: 'Confluence Checks' },
   { key: 'stage_4_policy_resolution', label: 'Policy Resolution' },
   { key: 'stage_5_verdict', label: 'Verdict' },
@@ -31,8 +36,35 @@ const LEGEND = [
 ]
 
 // Lay nodes out left-to-right by hop distance (target = rightmost column).
-function layoutGraph(graphView, targetId) {
+// `highlight` (optional) marks matching nodes with `highlighted: true`
+// (EventNode draws the amber ring) and restyles matching edges -- driven
+// by clicking a line in ConstraintExplanationList ({type:'constraint',
+// before, after}) or a route in PaymentRoutesCard ({type:'route',
+// eventIds}, the whole leaf-to-target chain).
+function pairKey(a, b) {
+  return [a, b].sort().join('::')
+}
+
+function buildHighlight(highlight) {
+  if (!highlight) return null
+  if (highlight.type === 'route') {
+    const ids = new Set(highlight.eventIds)
+    const edgeKeys = new Set()
+    for (let i = 0; i < highlight.eventIds.length - 1; i++) {
+      edgeKeys.add(pairKey(highlight.eventIds[i], highlight.eventIds[i + 1]))
+    }
+    return { ids, edgeKeys }
+  }
+  // {type: 'constraint', before, after}
+  return {
+    ids: new Set([highlight.before, highlight.after]),
+    edgeKeys: new Set([pairKey(highlight.before, highlight.after)]),
+  }
+}
+
+function layoutGraph(graphView, highlightSpec) {
   if (!graphView) return { nodes: [], edges: [] }
+  const highlight = buildHighlight(highlightSpec)
   const byHop = {}
   graphView.nodes.forEach((n) => {
     const hop = n.is_target ? -1 : n.hop ?? 99
@@ -58,7 +90,7 @@ function layoutGraph(graphView, targetId) {
       nodes.push({
         id: n.id,
         position: { x: col * COL_GAP, y: rowIdx * ROW_GAP - colHeight / 2 },
-        data: { node: n },
+        data: { node: highlight ? { ...n, highlighted: highlight.ids.has(n.id) } : n },
         type: 'event',
         // Not setting width/height here deliberately -- letting React
         // Flow auto-measure via its own ResizeObserver, matching how
@@ -81,18 +113,33 @@ function layoutGraph(graphView, targetId) {
   // edge has exactly one shared doc, and (b) its background chip is wide
   // enough to fully cover a short line between adjacent columns, which is
   // why edges could look completely missing even though they were drawn.
-  const edges = graphView.edges.map((e, i) => ({
-    id: `${e.source}-${e.target}-${i}`,
-    source: e.target,
-    target: e.source,
-    label: e.shared_objects?.length > 1 ? `${e.shared_objects.length} shared objects` : undefined,
-    labelStyle: { fontSize: 9, fill: '#5c6b7a', fontWeight: 600 },
-    labelBgStyle: { fill: '#f4f6f8' },
-    labelBgPadding: [3, 2],
-    animated: false,
-    markerEnd: { type: MarkerType.ArrowClosed, color: '#64748b', width: 20, height: 20 },
-    style: { stroke: '#64748b', strokeWidth: 2 },
-  }))
+  const edges = graphView.edges.map((e, i) => {
+    // Checked via the direction-agnostic pairKey against the RAW
+    // (unflipped) source/target -- a route's consecutive-link edgeKeys
+    // and a constraint's {before, after} both resolve the same way.
+    const isHighlighted = highlight && highlight.edgeKeys.has(pairKey(e.source, e.target))
+    return {
+      id: `${e.source}-${e.target}-${i}`,
+      source: e.target,
+      target: e.source,
+      label: e.shared_objects?.length > 1 ? `${e.shared_objects.length} shared objects` : undefined,
+      labelStyle: { fontSize: 9, fill: '#5c6b7a', fontWeight: 600 },
+      labelBgStyle: { fill: '#f4f6f8' },
+      labelBgPadding: [3, 2],
+      animated: false,
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        color: isHighlighted ? '#b5850f' : '#64748b',
+        width: isHighlighted ? 24 : 20,
+        height: isHighlighted ? 24 : 20,
+      },
+      style: {
+        stroke: isHighlighted ? '#b5850f' : '#64748b',
+        strokeWidth: isHighlighted ? 3.5 : 2,
+      },
+      zIndex: isHighlighted ? 10 : 0,
+    }
+  })
 
   return { nodes, edges }
 }
@@ -107,6 +154,8 @@ export default function ReplayConsole() {
   const [running, setRunning] = useState(false)
   const [runError, setRunError] = useState(null)
   const [selectedNode, setSelectedNode] = useState(null)
+  const [selectedConstraint, setSelectedConstraint] = useState(null)
+  const [selectedRoute, setSelectedRoute] = useState(null) // { key: 'highest' | 'lowest', eventIds }
 
   const cases = casesApi.data?.cases || []
 
@@ -121,6 +170,8 @@ export default function ReplayConsole() {
     setRunning(true)
     setRunError(null)
     setSelectedNode(null)
+    setSelectedConstraint(null)
+    setSelectedRoute(null)
     try {
       const data = await runReplay(selectedCaseId, { maxEvents, minEvents, maxHops })
       setResult(data)
@@ -131,10 +182,29 @@ export default function ReplayConsole() {
     }
   }
 
+  // Only one highlight is active at a time -- picking a constraint clears
+  // any selected route and vice versa (see the two onSelect handlers
+  // passed to the cards below), so this is a simple either/or.
+  const highlightSpec = selectedConstraint
+    ? { type: 'constraint', before: selectedConstraint.before, after: selectedConstraint.after }
+    : selectedRoute
+    ? { type: 'route', eventIds: selectedRoute.eventIds }
+    : null
+
   const { nodes, edges } = useMemo(
-    () => layoutGraph(result?.replay_graph, selectedCaseId),
-    [result, selectedCaseId]
+    () => layoutGraph(result?.replay_graph, highlightSpec),
+    [result, selectedConstraint, selectedRoute]
   )
+
+  const eventLookup = useMemo(() => {
+    const lookup = {}
+    result?.replay_graph?.nodes?.forEach((n) => {
+      lookup[n.id] = n.activity
+    })
+    return lookup
+  }, [result])
+
+  const paymentRoutes = useMemo(() => computePaymentRoutes(result?.replay_graph), [result])
 
   const onNodeClick = (_evt, node) => setSelectedNode(node.data.node)
 
@@ -249,6 +319,13 @@ export default function ReplayConsole() {
             )}
           </Card>
 
+          {result && (
+            <ConstraintSummaryCard
+              constraintData={result.stage_2b_constraint_extraction}
+              eventLookup={eventLookup}
+            />
+          )}
+
           <Card className="!p-0 overflow-hidden">
             <div className="flex items-center justify-between border-b border-[#e2e6ea] px-5 py-3">
               <div className="text-[14px] font-bold">
@@ -328,7 +405,16 @@ export default function ReplayConsole() {
                     </div>
                   )}
                 </div>
-                {STAGES.slice(2).map((s) => (
+                <div>
+                  <div className="font-semibold text-[#101828]">
+                    Stage 2b · Order Constraints
+                  </div>
+                  <div className="text-[#5c6b7a]">
+                    {result.stage_2b_constraint_extraction.num_constraints} locked ·{' '}
+                    {result.stage_2b_constraint_extraction.num_permutable_pairs} permutable
+                  </div>
+                </div>
+                {STAGES.filter((s) => ['stage_3_confluence_checks', 'stage_4_policy_resolution', 'stage_5_verdict'].includes(s.key)).map((s) => (
                   <div key={s.key}>
                     <div className="font-semibold text-[#8a97a3]">{s.label}</div>
                     <div className="text-[#8a97a3]">{result[s.key]?.message}</div>
@@ -337,6 +423,30 @@ export default function ReplayConsole() {
               </div>
             )}
           </Card>
+
+          {result && (
+            <ConstraintExplanationList
+              constraints={result.stage_2b_constraint_extraction.given_constraints}
+              eventLookup={eventLookup}
+              selected={selectedConstraint}
+              onSelect={(c) => {
+                setSelectedRoute(null)
+                setSelectedConstraint(c)
+              }}
+            />
+          )}
+
+          {result && (
+            <PaymentRoutesCard
+              routes={paymentRoutes}
+              eventLookup={eventLookup}
+              selectedRouteKey={selectedRoute?.key}
+              onSelectRoute={(key, route) => {
+                setSelectedConstraint(null)
+                setSelectedRoute(key ? { key, eventIds: route.eventIds } : null)
+              }}
+            />
+          )}
 
           <Card>
             <div className="mb-2 text-[13px] font-bold text-[#101828]">Diagnostic</div>

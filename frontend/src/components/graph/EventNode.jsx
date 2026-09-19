@@ -20,10 +20,14 @@ export const NODE_HEIGHT = 92
 const CIRCLE_SIZE = 56
 const CIRCLE_CENTER = CIRCLE_SIZE / 2
 
+// n.highlighted (set by the page, not stored on the API's node payload)
+// draws the amber "selected constraint" ring -- see ConstraintExplanationList.
+
 export default function EventNode({ data }) {
   const n = data.node
   const isTarget = n.is_target
   const disconnected = !isTarget && n.connected_to_target === false
+  const highlighted = !!n.highlighted
 
   const ring = isTarget
     ? { border: '#2a9d8f', bg: '#e6f6f4', text: '#0d4f47' }
@@ -51,17 +55,22 @@ export default function EventNode({ data }) {
           width: CIRCLE_SIZE,
           height: CIRCLE_SIZE,
           borderRadius: '50%',
-          border: `2px solid ${ring.border}`,
-          background: ring.bg,
-          color: ring.text,
+          border: highlighted ? '3px solid #b5850f' : `2px solid ${ring.border}`,
+          background: highlighted ? '#fff6e0' : ring.bg,
+          color: highlighted ? '#7a5b0a' : ring.text,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           fontSize: 12,
           fontWeight: 700,
           fontFamily: 'JetBrains Mono, monospace',
-          boxShadow: isTarget ? '0 0 0 3px rgba(42,157,143,0.15)' : 'none',
+          boxShadow: highlighted
+            ? '0 0 0 5px rgba(181,133,15,0.25)'
+            : isTarget
+            ? '0 0 0 3px rgba(42,157,143,0.15)'
+            : 'none',
           flexShrink: 0,
+          transition: 'box-shadow 150ms ease, background 150ms ease, border 150ms ease',
         }}
         title={n.id}
       >
