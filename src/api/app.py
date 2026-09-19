@@ -39,6 +39,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from replay_core.candidate_extraction import CandidateExtractionResult, extract_candidate_events
+from replay_core.constraint_extraction import extract_constraints
 from replay_core.graph import ObjectCentricGraph
 from replay_core.ingestion import load_ocel
 
@@ -235,6 +236,7 @@ def run_replay(case_id: str, max_events: int = 8, min_events: int = 3, max_hops:
         }
 
     graph_view = build_case_graph(graph, target, result)
+    constraint_result = extract_constraints(result)
 
     return {
         "case_id": case_id,
@@ -252,11 +254,26 @@ def run_replay(case_id: str, max_events: int = 8, min_events: int = 3, max_hops:
             "candidates": [event_payload(e) for e in result.candidate_events],
             "warnings": result.warnings,
         },
+        "stage_2b_constraint_extraction": {
+            "status": "complete",
+            "note": "Structural order-locks only (shared object + differing timestamp). "
+                    "Does NOT resolve order-invariance for the composition-consistency "
+                    "check below -- see constraint_extraction.py module docstring.",
+            "num_constraints": len(constraint_result.constraints),
+            "num_permutable_pairs": len(constraint_result.permutable_pairs),
+            "given_constraints": [c.to_policy_dict() for c in constraint_result.constraints],
+            "permutable_pairs": [
+                {"a": p.event_id_a, "b": p.event_id_b}
+                for p in constraint_result.permutable_pairs
+            ],
+        },
         "replay_graph": graph_view,
         "stage_3_confluence_checks": {
             "status": "not_implemented",
             "message": "Scheduled for Month 4 (Member 1). PASS / POLICY-ORDERED / "
-                       "BLOCKED classification requires the replay operator (Month 3) first.",
+                       "BLOCKED classification requires the replay operator (Month 3) first. "
+                       "Will only need to run order-behaviour tests on the "
+                       "stage_2b permutable_pairs, not every candidate pair.",
         },
         "stage_4_policy_resolution": {
             "status": "not_implemented",

@@ -1,0 +1,53 @@
+{
+  "target_event_id": "e977",
+  "given_constraints": [
+    {
+      "before": "e966",
+      "after": "e977",
+      "shared_object": "0000019222",
+      "reason": "structural_precedence"
+    },
+    {
+      "before": "e965",
+      "after": "e977",
+      "shared_object": "0000019222",
+      "reason": "structural_precedence"
+    },
+    {
+      "before": "e964",
+      "after": "e977",
+      "shared_object": "0000019222",
+      "reason": "structural_precedence"
+    },
+    {
+      "before": "e963",
+      "after": "e977",
+      "shared_object": "0000019222",
+      "reason": "structural_precedence"
+    },
+    {
+      "before": "e534",
+      "after": "e977",
+      "shared_object": "0000019222",
+      "reason": "structural_precedence"
+    },
+    {
+      "before": "e533",
+      "after": "e977",
+      "shared_object": "0000019222",
+      "reason": "structural_precedence"
+    },
+    {
+      "before": "e532",
+      "after": "e977",
+      "shared_object": "0000019222",
+      "reason": "structural_precedence"
+    },
+    {
+      "before": "e531",
+      "after": "e977",
+      "shared_object": "0000019222",
+      "reason": "structural_precedence"
+    }
+  ]
+}
