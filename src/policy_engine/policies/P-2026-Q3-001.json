@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0",
+  "policy_version": "P-2026-Q3-001",
+  "effective_from": "2026-07-01",
+  "description": "Full canonical order: upstream stage before downstream stage across the whole frozen chain (benchmark default).",
+  "stacking": {
+    "mode": "multiplicative",
+    "max_total_discount": "0.25"
+  },
+  "rounding": {
+    "decimals": 2,
+    "mode": "ROUND_HALF_UP"
+  },
+  "corrections": [
+    {
+      "correction_id": "price_correction",
+      "activity": "Override Unit Price",
+      "node_type": "gross_price",
+      "remediation_cost": 1,
+      "description": "Restore the contract unit price."
+    },
+    {
+      "correction_id": "quantity_correction",
+      "activity": "Adjust Quantity",
+      "node_type": "gross_qty",
+      "remediation_cost": 1,
+      "description": "Restore the ordered quantity."
+    },
+    {
+      "correction_id": "discount_correction",
+      "activity": "Apply Discount",
+      "node_type": "discount",
+      "remediation_cost": 1,
+      "description": "Restore the authorized discount rate for the stacking slot."
+    },
+    {
+      "correction_id": "tax_correction",
+      "activity": "Apply Tax Code",
+      "node_type": "tax",
+      "remediation_cost": 1,
+      "description": "Restore the policy tax rate; re-derive tax on the current post-discount base."
+    },
+    {
+      "correction_id": "currency_correction",
+      "activity": "Convert Currency",
+      "node_type": "currency",
+      "remediation_cost": 1,
+      "description": "Restore the policy FX rate."
+    },
+    {
+      "correction_id": "adjustment_correction",
+      "activity": "Post Manual Adjustment",
+      "node_type": "adjustment",
+      "remediation_cost": 1,
+      "description": "Restore the authorized posting amount."
+    },
+    {
+      "correction_id": "rounding_correction",
+      "activity": "Apply Rounding",
+      "node_type": "rounding",
+      "remediation_cost": 1,
+      "description": "Re-round the pre-rounding amount under the policy rounding rule."
+    }
+  ],
+  "canonical_orderings": [
+    {
+      "rule_id": "CO-01",
+      "before": "price_correction",
+      "after": "discount_correction",
+      "rationale": "Discount is computed on gross; the gross inputs must be final first."
+    },
+    {
+      "rule_id": "CO-02",
+      "before": "quantity_correction",
+      "after": "discount_correction",
+      "rationale": "Discount is computed on gross; the gross inputs must be final first."
+    },
+    {
+      "rule_id": "CO-03",
+      "before": "discount_correction",
+      "after": "tax_correction",
+      "rationale": "Tax base is the post-discount amount."
+    },
+    {
+      "rule_id": "CO-04",
+      "before": "tax_correction",
+      "after": "currency_correction",
+      "rationale": "FX conversion applies to the taxed amount."
+    },
+    {
+      "rule_id": "CO-05",
+      "before": "currency_correction",
+      "after": "adjustment_correction",
+      "rationale": "Fixed-amount postings are in reporting currency, after conversion."
+    },
+    {
+      "rule_id": "CO-06",
+      "before": "adjustment_correction",
+      "after": "rounding_correction",
+      "rationale": "Rounding is the last step over the complete pre-rounding amount."
+    },
+    {
+      "rule_id": "CO-07",
+      "within": "discount_correction",
+      "by": "slot_ascending",
+      "rationale": "Stacked discounts apply in slot order; each reads the previous slot's amount."
+    }
+  ]
+}

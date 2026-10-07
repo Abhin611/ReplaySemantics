@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReplaySemantics policy document",
+  "description": "Versioned, immutable policy. `remediation_cost` is reserved from schema 1.0 (Month 1) and populated per correction (Month 3). Structural `given_constraints` are NOT part of the versioned policy; they are a per-case overlay (see CasePolicy).",
+  "type": "object",
+  "required": ["schema_version", "policy_version", "effective_from", "stacking", "rounding", "corrections"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "policy_version": {"type": "string", "pattern": "^P-\\d{4}-Q[1-4]-\\d{3}$"},
+    "effective_from": {"type": "string"},
+    "description": {"type": "string"},
+    "stacking": {
+      "type": "object",
+      "required": ["mode", "max_total_discount"],
+      "properties": {
+        "mode": {"enum": ["additive", "multiplicative"]},
+        "max_total_discount": {"type": "string"}
+      }
+    },
+    "rounding": {
+      "type": "object",
+      "required": ["decimals", "mode"],
+      "properties": {
+        "decimals": {"type": "integer", "minimum": 0, "maximum": 6},
+        "mode": {"enum": ["ROUND_HALF_UP", "ROUND_HALF_EVEN", "ROUND_DOWN"]}
+      }
+    },
+    "corrections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["correction_id", "activity", "node_type", "remediation_cost"],
+        "properties": {
+          "correction_id": {"type": "string"},
+          "activity": {"type": "string"},
+          "node_type": {"enum": ["gross_price", "gross_qty", "discount", "tax", "currency", "adjustment", "rounding"]},
+          "remediation_cost": {"type": "integer", "minimum": 0},
+          "description": {"type": "string"}
+        }
+      }
+    },
+    "canonical_orderings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rule_id"],
+        "oneOf": [
+          {"required": ["before", "after"]},
+          {"required": ["within", "by"], "properties": {"by": {"const": "slot_ascending"}}}
+        ]
+      }
+    }
+  }
+}
