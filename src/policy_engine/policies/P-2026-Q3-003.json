@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "policy_version": "P-2026-Q3-003",
+  "effective_from": "2026-07-01",
+  "description": "No canonical orderings defined (baseline for BLOCKED cases).",
+  "stacking": {
+    "mode": "multiplicative",
+    "max_total_discount": "0.25"
+  },
+  "rounding": {
+    "decimals": 2,
+    "mode": "ROUND_HALF_UP"
+  },
+  "corrections": [
+    {
+      "correction_id": "price_correction",
+      "activity": "Override Unit Price",
+      "node_type": "gross_price",
+      "remediation_cost": 1,
+      "description": "Restore the contract unit price."
+    },
+    {
+      "correction_id": "quantity_correction",
+      "activity": "Adjust Quantity",
+      "node_type": "gross_qty",
+      "remediation_cost": 1,
+      "description": "Restore the ordered quantity."
+    },
+    {
+      "correction_id": "discount_correction",
+      "activity": "Apply Discount",
+      "node_type": "discount",
+      "remediation_cost": 1,
+      "description": "Restore the authorized discount rate for the stacking slot."
+    },
+    {
+      "correction_id": "tax_correction",
+      "activity": "Apply Tax Code",
+      "node_type": "tax",
+      "remediation_cost": 1,
+      "description": "Restore the policy tax rate; re-derive tax on the current post-discount base."
+    },
+    {
+      "correction_id": "currency_correction",
+      "activity": "Convert Currency",
+      "node_type": "currency",
+      "remediation_cost": 1,
+      "description": "Restore the policy FX rate."
+    },
+    {
+      "correction_id": "adjustment_correction",
+      "activity": "Post Manual Adjustment",
+      "node_type": "adjustment",
+      "remediation_cost": 1,
+      "description": "Restore the authorized posting amount."
+    },
+    {
+      "correction_id": "rounding_correction",
+      "activity": "Apply Rounding",
+      "node_type": "rounding",
+      "remediation_cost": 1,
+      "description": "Re-round the pre-rounding amount under the policy rounding rule."
+    }
+  ],
+  "canonical_orderings": []
+}
