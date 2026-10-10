@@ -1,0 +1,126 @@
+{
+ "objectTypes": [
+  {
+   "name": "Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Order",
+   "attributes": []
+  },
+  {
+   "name": "Account",
+   "attributes": []
+  }
+ ],
+ "eventTypes": [
+  {
+   "name": "Adjust Quantity",
+   "attributes": [
+    {
+     "name": "quantity",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Approve Order",
+   "attributes": []
+  },
+  {
+   "name": "Create Purchase Order",
+   "attributes": []
+  },
+  {
+   "name": "Post Invoice",
+   "attributes": []
+  }
+ ],
+ "objects": [
+  {
+   "id": "INV-00005",
+   "type": "Invoice",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "PO-00005",
+   "type": "Order",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "ACC-0005",
+   "type": "Account",
+   "attributes": [],
+   "relationships": []
+  }
+ ],
+ "events": [
+  {
+   "id": "e1",
+   "type": "Adjust Quantity",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "quantity",
+     "value": "7"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00005",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "type": "Create Purchase Order",
+   "time": "2026-08-03T11:14:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00005",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "PO-00005",
+     "qualifier": "order"
+    }
+   ]
+  },
+  {
+   "id": "e3",
+   "type": "Approve Order",
+   "time": "2026-08-03T11:21:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00005",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "PO-00005",
+     "qualifier": "order"
+    }
+   ]
+  },
+  {
+   "id": "e4",
+   "type": "Post Invoice",
+   "time": "2026-08-03T16:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00005",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "ACC-0005",
+     "qualifier": "ledger"
+    }
+   ]
+  }
+ ]
+}

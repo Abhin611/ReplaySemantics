@@ -4,11 +4,9 @@ import { useApi } from '../lib/useApi'
 import { getDashboard, getCases } from '../lib/api'
 import StatCard from '../components/StatCard'
 import Card from '../components/Card'
-import StatusBadge from '../components/StatusBadge'
 import PreviewTag from '../components/PreviewTag'
 import { LoadingState, ErrorState } from '../components/StatusStates'
 import { formatEur, formatInrCr, formatDateTime } from '../lib/format'
-import { previewStatusFor, previewPolicyVersionFor } from '../data/mockData'
 
 export default function Dashboard() {
   const navigate = useNavigate()
@@ -74,9 +72,7 @@ export default function Dashboard() {
                 <th className="px-5 py-3 font-semibold">Case ID</th>
                 <th className="px-5 py-3 font-semibold">Realized Loss</th>
                 <th className="px-5 py-3 font-semibold">Candidate Events</th>
-                <th className="px-5 py-3 font-semibold">
-                  Status <PreviewTag className="ml-1 normal-case" />
-                </th>
+                <th className="px-5 py-3 font-semibold">Pipeline</th>
                 <th className="px-5 py-3 font-semibold">Updated</th>
               </tr>
             </thead>
@@ -91,7 +87,12 @@ export default function Dashboard() {
                   <td className="px-5 py-3">{formatEur(c.value_eur)}</td>
                   <td className="px-5 py-3">{c.max_candidates_at_default_hops}</td>
                   <td className="px-5 py-3">
-                    <StatusBadge status={previewStatusFor(c.case_id)} />
+                    <span
+                      className="rounded-md bg-status-idleBg px-2.5 py-1 text-[11px] font-semibold text-status-idle"
+                      title="Real SAP events carry no pricing fields, so replay and verdicts do not apply"
+                    >
+                      stages 1–2b (real data)
+                    </span>
                   </td>
                   <td className="px-5 py-3 text-[#5c6b7a]">{formatDateTime(c.timestamp)}</td>
                 </tr>

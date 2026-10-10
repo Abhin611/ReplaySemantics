@@ -50,8 +50,8 @@ export default function ConstraintSummaryCard({ constraintData, eventLookup = {}
       </div>
       <p className="mb-3 text-[11.5px] leading-relaxed text-[#8a97a3]">
         Structural pre-check only, from the candidate graph itself &mdash; narrows what
-        the Month 4 confluence checker needs to test. A pair listed as permutable can
-        still come back BLOCKED there if its correction math doesn&apos;t commute.
+        the confluence checker (stage 3) needs to test. A pair listed as permutable can
+        still turn out order-sensitive there if its correction math doesn&apos;t commute.
       </p>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

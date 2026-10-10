@@ -1,0 +1,21 @@
+{
+  "generator_version": "1.0.0",
+  "seed": 7,
+  "per_family": 20,
+  "families": [
+    "single_event",
+    "independent",
+    "interaction",
+    "redundancy",
+    "exception",
+    "policy_ordered",
+    "non_confluent"
+  ],
+  "num_cases": 140,
+  "policies": [
+    "P-2026-Q3-001",
+    "P-2026-Q3-002",
+    "P-2026-Q3-003"
+  ],
+  "hidden_truth_sha256": "93f6ab7abe4f7ffe1283de6ee7f6924ba08efe6ad3ff2d8233101e96d3707ff4"
+}

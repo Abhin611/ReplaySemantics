@@ -1,0 +1,140 @@
+{
+ "objectTypes": [
+  {
+   "name": "Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Order",
+   "attributes": []
+  },
+  {
+   "name": "Account",
+   "attributes": []
+  }
+ ],
+ "eventTypes": [
+  {
+   "name": "Create Purchase Order",
+   "attributes": []
+  },
+  {
+   "name": "Post Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Post Manual Adjustment",
+   "attributes": [
+    {
+     "name": "amount",
+     "type": "string"
+    }
+   ]
+  }
+ ],
+ "objects": [
+  {
+   "id": "INV-00066",
+   "type": "Invoice",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "PO-00066",
+   "type": "Order",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "ACC-0066",
+   "type": "Account",
+   "attributes": [],
+   "relationships": []
+  }
+ ],
+ "events": [
+  {
+   "id": "e1",
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "45528.64"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00066",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "59265.79"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00066",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e3",
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "60569.02"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00066",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e4",
+   "type": "Create Purchase Order",
+   "time": "2026-08-03T11:28:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00066",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "PO-00066",
+     "qualifier": "order"
+    }
+   ]
+  },
+  {
+   "id": "e5",
+   "type": "Post Invoice",
+   "time": "2026-08-03T16:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00066",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "ACC-0066",
+     "qualifier": "ledger"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,120 @@
+{
+ "objectTypes": [
+  {
+   "name": "Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Order",
+   "attributes": []
+  },
+  {
+   "name": "Account",
+   "attributes": []
+  }
+ ],
+ "eventTypes": [
+  {
+   "name": "Post Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Post Manual Adjustment",
+   "attributes": [
+    {
+     "name": "amount",
+     "type": "string"
+    }
+   ]
+  }
+ ],
+ "objects": [
+  {
+   "id": "INV-00075",
+   "type": "Invoice",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "PO-00075",
+   "type": "Order",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "ACC-0075",
+   "type": "Account",
+   "attributes": [],
+   "relationships": []
+  }
+ ],
+ "events": [
+  {
+   "id": "e1",
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "43583.61"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00075",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "68466.52"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00075",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e3",
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "54497.83"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00075",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e4",
+   "type": "Post Invoice",
+   "time": "2026-08-03T16:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00075",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "ACC-0075",
+     "qualifier": "ledger"
+    }
+   ]
+  }
+ ]
+}

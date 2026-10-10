@@ -2,7 +2,7 @@
 //
 // Thin client for the REAL backend (src/api/app.py). Every function here
 // maps 1:1 to an endpoint that actually runs your Month 1-2 pipeline
-// against the live VBFA-derived OCEL 2.0 log -- nothing in this file is
+// against the live VBFA-derived OCEL 2.0 log and the synthetic benchmark -- nothing in this file is
 // mocked. See src/data/mockData.js for the Month 3-5 screens that don't
 // have a backend yet.
 
@@ -61,6 +61,16 @@ export function runReplay(caseId, { maxEvents = 8, minEvents = 3, maxHops = 3 } 
     max_hops: maxHops,
   })
   return request(`/api/cases/${encodeURIComponent(caseId)}/replay?${params}`)
+}
+
+// GET /api/benchmark/verdicts -- real verdict per synthetic benchmark case (404 if no benchmark generated)
+export function getBenchmarkVerdicts() {
+  return request('/api/benchmark/verdicts')
+}
+
+// GET /api/policies -- the real versioned policy files (ordering rules, corrections, coverage)
+export function getPolicies() {
+  return request('/api/policies')
 }
 
 export { ApiError, API_BASE }

@@ -32,3 +32,12 @@ export function formatNumber(value) {
   if (value === null || value === undefined) return '—'
   return new Intl.NumberFormat('en-US').format(value)
 }
+
+// Synthetic benchmark amounts are not EUR, so they are shown as plain numbers (exact decimal
+// strings from the API; Number() is only used for display grouping).
+export function formatAmount(value) {
+  if (value === null || value === undefined || value === '') return '—'
+  const n = Number(value)
+  if (Number.isNaN(n)) return String(value)
+  return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n)
+}

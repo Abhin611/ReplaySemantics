@@ -1,121 +1,33 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import ReactFlow, { Background, Controls, MarkerType } from 'reactflow'
+import ReactFlow, { Background, Controls } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { useApi } from '../lib/useApi'
 import { getCases, runReplay } from '../lib/api'
 import { useSelectedCase } from '../lib/SelectedCaseContext'
 import Card from '../components/Card'
 import StatusBadge from '../components/StatusBadge'
-import PreviewTag from '../components/PreviewTag'
 import EventNode from '../components/graph/EventNode'
 import ConstraintSummaryCard from '../components/ConstraintSummaryCard'
 import ConstraintExplanationList from '../components/ConstraintExplanationList'
 import PaymentRoutesCard from '../components/PaymentRoutesCard'
+import OrderSensitivityCard from '../components/OrderSensitivityCard'
 import { LoadingState, ErrorState } from '../components/StatusStates'
 import { formatDateTime } from '../lib/format'
 import { computePaymentRoutes } from '../lib/paymentRoutes'
-import { previewStatusFor, previewPolicyVersionFor } from '../data/mockData'
+import { layoutGraph } from '../lib/graphLayout'
+import { badgeStatus, buildNodeStatus, isApplicable, NODE_KIND_STYLE } from '../lib/verdict'
 
 const NODE_TYPES = { event: EventNode }
 
-const LEGEND = [
-  { label: 'PASS', color: '#1a7f4c' },
-  { label: 'POLICY-ORDERED', color: '#92650a' },
-  { label: 'BLOCKED', color: '#b3261e' },
+const VERDICT_LEGEND = ['independent', 'ordered', 'blocked', 'exempt', 'context'].map((k) => ({
+  label: NODE_KIND_STYLE[k].label,
+  color: NODE_KIND_STYLE[k].border,
+}))
+const PLAIN_LEGEND = [
+  { label: 'Target event', color: '#2a9d8f' },
+  { label: 'Candidate event', color: '#c2cad2' },
+  { label: 'Pruned parent (not connected to target)', color: '#b3261e' },
 ]
-
-// `highlight` (optional) marks matching nodes with `highlighted: true` and
-// restyles matching edges -- driven by clicking a line in
-// ConstraintExplanationList ({type:'constraint', before, after}) or a
-// route in PaymentRoutesCard ({type:'route', eventIds}, the whole
-// leaf-to-target chain).
-function pairKey(a, b) {
-  return [a, b].sort().join('::')
-}
-
-function buildHighlight(highlight) {
-  if (!highlight) return null
-  if (highlight.type === 'route') {
-    const ids = new Set(highlight.eventIds)
-    const edgeKeys = new Set()
-    for (let i = 0; i < highlight.eventIds.length - 1; i++) {
-      edgeKeys.add(pairKey(highlight.eventIds[i], highlight.eventIds[i + 1]))
-    }
-    return { ids, edgeKeys }
-  }
-  // {type: 'constraint', before, after}
-  return {
-    ids: new Set([highlight.before, highlight.after]),
-    edgeKeys: new Set([pairKey(highlight.before, highlight.after)]),
-  }
-}
-
-// Lay nodes out left-to-right by hop distance -- farthest hop on the left,
-// target on the right (mirrors the "backward traversal toward a realized
-// loss" model, and matches ReplayConsole's layout).
-function layoutGraph(graphView, highlightSpec) {
-  if (!graphView) return { nodes: [], edges: [] }
-  const highlight = buildHighlight(highlightSpec)
-  const byHop = {}
-  graphView.nodes.forEach((n) => {
-    const hop = n.is_target ? -1 : n.hop ?? 99
-    byHop[hop] = byHop[hop] || []
-    byHop[hop].push(n)
-  })
-  const hops = Object.keys(byHop)
-    .map(Number)
-    .sort((a, b) => b - a) // furthest hop first (left), target (-1) last (right)
-
-  const COL_GAP = 260
-  const ROW_GAP = 92
-  const nodes = []
-  hops.forEach((hop, colIdx) => {
-    const col = colIdx // array is already ordered farthest -> target
-    const rows = byHop[hop]
-    const colHeight = (rows.length - 1) * ROW_GAP
-    rows.forEach((n, rowIdx) => {
-      nodes.push({
-        id: n.id,
-        position: { x: col * COL_GAP, y: rowIdx * ROW_GAP - colHeight / 2 },
-        data: { node: highlight ? { ...n, highlighted: highlight.ids.has(n.id) } : n },
-        type: 'event',
-        draggable: true,
-      })
-    })
-  })
-
-  // Flip source/target for display -- see the comment in ReplayConsole.jsx.
-  // The API's edge direction is discovery order (near-target -> upstream);
-  // we want arrows to read upstream -> target, left to right.
-  const edges = graphView.edges.map((e, i) => {
-    // Checked via the direction-agnostic pairKey against the RAW
-    // (unflipped) source/target -- a route's consecutive-link edgeKeys
-    // and a constraint's {before, after} both resolve the same way.
-    const isHighlighted = highlight && highlight.edgeKeys.has(pairKey(e.source, e.target))
-    return {
-      id: `${e.source}-${e.target}-${i}`,
-      source: e.target,
-      target: e.source,
-      label: e.shared_objects?.length > 1 ? `${e.shared_objects.length} shared objects` : undefined,
-      labelStyle: { fontSize: 9, fill: '#5c6b7a', fontWeight: 600 },
-      labelBgStyle: { fill: '#f4f6f8' },
-      labelBgPadding: [3, 2],
-      markerEnd: {
-        type: MarkerType.ArrowClosed,
-        color: isHighlighted ? '#b5850f' : '#64748b',
-        width: isHighlighted ? 24 : 20,
-        height: isHighlighted ? 24 : 20,
-      },
-      style: {
-        stroke: isHighlighted ? '#b5850f' : '#64748b',
-        strokeWidth: isHighlighted ? 3.5 : 2,
-      },
-      zIndex: isHighlighted ? 10 : 0,
-    }
-  })
-
-  return { nodes, edges }
-}
 
 export default function ReplayGraph() {
   const { selectedCaseId, setSelectedCaseId } = useSelectedCase()
@@ -127,6 +39,7 @@ export default function ReplayGraph() {
   const [selectedNode, setSelectedNode] = useState(null)
   const [selectedConstraint, setSelectedConstraint] = useState(null)
   const [selectedRoute, setSelectedRoute] = useState(null) // { key: 'highest' | 'lowest', eventIds }
+  const [selectedPair, setSelectedPair] = useState(null) // order-sensitive pair {a, b, ...}
 
   useEffect(() => {
     if (!selectedCaseId && cases.length) setSelectedCaseId(cases[0].case_id)
@@ -140,6 +53,7 @@ export default function ReplayGraph() {
     setSelectedNode(null)
     setSelectedConstraint(null)
     setSelectedRoute(null)
+    setSelectedPair(null)
     runReplay(selectedCaseId)
       .then((data) => {
         if (!cancelled) setResult(data)
@@ -162,12 +76,24 @@ export default function ReplayGraph() {
     ? { type: 'constraint', before: selectedConstraint.before, after: selectedConstraint.after }
     : selectedRoute
     ? { type: 'route', eventIds: selectedRoute.eventIds }
+    : selectedPair
+    ? { type: 'pair', a: selectedPair.a, b: selectedPair.b }
     : null
 
+  // Verdict colouring comes from the real stage 3-4 output; null for real VBFA results.
+  const nodeStatus = useMemo(() => buildNodeStatus(result), [result])
+
   const { nodes, edges } = useMemo(
-    () => layoutGraph(result?.replay_graph, highlightSpec),
-    [result, selectedConstraint, selectedRoute]
+    () => layoutGraph(result?.replay_graph, highlightSpec, nodeStatus),
+    [result, nodeStatus, selectedConstraint, selectedRoute, selectedPair]
   )
+
+  // Exactly one highlight at a time: choosing anything clears the others.
+  const clearSelections = () => {
+    setSelectedConstraint(null)
+    setSelectedRoute(null)
+    setSelectedPair(null)
+  }
   const activeCase = cases.find((c) => c.case_id === selectedCaseId)
 
   const eventLookup = useMemo(() => {
@@ -207,14 +133,21 @@ export default function ReplayGraph() {
                   </option>
                 ))}
               </select>
-              {selectedCaseId && (
-                <StatusBadge status={previewStatusFor(selectedCaseId)} />
+              {result && isApplicable(result) && (
+                <StatusBadge status={badgeStatus(result.stage_5_verdict.classification)} />
               )}
-              <PreviewTag label="Verdict is preview" />
+              {result && !isApplicable(result) && (
+                <span
+                  className="rounded-md bg-status-idleBg px-2.5 py-1 text-xs font-semibold text-status-idle"
+                  title={result.stage_5_verdict?.message}
+                >
+                  stages 1–2b only (real data)
+                </span>
+              )}
             </div>
             <div className="text-[12.5px] text-[#8a97a3]">
-              {selectedCaseId && previewPolicyVersionFor(selectedCaseId)}
-              {activeCase && ` · ${formatDateTime(activeCase.timestamp)}`}
+              {result?.policy_version}
+              {activeCase?.timestamp && `${result?.policy_version ? ' · ' : ''}${formatDateTime(activeCase.timestamp)}`}
             </div>
           </div>
 
@@ -242,10 +175,10 @@ export default function ReplayGraph() {
             ) : null}
           </div>
 
-          <div className="flex items-center gap-4 border-t border-[#e2e6ea] px-5 py-3">
-            {LEGEND.map((l) => (
+          <div className="flex flex-wrap items-center gap-4 border-t border-[#e2e6ea] px-5 py-3">
+            {(nodeStatus ? VERDICT_LEGEND : PLAIN_LEGEND).map((l) => (
               <div key={l.label} className="flex items-center gap-1.5 text-[12px] text-[#5c6b7a]">
-                <span className="h-2.5 w-2.5 rounded-full" style={{ background: l.color, opacity: 0.4 }} />
+                <span className="h-2.5 w-2.5 rounded-full" style={{ background: l.color }} />
                 {l.label}
               </div>
             ))}
@@ -257,7 +190,7 @@ export default function ReplayGraph() {
             <div className="mb-2 text-[13px] font-bold text-[#101828]">Node Inspector</div>
             {!selectedNode ? (
               <p className="text-[12.5px] text-[#8a97a3]">
-                Click any node to inspect its verdict and diagnostics.
+                Click any node to inspect its role and diagnostics.
               </p>
             ) : (
               <div className="flex flex-col gap-1.5 text-[12.5px]">
@@ -265,16 +198,34 @@ export default function ReplayGraph() {
                 <Row label="Activity" value={selectedNode.activity} />
                 <Row label="Hop" value={selectedNode.is_target ? 'target' : selectedNode.hop} />
                 <Row label="Timestamp" value={formatDateTime(selectedNode.timestamp)} />
-                <div className="mt-2 flex items-center justify-between border-t border-[#eef1f4] pt-2">
-                  <span className="text-[#8a97a3]">Verdict</span>
-                  <span className="flex items-center gap-1.5">
-                    <StatusBadge status="IDLE" />
-                    <PreviewTag label="Month 4" />
-                  </span>
-                </div>
+                {selectedNode.verdictKind ? (
+                  <div className="mt-2 flex flex-col gap-1.5 border-t border-[#eef1f4] pt-2">
+                    <Row label="Role" value={NODE_KIND_STYLE[selectedNode.verdictKind]?.label} />
+                    {selectedNode.partners?.length > 0 && (
+                      <Row label="Order-sensitive with" value={selectedNode.partners.join(', ')} />
+                    )}
+                  </div>
+                ) : (
+                  <p className="mt-2 border-t border-[#eef1f4] pt-2 text-[11.5px] text-[#8a97a3]">
+                    No verdict for this event: real SAP data stops at stage 2b (no pricing fields to replay).
+                  </p>
+                )}
               </div>
             )}
           </Card>
+
+          {result && isApplicable(result) && (
+            <OrderSensitivityCard
+              result={result}
+              nodeStatus={nodeStatus}
+              eventLookup={eventLookup}
+              selected={selectedPair}
+              onSelect={(p) => {
+                clearSelections()
+                setSelectedPair(p)
+              }}
+            />
+          )}
 
           {result && (
             <ConstraintExplanationList
@@ -282,19 +233,19 @@ export default function ReplayGraph() {
               eventLookup={eventLookup}
               selected={selectedConstraint}
               onSelect={(c) => {
-                setSelectedRoute(null)
+                clearSelections()
                 setSelectedConstraint(c)
               }}
             />
           )}
 
-          {result && (
+          {result && !isApplicable(result) && (
             <PaymentRoutesCard
               routes={paymentRoutes}
               eventLookup={eventLookup}
               selectedRouteKey={selectedRoute?.key}
               onSelectRoute={(key, route) => {
-                setSelectedConstraint(null)
+                clearSelections()
                 setSelectedRoute(key ? { key, eventIds: route.eventIds } : null)
               }}
             />

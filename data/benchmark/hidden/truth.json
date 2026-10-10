@@ -1,0 +1,8560 @@
+{
+ "truth": [
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00001",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "143.590000"
+   },
+   "compliant_net": "1948.610000",
+   "family": "single_event",
+   "realized_loss": "143.590000",
+   "shapley": {
+    "e1": "143.590000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e2",
+     "e5"
+    ],
+    [
+     "e3",
+     "e4"
+    ],
+    [
+     "e3",
+     "e5"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00002",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "147221.130000"
+   },
+   "compliant_net": "1586716.570000",
+   "family": "single_event",
+   "realized_loss": "147221.130000",
+   "shapley": {
+    "e1": "147221.130000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e2",
+     "e5"
+    ],
+    [
+     "e3",
+     "e4"
+    ],
+    [
+     "e3",
+     "e5"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00003",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "48863.790000"
+   },
+   "compliant_net": "1285889.220000",
+   "family": "single_event",
+   "realized_loss": "48863.790000",
+   "shapley": {
+    "e1": "48863.790000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e2",
+     "e5"
+    ],
+    [
+     "e3",
+     "e4"
+    ],
+    [
+     "e3",
+     "e5"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00004",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "28787.050000"
+   },
+   "compliant_net": "849218.030000",
+   "family": "single_event",
+   "realized_loss": "28787.050000",
+   "shapley": {
+    "e1": "28787.050000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00005",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "17023.890000"
+   },
+   "compliant_net": "136191.150000",
+   "family": "single_event",
+   "realized_loss": "17023.890000",
+   "shapley": {
+    "e1": "17023.890000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00006",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "31911.500000"
+   },
+   "compliant_net": "35351.820000",
+   "family": "single_event",
+   "realized_loss": "31911.500000",
+   "shapley": {
+    "e1": "31911.500000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00007",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "55181.680000"
+   },
+   "compliant_net": "852466.840000",
+   "family": "single_event",
+   "realized_loss": "55181.680000",
+   "shapley": {
+    "e1": "55181.680000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00008",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "51.820000"
+   },
+   "compliant_net": "2901.520000",
+   "family": "single_event",
+   "realized_loss": "51.820000",
+   "shapley": {
+    "e1": "51.820000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e2",
+     "e5"
+    ],
+    [
+     "e3",
+     "e4"
+    ],
+    [
+     "e3",
+     "e5"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00009",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "5267.980000"
+   },
+   "compliant_net": "119727.000000",
+   "family": "single_event",
+   "realized_loss": "5267.980000",
+   "shapley": {
+    "e1": "5267.980000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e2",
+     "e5"
+    ],
+    [
+     "e3",
+     "e4"
+    ],
+    [
+     "e3",
+     "e5"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00010",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "128601.660000"
+   },
+   "compliant_net": "872654.110000",
+   "family": "single_event",
+   "realized_loss": "128601.660000",
+   "shapley": {
+    "e1": "128601.660000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00011",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "40282.840000"
+   },
+   "compliant_net": "1188343.630000",
+   "family": "single_event",
+   "realized_loss": "40282.840000",
+   "shapley": {
+    "e1": "40282.840000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00012",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "66943.280000"
+   },
+   "compliant_net": "80637.690000",
+   "family": "single_event",
+   "realized_loss": "66943.280000",
+   "shapley": {
+    "e1": "66943.280000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e2",
+     "e5"
+    ],
+    [
+     "e3",
+     "e4"
+    ],
+    [
+     "e3",
+     "e5"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00013",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "20731.800000"
+   },
+   "compliant_net": "494623.000000",
+   "family": "single_event",
+   "realized_loss": "20731.800000",
+   "shapley": {
+    "e1": "20731.800000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00014",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "144309.800000"
+   },
+   "compliant_net": "999860.750000",
+   "family": "single_event",
+   "realized_loss": "144309.800000",
+   "shapley": {
+    "e1": "144309.800000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00015",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "357.140000"
+   },
+   "compliant_net": "3464.310000",
+   "family": "single_event",
+   "realized_loss": "357.140000",
+   "shapley": {
+    "e1": "357.140000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e2",
+     "e5"
+    ],
+    [
+     "e3",
+     "e4"
+    ],
+    [
+     "e3",
+     "e5"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00016",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "18191.800000"
+   },
+   "compliant_net": "955069.540000",
+   "family": "single_event",
+   "realized_loss": "18191.800000",
+   "shapley": {
+    "e1": "18191.800000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e2",
+     "e5"
+    ],
+    [
+     "e3",
+     "e4"
+    ],
+    [
+     "e3",
+     "e5"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00017",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "164.890000"
+   },
+   "compliant_net": "2284.850000",
+   "family": "single_event",
+   "realized_loss": "164.890000",
+   "shapley": {
+    "e1": "164.890000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00018",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "1242.180000"
+   },
+   "compliant_net": "11800.700000",
+   "family": "single_event",
+   "realized_loss": "1242.180000",
+   "shapley": {
+    "e1": "1242.180000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e2",
+     "e5"
+    ],
+    [
+     "e3",
+     "e4"
+    ],
+    [
+     "e3",
+     "e5"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00019",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "95.430000"
+   },
+   "compliant_net": "2891.650000",
+   "family": "single_event",
+   "realized_loss": "95.430000",
+   "shapley": {
+    "e1": "95.430000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00020",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.010000"
+   },
+   "compliant_net": "432969.110000",
+   "family": "single_event",
+   "realized_loss": "0.010000",
+   "shapley": {
+    "e1": "0.010000"
+   },
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e2",
+     "e3"
+    ],
+    [
+     "e2",
+     "e4"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00021",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "59626.370000",
+    "e1,e2": "145865.920000",
+    "e1,e2,e3": "149973.010000",
+    "e1,e3": "63733.460000",
+    "e2": "86239.550000",
+    "e2,e3": "90346.640000",
+    "e3": "4107.090000"
+   },
+   "compliant_net": "301117.410000",
+   "family": "independent",
+   "realized_loss": "149973.010000",
+   "shapley": {
+    "e1": "59626.370000",
+    "e2": "86239.550000",
+    "e3": "4107.090000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00022",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "10514.650000",
+    "e1,e2": "68957.080000",
+    "e1,e2,e3": "74425.250000",
+    "e1,e3": "15982.820000",
+    "e2": "58442.430000",
+    "e2,e3": "63910.600000",
+    "e3": "5468.170000"
+   },
+   "compliant_net": "1609128.300000",
+   "family": "independent",
+   "realized_loss": "74425.250000",
+   "shapley": {
+    "e1": "10514.650000",
+    "e2": "58442.430000",
+    "e3": "5468.170000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00023",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "77624.120000",
+    "e1,e2": "139534.550000",
+    "e2": "61910.430000"
+   },
+   "compliant_net": "540138.300000",
+   "family": "independent",
+   "realized_loss": "139534.550000",
+   "shapley": {
+    "e1": "77624.120000",
+    "e2": "61910.430000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00024",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "60060.980000",
+    "e1,e2": "121234.380000",
+    "e1,e2,e3": "151000.340000",
+    "e1,e3": "89826.940000",
+    "e2": "61173.400000",
+    "e2,e3": "90939.360000",
+    "e3": "29765.960000"
+   },
+   "compliant_net": "1154622.760000",
+   "family": "independent",
+   "realized_loss": "151000.340000",
+   "shapley": {
+    "e1": "60060.980000",
+    "e2": "61173.400000",
+    "e3": "29765.960000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00025",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "14531.200000",
+    "e1,e2": "96042.620000",
+    "e1,e2,e3": "102900.470000",
+    "e1,e3": "21389.050000",
+    "e2": "81511.420000",
+    "e2,e3": "88369.270000",
+    "e3": "6857.850000"
+   },
+   "compliant_net": "2054695.460000",
+   "family": "independent",
+   "realized_loss": "102900.470000",
+   "shapley": {
+    "e1": "14531.200000",
+    "e2": "81511.420000",
+    "e3": "6857.850000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00026",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "47996.760000",
+    "e1,e2": "80724.240000",
+    "e1,e2,e3": "161782.600000",
+    "e1,e3": "129055.120000",
+    "e2": "32727.480000",
+    "e2,e3": "113785.840000",
+    "e3": "81058.360000"
+   },
+   "compliant_net": "501657.120000",
+   "family": "independent",
+   "realized_loss": "161782.600000",
+   "shapley": {
+    "e1": "47996.760000",
+    "e2": "32727.480000",
+    "e3": "81058.360000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00027",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "61228.550000",
+    "e1,e2": "124326.680000",
+    "e2": "63098.130000"
+   },
+   "compliant_net": "166212.680000",
+   "family": "independent",
+   "realized_loss": "124326.680000",
+   "shapley": {
+    "e1": "61228.550000",
+    "e2": "63098.130000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00028",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "60626.610000",
+    "e1,e2": "149916.900000",
+    "e1,e2,e3": "209928.010000",
+    "e1,e3": "120637.720000",
+    "e2": "89290.290000",
+    "e2,e3": "149301.400000",
+    "e3": "60011.110000"
+   },
+   "compliant_net": "790029.190000",
+   "family": "independent",
+   "realized_loss": "209928.010000",
+   "shapley": {
+    "e1": "60626.610000",
+    "e2": "89290.290000",
+    "e3": "60011.110000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00029",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "58516.300000",
+    "e1,e2": "83753.670000",
+    "e2": "25237.370000"
+   },
+   "compliant_net": "1055542.940000",
+   "family": "independent",
+   "realized_loss": "83753.670000",
+   "shapley": {
+    "e1": "58516.300000",
+    "e2": "25237.370000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00030",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "2466.010000",
+    "e1,e2": "68257.800000",
+    "e1,e2,e3": "123823.140000",
+    "e1,e3": "58031.350000",
+    "e2": "65791.790000",
+    "e2,e3": "121357.130000",
+    "e3": "55565.340000"
+   },
+   "compliant_net": "410527.790000",
+   "family": "independent",
+   "realized_loss": "123823.140000",
+   "shapley": {
+    "e1": "2466.010000",
+    "e2": "65791.790000",
+    "e3": "55565.340000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00031",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "63282.150000",
+    "e1,e2": "121748.550000",
+    "e1,e2,e3": "174867.530000",
+    "e1,e3": "116401.130000",
+    "e2": "58466.400000",
+    "e2,e3": "111585.380000",
+    "e3": "53118.980000"
+   },
+   "compliant_net": "197656.510000",
+   "family": "independent",
+   "realized_loss": "174867.530000",
+   "shapley": {
+    "e1": "63282.150000",
+    "e2": "58466.400000",
+    "e3": "53118.980000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00032",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "77819.280000",
+    "e1,e2": "120527.090000",
+    "e2": "42707.810000"
+   },
+   "compliant_net": "129643.980000",
+   "family": "independent",
+   "realized_loss": "120527.090000",
+   "shapley": {
+    "e1": "77819.280000",
+    "e2": "42707.810000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00033",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "7167.730000",
+    "e1,e2": "77027.720000",
+    "e1,e2,e3": "91892.280000",
+    "e1,e3": "22032.290000",
+    "e2": "69859.990000",
+    "e2,e3": "84724.550000",
+    "e3": "14864.560000"
+   },
+   "compliant_net": "219616.390000",
+   "family": "independent",
+   "realized_loss": "91892.280000",
+   "shapley": {
+    "e1": "7167.730000",
+    "e2": "69859.990000",
+    "e3": "14864.560000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00034",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "77042.350000",
+    "e1,e2": "99104.420000",
+    "e1,e2,e3": "174104.440000",
+    "e1,e3": "152042.370000",
+    "e2": "22062.070000",
+    "e2,e3": "97062.090000",
+    "e3": "75000.020000"
+   },
+   "compliant_net": "598481.070000",
+   "family": "independent",
+   "realized_loss": "174104.440000",
+   "shapley": {
+    "e1": "77042.350000",
+    "e2": "22062.070000",
+    "e3": "75000.020000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00035",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "7720.760000",
+    "e1,e2": "90676.440000",
+    "e1,e2,e3": "170363.490000",
+    "e1,e3": "87407.810000",
+    "e2": "82955.680000",
+    "e2,e3": "162642.730000",
+    "e3": "79687.050000"
+   },
+   "compliant_net": "434097.600000",
+   "family": "independent",
+   "realized_loss": "170363.490000",
+   "shapley": {
+    "e1": "7720.760000",
+    "e2": "82955.680000",
+    "e3": "79687.050000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00036",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "22379.500000",
+    "e1,e2": "61866.930000",
+    "e2": "39487.430000"
+   },
+   "compliant_net": "149485.900000",
+   "family": "independent",
+   "realized_loss": "61866.930000",
+   "shapley": {
+    "e1": "22379.500000",
+    "e2": "39487.430000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00037",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "76267.390000",
+    "e1,e2": "148579.460000",
+    "e1,e2,e3": "178193.980000",
+    "e1,e3": "105881.910000",
+    "e2": "72312.070000",
+    "e2,e3": "101926.590000",
+    "e3": "29614.520000"
+   },
+   "compliant_net": "512480.790000",
+   "family": "independent",
+   "realized_loss": "178193.980000",
+   "shapley": {
+    "e1": "76267.390000",
+    "e2": "72312.070000",
+    "e3": "29614.520000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00038",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "87425.890000",
+    "e1,e2": "94048.230000",
+    "e2": "6622.340000"
+   },
+   "compliant_net": "511229.480000",
+   "family": "independent",
+   "realized_loss": "94048.230000",
+   "shapley": {
+    "e1": "87425.890000",
+    "e2": "6622.340000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00039",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "72219.400000",
+    "e1,e2": "99512.290000",
+    "e2": "27292.890000"
+   },
+   "compliant_net": "108859.420000",
+   "family": "independent",
+   "realized_loss": "99512.290000",
+   "shapley": {
+    "e1": "72219.400000",
+    "e2": "27292.890000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00040",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "88570.580000",
+    "e1,e2": "150229.820000",
+    "e2": "61659.240000"
+   },
+   "compliant_net": "159761.350000",
+   "family": "independent",
+   "realized_loss": "150229.820000",
+   "shapley": {
+    "e1": "88570.580000",
+    "e2": "61659.240000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00041",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "75857.740000",
+    "e2": "0.000000"
+   },
+   "compliant_net": "726878.910000",
+   "family": "interaction",
+   "realized_loss": "75857.740000",
+   "shapley": {
+    "e1": "37928.870000",
+    "e2": "37928.870000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00042",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "95826.550000",
+    "e2": "0.000000"
+   },
+   "compliant_net": "783472.790000",
+   "family": "interaction",
+   "realized_loss": "95826.550000",
+   "shapley": {
+    "e1": "47913.275000",
+    "e2": "47913.275000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00043",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "0.000000",
+    "e1,e2,e3": "169147.770000",
+    "e1,e3": "0.000000",
+    "e2": "0.000000",
+    "e2,e3": "0.000000",
+    "e3": "0.000000"
+   },
+   "compliant_net": "1225656.860000",
+   "family": "interaction",
+   "realized_loss": "169147.770000",
+   "shapley": {
+    "e1": "56382.590000",
+    "e2": "56382.590000",
+    "e3": "56382.590000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00044",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "0.000000",
+    "e1,e2,e3": "164097.780000",
+    "e1,e3": "0.000000",
+    "e2": "0.000000",
+    "e2,e3": "0.000000",
+    "e3": "0.000000"
+   },
+   "compliant_net": "1575441.660000",
+   "family": "interaction",
+   "realized_loss": "164097.780000",
+   "shapley": {
+    "e1": "54699.260000",
+    "e2": "54699.260000",
+    "e3": "54699.260000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00045",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "144171.410000",
+    "e2": "0.000000"
+   },
+   "compliant_net": "155883.230000",
+   "family": "interaction",
+   "realized_loss": "144171.410000",
+   "shapley": {
+    "e1": "72085.705000",
+    "e2": "72085.705000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00046",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "107314.010000",
+    "e2": "0.000000"
+   },
+   "compliant_net": "37049.780000",
+   "family": "interaction",
+   "realized_loss": "107314.010000",
+   "shapley": {
+    "e1": "53657.005000",
+    "e2": "53657.005000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00047",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "0.000000",
+    "e1,e2,e3": "171533.540000",
+    "e1,e3": "0.000000",
+    "e2": "0.000000",
+    "e2,e3": "0.000000",
+    "e3": "0.000000"
+   },
+   "compliant_net": "379869.470000",
+   "family": "interaction",
+   "realized_loss": "171533.540000",
+   "shapley": {
+    "e1": "57177.846667",
+    "e2": "57177.846667",
+    "e3": "57177.846667"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00048",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "0.000000",
+    "e1,e2,e3": "112638.570000",
+    "e1,e3": "0.000000",
+    "e2": "0.000000",
+    "e2,e3": "0.000000",
+    "e3": "0.000000"
+   },
+   "compliant_net": "531818.530000",
+   "family": "interaction",
+   "realized_loss": "112638.570000",
+   "shapley": {
+    "e1": "37546.190000",
+    "e2": "37546.190000",
+    "e3": "37546.190000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00049",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "0.000000",
+    "e1,e2,e3": "121031.560000",
+    "e1,e3": "0.000000",
+    "e2": "0.000000",
+    "e2,e3": "0.000000",
+    "e3": "0.000000"
+   },
+   "compliant_net": "1600633.130000",
+   "family": "interaction",
+   "realized_loss": "121031.560000",
+   "shapley": {
+    "e1": "40343.853333",
+    "e2": "40343.853333",
+    "e3": "40343.853333"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00050",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "116793.030000",
+    "e2": "0.000000"
+   },
+   "compliant_net": "102002.840000",
+   "family": "interaction",
+   "realized_loss": "116793.030000",
+   "shapley": {
+    "e1": "58396.515000",
+    "e2": "58396.515000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00051",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "0.000000",
+    "e1,e2,e3": "130729.900000",
+    "e1,e3": "0.000000",
+    "e2": "0.000000",
+    "e2,e3": "0.000000",
+    "e3": "0.000000"
+   },
+   "compliant_net": "1792770.520000",
+   "family": "interaction",
+   "realized_loss": "130729.900000",
+   "shapley": {
+    "e1": "43576.633333",
+    "e2": "43576.633333",
+    "e3": "43576.633333"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00052",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "0.000000",
+    "e1,e2,e3": "168447.070000",
+    "e1,e3": "0.000000",
+    "e2": "0.000000",
+    "e2,e3": "0.000000",
+    "e3": "0.000000"
+   },
+   "compliant_net": "229852.990000",
+   "family": "interaction",
+   "realized_loss": "168447.070000",
+   "shapley": {
+    "e1": "56149.023333",
+    "e2": "56149.023333",
+    "e3": "56149.023333"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00053",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "116058.710000",
+    "e2": "0.000000"
+   },
+   "compliant_net": "309478.540000",
+   "family": "interaction",
+   "realized_loss": "116058.710000",
+   "shapley": {
+    "e1": "58029.355000",
+    "e2": "58029.355000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00054",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "0.000000",
+    "e1,e2,e3": "157517.410000",
+    "e1,e3": "0.000000",
+    "e2": "0.000000",
+    "e2,e3": "0.000000",
+    "e3": "0.000000"
+   },
+   "compliant_net": "497116.380000",
+   "family": "interaction",
+   "realized_loss": "157517.410000",
+   "shapley": {
+    "e1": "52505.803333",
+    "e2": "52505.803333",
+    "e3": "52505.803333"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00055",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "0.000000",
+    "e1,e2,e3": "186573.990000",
+    "e1,e3": "0.000000",
+    "e2": "0.000000",
+    "e2,e3": "0.000000",
+    "e3": "0.000000"
+   },
+   "compliant_net": "174557.140000",
+   "family": "interaction",
+   "realized_loss": "186573.990000",
+   "shapley": {
+    "e1": "62191.330000",
+    "e2": "62191.330000",
+    "e3": "62191.330000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00056",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "108813.770000",
+    "e2": "0.000000"
+   },
+   "compliant_net": "177697.400000",
+   "family": "interaction",
+   "realized_loss": "108813.770000",
+   "shapley": {
+    "e1": "54406.885000",
+    "e2": "54406.885000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00057",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "70555.380000",
+    "e2": "0.000000"
+   },
+   "compliant_net": "303158.910000",
+   "family": "interaction",
+   "realized_loss": "70555.380000",
+   "shapley": {
+    "e1": "35277.690000",
+    "e2": "35277.690000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00058",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "0.000000",
+    "e1,e2,e3": "175918.270000",
+    "e1,e3": "0.000000",
+    "e2": "0.000000",
+    "e2,e3": "0.000000",
+    "e3": "0.000000"
+   },
+   "compliant_net": "261092.040000",
+   "family": "interaction",
+   "realized_loss": "175918.270000",
+   "shapley": {
+    "e1": "58639.423333",
+    "e2": "58639.423333",
+    "e3": "58639.423333"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00059",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "0.000000",
+    "e1,e2,e3": "86571.660000",
+    "e1,e3": "0.000000",
+    "e2": "0.000000",
+    "e2,e3": "0.000000",
+    "e3": "0.000000"
+   },
+   "compliant_net": "253436.010000",
+   "family": "interaction",
+   "realized_loss": "86571.660000",
+   "shapley": {
+    "e1": "28857.220000",
+    "e2": "28857.220000",
+    "e3": "28857.220000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00060",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "103600.600000",
+    "e2": "0.000000"
+   },
+   "compliant_net": "633213.140000",
+   "family": "interaction",
+   "realized_loss": "103600.600000",
+   "shapley": {
+    "e1": "51800.300000",
+    "e2": "51800.300000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00061",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "88296.900000",
+    "e1,e2": "88296.900000",
+    "e2": "88296.900000"
+   },
+   "compliant_net": "475024.180000",
+   "family": "redundancy",
+   "realized_loss": "88296.900000",
+   "shapley": {
+    "e1": "44148.450000",
+    "e2": "44148.450000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00062",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "92345.670000",
+    "e1,e2": "92345.670000",
+    "e1,e2,e3": "92345.670000",
+    "e1,e3": "92345.670000",
+    "e2": "92345.670000",
+    "e2,e3": "92345.670000",
+    "e3": "92345.670000"
+   },
+   "compliant_net": "184320.720000",
+   "family": "redundancy",
+   "realized_loss": "92345.670000",
+   "shapley": {
+    "e1": "30781.890000",
+    "e2": "30781.890000",
+    "e3": "30781.890000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00063",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "218981.300000",
+    "e1,e2": "218981.300000",
+    "e1,e2,e3": "218981.300000",
+    "e1,e3": "218981.300000",
+    "e2": "218981.300000",
+    "e2,e3": "218981.300000",
+    "e3": "218981.300000"
+   },
+   "compliant_net": "921462.330000",
+   "family": "redundancy",
+   "realized_loss": "218981.300000",
+   "shapley": {
+    "e1": "72993.766667",
+    "e2": "72993.766667",
+    "e3": "72993.766667"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00064",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "205304.750000",
+    "e1,e2": "205304.750000",
+    "e1,e2,e3": "205304.750000",
+    "e1,e3": "205304.750000",
+    "e2": "205304.750000",
+    "e2,e3": "205304.750000",
+    "e3": "205304.750000"
+   },
+   "compliant_net": "1071959.740000",
+   "family": "redundancy",
+   "realized_loss": "205304.750000",
+   "shapley": {
+    "e1": "68434.916667",
+    "e2": "68434.916667",
+    "e3": "68434.916667"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00065",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "122467.850000",
+    "e1,e2": "122467.850000",
+    "e1,e2,e3": "122467.850000",
+    "e1,e3": "122467.850000",
+    "e2": "122467.850000",
+    "e2,e3": "122467.850000",
+    "e3": "122467.850000"
+   },
+   "compliant_net": "313902.760000",
+   "family": "redundancy",
+   "realized_loss": "122467.850000",
+   "shapley": {
+    "e1": "40822.616667",
+    "e2": "40822.616667",
+    "e3": "40822.616667"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00066",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "88985.330000",
+    "e1,e2": "88985.330000",
+    "e1,e2,e3": "88985.330000",
+    "e1,e3": "88985.330000",
+    "e2": "88985.330000",
+    "e2,e3": "88985.330000",
+    "e3": "88985.330000"
+   },
+   "compliant_net": "263303.240000",
+   "family": "redundancy",
+   "realized_loss": "88985.330000",
+   "shapley": {
+    "e1": "29661.776667",
+    "e2": "29661.776667",
+    "e3": "29661.776667"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00067",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "45308.570000",
+    "e1,e2": "45308.570000",
+    "e2": "45308.570000"
+   },
+   "compliant_net": "650135.040000",
+   "family": "redundancy",
+   "realized_loss": "45308.570000",
+   "shapley": {
+    "e1": "22654.285000",
+    "e2": "22654.285000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00068",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "106655.930000",
+    "e1,e2": "106655.930000",
+    "e1,e2,e3": "106655.930000",
+    "e1,e3": "106655.930000",
+    "e2": "106655.930000",
+    "e2,e3": "106655.930000",
+    "e3": "106655.930000"
+   },
+   "compliant_net": "672347.190000",
+   "family": "redundancy",
+   "realized_loss": "106655.930000",
+   "shapley": {
+    "e1": "35551.976667",
+    "e2": "35551.976667",
+    "e3": "35551.976667"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00069",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "85619.530000",
+    "e1,e2": "85619.530000",
+    "e2": "85619.530000"
+   },
+   "compliant_net": "127381.120000",
+   "family": "redundancy",
+   "realized_loss": "85619.530000",
+   "shapley": {
+    "e1": "42809.765000",
+    "e2": "42809.765000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00070",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "73267.090000",
+    "e1,e2": "73267.090000",
+    "e2": "73267.090000"
+   },
+   "compliant_net": "86409.290000",
+   "family": "redundancy",
+   "realized_loss": "73267.090000",
+   "shapley": {
+    "e1": "36633.545000",
+    "e2": "36633.545000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00071",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "195963.450000",
+    "e1,e2": "195963.450000",
+    "e1,e2,e3": "195963.450000",
+    "e1,e3": "195963.450000",
+    "e2": "195963.450000",
+    "e2,e3": "195963.450000",
+    "e3": "195963.450000"
+   },
+   "compliant_net": "2133293.610000",
+   "family": "redundancy",
+   "realized_loss": "195963.450000",
+   "shapley": {
+    "e1": "65321.150000",
+    "e2": "65321.150000",
+    "e3": "65321.150000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00072",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "76860.590000",
+    "e1,e2": "76860.590000",
+    "e2": "76860.590000"
+   },
+   "compliant_net": "787438.740000",
+   "family": "redundancy",
+   "realized_loss": "76860.590000",
+   "shapley": {
+    "e1": "38430.295000",
+    "e2": "38430.295000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00073",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "77524.900000",
+    "e1,e2": "77524.900000",
+    "e1,e2,e3": "77524.900000",
+    "e1,e3": "77524.900000",
+    "e2": "77524.900000",
+    "e2,e3": "77524.900000",
+    "e3": "77524.900000"
+   },
+   "compliant_net": "1080059.420000",
+   "family": "redundancy",
+   "realized_loss": "77524.900000",
+   "shapley": {
+    "e1": "25841.633333",
+    "e2": "25841.633333",
+    "e3": "25841.633333"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00074",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "143280.340000",
+    "e1,e2": "143280.340000",
+    "e1,e2,e3": "143280.340000",
+    "e1,e3": "143280.340000",
+    "e2": "143280.340000",
+    "e2,e3": "143280.340000",
+    "e3": "143280.340000"
+   },
+   "compliant_net": "821636.080000",
+   "family": "redundancy",
+   "realized_loss": "143280.340000",
+   "shapley": {
+    "e1": "47760.113333",
+    "e2": "47760.113333",
+    "e3": "47760.113333"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00075",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "114115.180000",
+    "e1,e2": "114115.180000",
+    "e1,e2,e3": "114115.180000",
+    "e1,e3": "114115.180000",
+    "e2": "114115.180000",
+    "e2,e3": "114115.180000",
+    "e3": "114115.180000"
+   },
+   "compliant_net": "948668.510000",
+   "family": "redundancy",
+   "realized_loss": "114115.180000",
+   "shapley": {
+    "e1": "38038.393333",
+    "e2": "38038.393333",
+    "e3": "38038.393333"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00076",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "133388.510000",
+    "e1,e2": "133388.510000",
+    "e1,e2,e3": "133388.510000",
+    "e1,e3": "133388.510000",
+    "e2": "133388.510000",
+    "e2,e3": "133388.510000",
+    "e3": "133388.510000"
+   },
+   "compliant_net": "878107.760000",
+   "family": "redundancy",
+   "realized_loss": "133388.510000",
+   "shapley": {
+    "e1": "44462.836667",
+    "e2": "44462.836667",
+    "e3": "44462.836667"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00077",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "142971.790000",
+    "e1,e2": "142971.790000",
+    "e2": "142971.790000"
+   },
+   "compliant_net": "464401.940000",
+   "family": "redundancy",
+   "realized_loss": "142971.790000",
+   "shapley": {
+    "e1": "71485.895000",
+    "e2": "71485.895000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00078",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "128397.360000",
+    "e1,e2": "128397.360000",
+    "e2": "128397.360000"
+   },
+   "compliant_net": "144889.520000",
+   "family": "redundancy",
+   "realized_loss": "128397.360000",
+   "shapley": {
+    "e1": "64198.680000",
+    "e2": "64198.680000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00079",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "50552.000000",
+    "e1,e2": "50552.000000",
+    "e2": "50552.000000"
+   },
+   "compliant_net": "722651.980000",
+   "family": "redundancy",
+   "realized_loss": "50552.000000",
+   "shapley": {
+    "e1": "25276.000000",
+    "e2": "25276.000000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00080",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "94679.160000",
+    "e1,e2": "94679.160000",
+    "e1,e2,e3": "94679.160000",
+    "e1,e3": "94679.160000",
+    "e2": "94679.160000",
+    "e2,e3": "94679.160000",
+    "e3": "94679.160000"
+   },
+   "compliant_net": "2461299.180000",
+   "family": "redundancy",
+   "realized_loss": "94679.160000",
+   "shapley": {
+    "e1": "31559.720000",
+    "e2": "31559.720000",
+    "e3": "31559.720000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00081",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "12421.350000",
+    "e1,e2,e3": "69738.740000",
+    "e1,e3": "57317.390000",
+    "e2": "12421.350000",
+    "e2,e3": "69738.740000",
+    "e3": "57317.390000"
+   },
+   "compliant_net": "364126.690000",
+   "family": "exception",
+   "realized_loss": "69738.740000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "12421.350000",
+    "e3": "57317.390000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00082",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "59704.290000",
+    "e1,e2,e3": "107487.940000",
+    "e1,e3": "47783.650000",
+    "e2": "59704.290000",
+    "e2,e3": "107487.940000",
+    "e3": "47783.650000"
+   },
+   "compliant_net": "1887953.630000",
+   "family": "exception",
+   "realized_loss": "107487.940000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "59704.290000",
+    "e3": "47783.650000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00083",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "30504.730000",
+    "e1,e2,e3": "59986.090000",
+    "e1,e3": "29481.360000",
+    "e2": "30504.730000",
+    "e2,e3": "59986.090000",
+    "e3": "29481.360000"
+   },
+   "compliant_net": "664370.790000",
+   "family": "exception",
+   "realized_loss": "59986.090000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "30504.730000",
+    "e3": "29481.360000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00084",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "43801.700000",
+    "e1,e2,e3": "47561.790000",
+    "e1,e3": "3760.090000",
+    "e2": "43801.700000",
+    "e2,e3": "47561.790000",
+    "e3": "3760.090000"
+   },
+   "compliant_net": "229078.910000",
+   "family": "exception",
+   "realized_loss": "47561.790000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "43801.700000",
+    "e3": "3760.090000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00085",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "22063.540000",
+    "e1,e2,e3": "104872.730000",
+    "e1,e3": "82809.190000",
+    "e2": "22063.540000",
+    "e2,e3": "104872.730000",
+    "e3": "82809.190000"
+   },
+   "compliant_net": "197928.670000",
+   "family": "exception",
+   "realized_loss": "104872.730000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "22063.540000",
+    "e3": "82809.190000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00086",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "11685.890000",
+    "e1,e2,e3": "53563.870000",
+    "e1,e3": "41877.980000",
+    "e2": "11685.890000",
+    "e2,e3": "53563.870000",
+    "e3": "41877.980000"
+   },
+   "compliant_net": "526561.320000",
+   "family": "exception",
+   "realized_loss": "53563.870000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "11685.890000",
+    "e3": "41877.980000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00087",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "84526.740000",
+    "e2": "84526.740000"
+   },
+   "compliant_net": "66124.280000",
+   "family": "exception",
+   "realized_loss": "84526.740000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "84526.740000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00088",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "50405.790000",
+    "e1,e2,e3": "119249.060000",
+    "e1,e3": "68843.270000",
+    "e2": "50405.790000",
+    "e2,e3": "119249.060000",
+    "e3": "68843.270000"
+   },
+   "compliant_net": "431423.720000",
+   "family": "exception",
+   "realized_loss": "119249.060000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "50405.790000",
+    "e3": "68843.270000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00089",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "71116.950000",
+    "e1,e2,e3": "149656.890000",
+    "e1,e3": "78539.940000",
+    "e2": "71116.950000",
+    "e2,e3": "149656.890000",
+    "e3": "78539.940000"
+   },
+   "compliant_net": "587122.630000",
+   "family": "exception",
+   "realized_loss": "149656.890000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "71116.950000",
+    "e3": "78539.940000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00090",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "50118.170000",
+    "e1,e2,e3": "110424.310000",
+    "e1,e3": "60306.140000",
+    "e2": "50118.170000",
+    "e2,e3": "110424.310000",
+    "e3": "60306.140000"
+   },
+   "compliant_net": "75559.230000",
+   "family": "exception",
+   "realized_loss": "110424.310000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "50118.170000",
+    "e3": "60306.140000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00091",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "62560.130000",
+    "e1,e2,e3": "78865.180000",
+    "e1,e3": "16305.050000",
+    "e2": "62560.130000",
+    "e2,e3": "78865.180000",
+    "e3": "16305.050000"
+   },
+   "compliant_net": "439771.850000",
+   "family": "exception",
+   "realized_loss": "78865.180000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "62560.130000",
+    "e3": "16305.050000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00092",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "57694.710000",
+    "e1,e2,e3": "67672.820000",
+    "e1,e3": "9978.110000",
+    "e2": "57694.710000",
+    "e2,e3": "67672.820000",
+    "e3": "9978.110000"
+   },
+   "compliant_net": "618770.760000",
+   "family": "exception",
+   "realized_loss": "67672.820000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "57694.710000",
+    "e3": "9978.110000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00093",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "29177.660000",
+    "e1,e2,e3": "102677.730000",
+    "e1,e3": "73500.070000",
+    "e2": "29177.660000",
+    "e2,e3": "102677.730000",
+    "e3": "73500.070000"
+   },
+   "compliant_net": "179963.430000",
+   "family": "exception",
+   "realized_loss": "102677.730000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "29177.660000",
+    "e3": "73500.070000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00094",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "67793.240000",
+    "e1,e2,e3": "123003.300000",
+    "e1,e3": "55210.060000",
+    "e2": "67793.240000",
+    "e2,e3": "123003.300000",
+    "e3": "55210.060000"
+   },
+   "compliant_net": "883043.630000",
+   "family": "exception",
+   "realized_loss": "123003.300000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "67793.240000",
+    "e3": "55210.060000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00095",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "63513.910000",
+    "e1,e2,e3": "125638.000000",
+    "e1,e3": "62124.090000",
+    "e2": "63513.910000",
+    "e2,e3": "125638.000000",
+    "e3": "62124.090000"
+   },
+   "compliant_net": "95309.440000",
+   "family": "exception",
+   "realized_loss": "125638.000000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "63513.910000",
+    "e3": "62124.090000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00096",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "12458.980000",
+    "e1,e2,e3": "43166.720000",
+    "e1,e3": "30707.740000",
+    "e2": "12458.980000",
+    "e2,e3": "43166.720000",
+    "e3": "30707.740000"
+   },
+   "compliant_net": "1144679.210000",
+   "family": "exception",
+   "realized_loss": "43166.720000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "12458.980000",
+    "e3": "30707.740000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00097",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "16308.460000",
+    "e2": "16308.460000"
+   },
+   "compliant_net": "295569.370000",
+   "family": "exception",
+   "realized_loss": "16308.460000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "16308.460000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00098",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "60160.130000",
+    "e2": "60160.130000"
+   },
+   "compliant_net": "1224214.160000",
+   "family": "exception",
+   "realized_loss": "60160.130000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "60160.130000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e3",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00099",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "46108.090000",
+    "e2": "46108.090000"
+   },
+   "compliant_net": "726072.380000",
+   "family": "exception",
+   "realized_loss": "46108.090000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "46108.090000"
+   },
+   "structural_pairs": [
+    [
+     "e3",
+     "e1"
+    ],
+    [
+     "e3",
+     "e2"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e2": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00100",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "56261.620000",
+    "e1,e2,e3": "102252.300000",
+    "e1,e3": "45990.680000",
+    "e2": "56261.620000",
+    "e2,e3": "102252.300000",
+    "e3": "45990.680000"
+   },
+   "compliant_net": "1498022.320000",
+   "family": "exception",
+   "realized_loss": "102252.300000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "56261.620000",
+    "e3": "45990.680000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00101",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "115836.682500",
+    "e1,e2": "176650.940812",
+    "e1,e2,e3": "176650.970000",
+    "e1,e3": "115836.710000",
+    "e2": "39963.655462",
+    "e2,e3": "39963.680000",
+    "e3": "0.030000"
+   },
+   "compliant_net": "1708591.070000",
+   "family": "policy_ordered",
+   "realized_loss": "176650.970000",
+   "shapley": {
+    "e1": "126261.985058",
+    "e2": "50388.956540",
+    "e3": "0.028402"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "POLICY_ORDERED",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e3": "POLICY_ORDERED",
+    "e2": "PASS",
+    "e2,e3": "POLICY_ORDERED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6"
+   ],
+   "case_id": "RSC-2026-00102",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "221593.491840",
+    "e1,e2": "232673.166432",
+    "e1,e2,e3": "299843.693646",
+    "e1,e2,e3,e4": "299843.780000",
+    "e1,e2,e4": "232673.250000",
+    "e1,e3": "288302.365946",
+    "e1,e3,e4": "288302.450000",
+    "e1,e4": "221593.580000",
+    "e2": "0.000000",
+    "e2,e3": "57475.811946",
+    "e2,e3,e4": "57475.900000",
+    "e2,e4": "0.090000",
+    "e3": "57475.811946",
+    "e3,e4": "57475.900000",
+    "e4": "0.090000"
+   },
+   "compliant_net": "1679263.180000",
+   "family": "policy_ordered",
+   "realized_loss": "299843.780000",
+   "shapley": {
+    "e1": "231903.743138",
+    "e2": "5693.721858",
+    "e3": "62246.227425",
+    "e4": "0.087579"
+   },
+   "structural_pairs": [
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e6",
+     "e1"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e6",
+     "e2"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e6",
+     "e3"
+    ],
+    [
+     "e5",
+     "e4"
+    ],
+    [
+     "e6",
+     "e4"
+    ],
+    [
+     "e5",
+     "e6"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "POLICY_ORDERED",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e2,e3,e4": "POLICY_ORDERED",
+    "e1,e2,e4": "POLICY_ORDERED",
+    "e1,e3": "PASS",
+    "e1,e3,e4": "POLICY_ORDERED",
+    "e1,e4": "POLICY_ORDERED",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e2,e3,e4": "POLICY_ORDERED",
+    "e2,e4": "PASS",
+    "e3": "PASS",
+    "e3,e4": "POLICY_ORDERED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e7"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00103",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "140358.030000",
+    "e1,e2": "178154.440000",
+    "e1,e2,e3": "210222.240000",
+    "e1,e3": "165622.470000",
+    "e2": "40603.570000",
+    "e2,e3": "47912.220000",
+    "e3": "0.000000"
+   },
+   "compliant_net": "1101389.430000",
+   "family": "policy_ordered",
+   "realized_loss": "210222.240000",
+   "shapley": {
+    "e1": "151418.240000",
+    "e2": "42685.885000",
+    "e3": "16118.115000"
+   },
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "POLICY_ORDERED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00104",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "202.640000",
+    "e1,e2": "262.200000",
+    "e1,e2,e3": "389.770000",
+    "e1,e2,e3,e4": "459.930000",
+    "e1,e2,e4": "309.400000",
+    "e1,e3": "330.210000",
+    "e1,e3,e4": "389.650000",
+    "e1,e4": "239.120000",
+    "e2": "53.600000",
+    "e2,e3": "181.170000",
+    "e2,e3,e4": "213.780000",
+    "e2,e4": "63.250000",
+    "e3": "127.570000",
+    "e3,e4": "150.530000",
+    "e4": "0.000000"
+   },
+   "compliant_net": "2459.830000",
+   "family": "policy_ordered",
+   "realized_loss": "459.930000",
+   "shapley": {
+    "e1": "224.216667",
+    "e2": "61.761667",
+    "e3": "139.050000",
+    "e4": "34.901667"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e2,e3,e4": "POLICY_ORDERED",
+    "e1,e2,e4": "POLICY_ORDERED",
+    "e1,e3": "PASS",
+    "e1,e3,e4": "POLICY_ORDERED",
+    "e1,e4": "POLICY_ORDERED",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e2,e3,e4": "POLICY_ORDERED",
+    "e2,e4": "POLICY_ORDERED",
+    "e3": "PASS",
+    "e3,e4": "POLICY_ORDERED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00105",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "325768.540000",
+    "e1,e2": "378976.580000",
+    "e1,e2,e3": "506297.230000",
+    "e1,e3": "438190.930000",
+    "e2": "53208.050000",
+    "e2,e3": "89313.510000",
+    "e3": "21207.210000"
+   },
+   "compliant_net": "1389930.860000",
+   "family": "policy_ordered",
+   "realized_loss": "506297.230000",
+   "shapley": {
+    "e1": "371376.128333",
+    "e2": "60657.173333",
+    "e3": "74263.928333"
+   },
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "POLICY_ORDERED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00106",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "17273.375000",
+    "e1,e2": "32473.945000",
+    "e1,e2,e3": "41843.023600",
+    "e1,e2,e3,e4": "41843.060000",
+    "e1,e2,e4": "32473.990000",
+    "e1,e3": "24818.385200",
+    "e1,e3,e4": "24818.430000",
+    "e1,e4": "17273.420000",
+    "e2": "15200.570000",
+    "e2,e3": "22496.843600",
+    "e2,e3,e4": "22496.880000",
+    "e2,e4": "15200.610000",
+    "e3": "5472.205200",
+    "e3,e4": "5472.250000",
+    "e4": "0.040000"
+   },
+   "compliant_net": "189592.560000",
+   "family": "policy_ordered",
+   "realized_loss": "41843.060000",
+   "shapley": {
+    "e1": "18309.778333",
+    "e2": "16112.601400",
+    "e3": "7420.639833",
+    "e4": "0.040433"
+   },
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e2,e3,e4": "POLICY_ORDERED",
+    "e1,e2,e4": "PASS",
+    "e1,e3": "PASS",
+    "e1,e3,e4": "POLICY_ORDERED",
+    "e1,e4": "PASS",
+    "e2": "PASS",
+    "e2,e3": "POLICY_ORDERED",
+    "e2,e3,e4": "POLICY_ORDERED",
+    "e2,e4": "PASS",
+    "e3": "PASS",
+    "e3,e4": "POLICY_ORDERED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00107",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "388.800000",
+    "e1,e2": "565.520000",
+    "e1,e2,e3": "988.930000",
+    "e1,e2,e3,e4": "1265.840000",
+    "e1,e2,e4": "723.860000",
+    "e1,e3": "817.520000",
+    "e1,e3,e4": "1046.420000",
+    "e1,e4": "497.660000",
+    "e2": "157.280000",
+    "e2,e3": "592.940000",
+    "e2,e3,e4": "758.970000",
+    "e2,e4": "201.310000",
+    "e3": "440.380000",
+    "e3,e4": "563.690000",
+    "e4": "0.000000"
+   },
+   "compliant_net": "4607.730000",
+   "family": "policy_ordered",
+   "realized_loss": "1265.840000",
+   "shapley": {
+    "e1": "447.610000",
+    "e2": "187.798333",
+    "e3": "492.081667",
+    "e4": "138.350000"
+   },
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e2,e3,e4": "POLICY_ORDERED",
+    "e1,e2,e4": "POLICY_ORDERED",
+    "e1,e3": "PASS",
+    "e1,e3,e4": "POLICY_ORDERED",
+    "e1,e4": "PASS",
+    "e2": "PASS",
+    "e2,e3": "POLICY_ORDERED",
+    "e2,e3,e4": "POLICY_ORDERED",
+    "e2,e4": "POLICY_ORDERED",
+    "e3": "PASS",
+    "e3,e4": "POLICY_ORDERED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6"
+   ],
+   "case_id": "RSC-2026-00108",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "146205.000000",
+    "e1,e2": "281580.000000",
+    "e1,e2,e3": "317156.550000",
+    "e1,e2,e3,e4": "416751.940000",
+    "e1,e2,e4": "371213.960000",
+    "e1,e3": "181781.550000",
+    "e1,e3,e4": "243471.940000",
+    "e1,e4": "197933.960000",
+    "e2": "98823.750000",
+    "e2,e3": "134400.300000",
+    "e2,e3,e4": "182823.940000",
+    "e2,e4": "137285.960000",
+    "e3": "35576.550000",
+    "e3,e4": "56329.540000",
+    "e4": "10791.560000"
+   },
+   "compliant_net": "866400.000000",
+   "family": "policy_ordered",
+   "realized_loss": "416751.940000",
+   "shapley": {
+    "e1": "188360.775000",
+    "e2": "134346.150000",
+    "e3": "40557.265000",
+    "e4": "53487.750000"
+   },
+   "structural_pairs": [
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e6",
+     "e1"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e6",
+     "e2"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e6",
+     "e3"
+    ],
+    [
+     "e5",
+     "e4"
+    ],
+    [
+     "e6",
+     "e4"
+    ],
+    [
+     "e5",
+     "e6"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e2,e3,e4": "POLICY_ORDERED",
+    "e1,e2,e4": "POLICY_ORDERED",
+    "e1,e3": "PASS",
+    "e1,e3,e4": "POLICY_ORDERED",
+    "e1,e4": "POLICY_ORDERED",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e2,e3,e4": "POLICY_ORDERED",
+    "e2,e4": "POLICY_ORDERED",
+    "e3": "PASS",
+    "e3,e4": "POLICY_ORDERED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e7"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00109",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "432.900000",
+    "e1,e2": "1635.200000",
+    "e1,e2,e3": "2083.890000",
+    "e1,e2,e3,e4": "2840.600000",
+    "e1,e2,e4": "2266.270000",
+    "e1,e3": "917.660000",
+    "e1,e3,e4": "1347.820000",
+    "e1,e4": "727.330000",
+    "e2": "1106.100000",
+    "e2,e3": "1570.670000",
+    "e2,e3,e4": "2183.670000",
+    "e2,e4": "1589.030000",
+    "e3": "497.750000",
+    "e3,e4": "810.330000",
+    "e4": "173.220000"
+   },
+   "compliant_net": "8210.270000",
+   "family": "policy_ordered",
+   "realized_loss": "2840.600000",
+   "shapley": {
+    "e1": "541.713333",
+    "e2": "1297.181667",
+    "e3": "538.875000",
+    "e4": "462.830000"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e2,e3,e4": "POLICY_ORDERED",
+    "e1,e2,e4": "POLICY_ORDERED",
+    "e1,e3": "POLICY_ORDERED",
+    "e1,e3,e4": "POLICY_ORDERED",
+    "e1,e4": "POLICY_ORDERED",
+    "e2": "PASS",
+    "e2,e3": "POLICY_ORDERED",
+    "e2,e3,e4": "POLICY_ORDERED",
+    "e2,e4": "POLICY_ORDERED",
+    "e3": "PASS",
+    "e3,e4": "POLICY_ORDERED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00110",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "76241.420000",
+    "e1,e2": "115642.670000",
+    "e1,e2,e3": "132133.410000",
+    "e1,e2,e3,e4": "155917.420000",
+    "e1,e2,e4": "136458.350000",
+    "e1,e3": "92732.160000",
+    "e1,e3,e4": "109423.950000",
+    "e1,e4": "89964.880000",
+    "e2": "28762.920000",
+    "e2,e3": "45253.650000",
+    "e2,e3,e4": "53399.310000",
+    "e2,e4": "33940.240000",
+    "e3": "16490.740000",
+    "e3,e4": "19459.070000",
+    "e4": "0.000000"
+   },
+   "compliant_net": "379696.710000",
+   "family": "policy_ordered",
+   "realized_loss": "155917.420000",
+   "shapley": {
+    "e1": "89060.615833",
+    "e2": "37309.044167",
+    "e3": "17974.904167",
+    "e4": "11572.855833"
+   },
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ],
+    [
+     "e1",
+     "e5"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e5",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e2,e3,e4": "POLICY_ORDERED",
+    "e1,e2,e4": "POLICY_ORDERED",
+    "e1,e3": "PASS",
+    "e1,e3,e4": "POLICY_ORDERED",
+    "e1,e4": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e2,e3,e4": "POLICY_ORDERED",
+    "e2,e4": "POLICY_ORDERED",
+    "e3": "PASS",
+    "e3,e4": "POLICY_ORDERED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00111",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "92453.420500",
+    "e1,e2": "103547.830960",
+    "e1,e2,e3": "103547.890000",
+    "e1,e3": "92453.480000",
+    "e2": "0.000000",
+    "e2,e3": "0.060000",
+    "e3": "0.060000"
+   },
+   "compliant_net": "1294347.890000",
+   "family": "policy_ordered",
+   "realized_loss": "103547.890000",
+   "shapley": {
+    "e1": "98000.625327",
+    "e2": "5547.205077",
+    "e3": "0.059597"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "POLICY_ORDERED",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e3": "POLICY_ORDERED",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00112",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "21082.400000",
+    "e1,e2": "79164.412000",
+    "e1,e2,e3": "111477.406480",
+    "e1,e2,e3,e4": "111477.420000",
+    "e1,e2,e4": "79164.420000",
+    "e1,e3": "42940.632320",
+    "e1,e3,e4": "42940.640000",
+    "e1,e4": "21082.410000",
+    "e2": "59136.132000",
+    "e2,e3": "87844.036080",
+    "e2,e3,e4": "87844.050000",
+    "e2,e4": "59136.140000",
+    "e3": "18063.400320",
+    "e3,e4": "18063.410000",
+    "e4": "0.010000"
+   },
+   "compliant_net": "626284.320000",
+   "family": "policy_ordered",
+   "realized_loss": "111477.420000",
+   "shapley": {
+    "e1": "22389.508533",
+    "e2": "63868.078160",
+    "e3": "25219.822653",
+    "e4": "0.010653"
+   },
+   "structural_pairs": [
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e5",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "POLICY_ORDERED",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e2,e3,e4": "POLICY_ORDERED",
+    "e1,e2,e4": "POLICY_ORDERED",
+    "e1,e3": "POLICY_ORDERED",
+    "e1,e3,e4": "POLICY_ORDERED",
+    "e1,e4": "PASS",
+    "e2": "PASS",
+    "e2,e3": "POLICY_ORDERED",
+    "e2,e3,e4": "POLICY_ORDERED",
+    "e2,e4": "POLICY_ORDERED",
+    "e3": "PASS",
+    "e3,e4": "POLICY_ORDERED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00113",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "100448.250000",
+    "e1,e2": "313033.930000",
+    "e1,e2,e3": "358792.840000",
+    "e1,e2,e3,e4": "376732.480000",
+    "e1,e2,e4": "328685.620000",
+    "e1,e3": "146207.160000",
+    "e1,e3,e4": "153517.520000",
+    "e1,e4": "105470.660000",
+    "e2": "174319.680000",
+    "e2,e3": "220078.590000",
+    "e2,e3,e4": "231082.520000",
+    "e2,e4": "183035.660000",
+    "e3": "45758.910000",
+    "e3,e4": "48046.860000",
+    "e4": "0.000000"
+   },
+   "compliant_net": "809154.240000",
+   "family": "policy_ordered",
+   "realized_loss": "376732.480000",
+   "shapley": {
+    "e1": "122730.221667",
+    "e2": "198448.436667",
+    "e3": "46902.885000",
+    "e4": "8650.936667"
+   },
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ],
+    [
+     "e1",
+     "e5"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e5",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e2,e3,e4": "POLICY_ORDERED",
+    "e1,e2,e4": "POLICY_ORDERED",
+    "e1,e3": "PASS",
+    "e1,e3,e4": "POLICY_ORDERED",
+    "e1,e4": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e2,e3,e4": "POLICY_ORDERED",
+    "e2,e4": "POLICY_ORDERED",
+    "e3": "PASS",
+    "e3,e4": "POLICY_ORDERED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00114",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "238.546157",
+    "e1,e2,e3": "239.010000",
+    "e1,e3": "0.470000",
+    "e2": "238.546157",
+    "e2,e3": "239.010000",
+    "e3": "0.470000"
+   },
+   "compliant_net": "17039.010000",
+   "family": "policy_ordered",
+   "realized_loss": "239.010000",
+   "shapley": {
+    "e1": "0.000000",
+    "e2": "238.543078",
+    "e3": "0.466922"
+   },
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "POLICY_ORDERED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00115",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "134205.310000",
+    "e1,e2": "201879.870000",
+    "e1,e2,e3": "256986.110000",
+    "e1,e3": "177130.130000",
+    "e2": "74384.820000",
+    "e2,e3": "106541.950000",
+    "e3": "18767.860000"
+   },
+   "compliant_net": "791870.200000",
+   "family": "policy_ordered",
+   "realized_loss": "256986.110000",
+   "shapley": {
+    "e1": "142526.043333",
+    "e2": "77321.708333",
+    "e3": "37138.358333"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "POLICY_ORDERED",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e3": "POLICY_ORDERED",
+    "e2": "PASS",
+    "e2,e3": "POLICY_ORDERED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00116",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "7586.420000",
+    "e1,e2": "9537.440000",
+    "e1,e2,e3": "10681.930000",
+    "e1,e3": "8496.790000",
+    "e2": "2330.350000",
+    "e2,e3": "2609.990000",
+    "e3": "0.000000"
+   },
+   "compliant_net": "57661.690000",
+   "family": "policy_ordered",
+   "realized_loss": "10681.930000",
+   "shapley": {
+    "e1": "7836.766667",
+    "e2": "2265.331667",
+    "e3": "579.831667"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "POLICY_ORDERED",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e3": "POLICY_ORDERED",
+    "e2": "PASS",
+    "e2,e3": "POLICY_ORDERED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00117",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "127906.020000",
+    "e1,e2": "163262.890000",
+    "e1,e2,e3": "192582.610000",
+    "e1,e3": "155457.890000",
+    "e2": "37915.000000",
+    "e2,e3": "60967.320000",
+    "e3": "21156.570000"
+   },
+   "compliant_net": "911905.950000",
+   "family": "policy_ordered",
+   "realized_loss": "192582.610000",
+   "shapley": {
+    "e1": "129781.971667",
+    "e2": "37541.176667",
+    "e3": "25259.461667"
+   },
+   "structural_pairs": [],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "POLICY_ORDERED",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e3": "POLICY_ORDERED",
+    "e2": "PASS",
+    "e2,e3": "POLICY_ORDERED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00118",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "622.440000",
+    "e1,e2": "1260.441000",
+    "e1,e2,e3": "1594.380060",
+    "e1,e2,e3,e4": "1594.430000",
+    "e1,e2,e4": "1260.500000",
+    "e1,e3": "841.538880",
+    "e1,e3,e4": "841.590000",
+    "e1,e4": "622.490000",
+    "e2": "669.123000",
+    "e2,e3": "896.624820",
+    "e2,e3,e4": "896.680000",
+    "e2,e4": "669.180000",
+    "e3": "107.059680",
+    "e3,e4": "107.110000",
+    "e4": "0.050000"
+   },
+   "compliant_net": "5698.330000",
+   "family": "policy_ordered",
+   "realized_loss": "1594.430000",
+   "shapley": {
+    "e1": "661.030203",
+    "e2": "711.917193",
+    "e3": "221.430733",
+    "e4": "0.051870"
+   },
+   "structural_pairs": [
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e5",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "POLICY_ORDERED",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e2,e3,e4": "POLICY_ORDERED",
+    "e1,e2,e4": "POLICY_ORDERED",
+    "e1,e3": "POLICY_ORDERED",
+    "e1,e3,e4": "POLICY_ORDERED",
+    "e1,e4": "PASS",
+    "e2": "PASS",
+    "e2,e3": "POLICY_ORDERED",
+    "e2,e3,e4": "POLICY_ORDERED",
+    "e2,e4": "POLICY_ORDERED",
+    "e3": "PASS",
+    "e3,e4": "POLICY_ORDERED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00119",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "9449.650000",
+    "e1,e2": "26329.850000",
+    "e1,e2,e3": "43122.820000",
+    "e1,e2,e3,e4": "55197.210000",
+    "e1,e2,e4": "33702.200000",
+    "e1,e3": "26749.030000",
+    "e1,e3,e4": "34238.760000",
+    "e1,e4": "12095.560000",
+    "e2": "15698.990000",
+    "e2,e3": "32810.890000",
+    "e2,e3,e4": "41997.940000",
+    "e2,e4": "20094.710000",
+    "e3": "17582.870000",
+    "e3,e4": "22506.070000",
+    "e4": "0.000000"
+   },
+   "compliant_net": "188626.040000",
+   "family": "policy_ordered",
+   "realized_loss": "55197.210000",
+   "shapley": {
+    "e1": "11290.954167",
+    "e2": "18303.962500",
+    "e3": "19582.532500",
+    "e4": "6019.760833"
+   },
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e2,e3,e4": "POLICY_ORDERED",
+    "e1,e2,e4": "POLICY_ORDERED",
+    "e1,e3": "PASS",
+    "e1,e3,e4": "POLICY_ORDERED",
+    "e1,e4": "PASS",
+    "e2": "PASS",
+    "e2,e3": "POLICY_ORDERED",
+    "e2,e3,e4": "POLICY_ORDERED",
+    "e2,e4": "POLICY_ORDERED",
+    "e3": "PASS",
+    "e3,e4": "POLICY_ORDERED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00120",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "36546.740000",
+    "e1,e2": "56105.720000",
+    "e1,e2,e3": "71835.540000",
+    "e1,e3": "49929.480000",
+    "e2": "19558.980000",
+    "e2,e3": "30903.190000",
+    "e3": "8997.130000"
+   },
+   "compliant_net": "314758.070000",
+   "family": "policy_ordered",
+   "realized_loss": "71835.540000",
+   "shapley": {
+    "e1": "38739.545000",
+    "e2": "20732.520000",
+    "e3": "12363.475000"
+   },
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "POLICY_ORDERED",
+    "e1,e3": "POLICY_ORDERED",
+    "e2": "PASS",
+    "e2,e3": "POLICY_ORDERED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00121",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "146183.747965",
+    "e1,e2": "190456.540206",
+    "e1,e2,e3": "222048.646788",
+    "e1,e2,e3,e4": null,
+    "e1,e2,e4": null,
+    "e1,e3": "176640.680548",
+    "e1,e3,e4": null,
+    "e1,e4": "146183.770000",
+    "e2": "17959.717607",
+    "e2,e3": "45128.929268",
+    "e2,e3,e4": null,
+    "e2,e4": null,
+    "e3": "26708.716548",
+    "e3,e4": null,
+    "e4": "0.020000"
+   },
+   "compliant_net": "1263712.270000",
+   "family": "non_confluent",
+   "realized_loss": "222048.670000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e2,e3,e4": "BLOCKED",
+    "e1,e2,e4": "BLOCKED",
+    "e1,e3": "PASS",
+    "e1,e3,e4": "BLOCKED",
+    "e1,e4": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e2,e3,e4": "BLOCKED",
+    "e2,e4": "BLOCKED",
+    "e3": "PASS",
+    "e3,e4": "BLOCKED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6"
+   ],
+   "case_id": "RSC-2026-00122",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "88768.095000",
+    "e1,e2": "234939.558100",
+    "e1,e2,e3": null,
+    "e1,e2,e3,e4": null,
+    "e1,e2,e4": null,
+    "e1,e3": null,
+    "e1,e3,e4": null,
+    "e1,e4": null,
+    "e2": "146171.463100",
+    "e2,e3": null,
+    "e2,e3,e4": null,
+    "e2,e4": null,
+    "e3": "0.000000",
+    "e3,e4": "0.240000",
+    "e4": "0.240000"
+   },
+   "compliant_net": "1552849.880000",
+   "family": "non_confluent",
+   "realized_loss": "300722.880000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e6",
+     "e1"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e6",
+     "e2"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e6",
+     "e3"
+    ],
+    [
+     "e5",
+     "e4"
+    ],
+    [
+     "e6",
+     "e4"
+    ],
+    [
+     "e5",
+     "e6"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "BLOCKED",
+    "e1,e2,e3,e4": "BLOCKED",
+    "e1,e2,e4": "BLOCKED",
+    "e1,e3": "BLOCKED",
+    "e1,e3,e4": "BLOCKED",
+    "e1,e4": "BLOCKED",
+    "e2": "PASS",
+    "e2,e3": "BLOCKED",
+    "e2,e3,e4": "BLOCKED",
+    "e2,e4": "BLOCKED",
+    "e3": "PASS",
+    "e3,e4": "PASS",
+    "e4": "PASS"
+   },
+   "target_event_id": "e7"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6"
+   ],
+   "case_id": "RSC-2026-00123",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "123992.541750",
+    "e1,e2": null,
+    "e1,e2,e3": null,
+    "e1,e2,e3,e4": null,
+    "e1,e2,e4": null,
+    "e1,e3": "153450.163790",
+    "e1,e3,e4": null,
+    "e1,e4": null,
+    "e2": "13225.871120",
+    "e2,e3": "39021.785040",
+    "e2,e3,e4": null,
+    "e2,e4": null,
+    "e3": "25358.695040",
+    "e3,e4": null,
+    "e4": "0.520000"
+   },
+   "compliant_net": "957270.240000",
+   "family": "non_confluent",
+   "realized_loss": "190170.240000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e6",
+     "e1"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e6",
+     "e2"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e6",
+     "e3"
+    ],
+    [
+     "e5",
+     "e4"
+    ],
+    [
+     "e6",
+     "e4"
+    ],
+    [
+     "e5",
+     "e6"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "BLOCKED",
+    "e1,e2,e3": "BLOCKED",
+    "e1,e2,e3,e4": "BLOCKED",
+    "e1,e2,e4": "BLOCKED",
+    "e1,e3": "PASS",
+    "e1,e3,e4": "BLOCKED",
+    "e1,e4": "BLOCKED",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e2,e3,e4": "BLOCKED",
+    "e2,e4": "BLOCKED",
+    "e3": "PASS",
+    "e3,e4": "BLOCKED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e7"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00124",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "49731.609375",
+    "e1,e2": "74928.958125",
+    "e1,e2,e3": null,
+    "e1,e3": null,
+    "e2": "11272.498125",
+    "e2,e3": null,
+    "e3": "0.040000"
+   },
+   "compliant_net": "424376.400000",
+   "family": "non_confluent",
+   "realized_loss": "74929.000000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "POLICY_ORDERED",
+    "e1,e2,e3": "BLOCKED",
+    "e1,e3": "BLOCKED",
+    "e2": "PASS",
+    "e2,e3": "BLOCKED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00125",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "44919.699300",
+    "e1,e2": "59393.824630",
+    "e1,e2,e3": null,
+    "e1,e3": "44919.780000",
+    "e2": "9083.761414",
+    "e2,e3": null,
+    "e3": "0.080000"
+   },
+   "compliant_net": "559000.700000",
+   "family": "non_confluent",
+   "realized_loss": "59393.900000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "BLOCKED",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "BLOCKED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "case_id": "RSC-2026-00126",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "9975.000000",
+    "e1,e2": "13395.500000",
+    "e1,e2,e3": null,
+    "e1,e3": "12190.740000",
+    "e2": "3420.500000",
+    "e2,e3": null,
+    "e3": "420.240000"
+   },
+   "compliant_net": "40600.380000",
+   "family": "non_confluent",
+   "realized_loss": "16226.920000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "BLOCKED",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "BLOCKED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e4"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00127",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "1055.938108",
+    "e1,e2": "1108.735014",
+    "e1,e2,e3": "1274.332632",
+    "e1,e2,e3,e4": null,
+    "e1,e2,e4": null,
+    "e1,e3": "1220.622657",
+    "e1,e3,e4": null,
+    "e1,e4": "1056.640000",
+    "e2": "0.000000",
+    "e2,e3": "146.423157",
+    "e2,e3,e4": null,
+    "e2,e4": "0.700000",
+    "e3": "146.423157",
+    "e3,e4": null,
+    "e4": "0.700000"
+   },
+   "compliant_net": "9741.040000",
+   "family": "non_confluent",
+   "realized_loss": "1275.040000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e2,e3,e4": "BLOCKED",
+    "e1,e2,e4": "BLOCKED",
+    "e1,e3": "PASS",
+    "e1,e3,e4": "BLOCKED",
+    "e1,e4": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e2,e3,e4": "BLOCKED",
+    "e2,e4": "PASS",
+    "e3": "PASS",
+    "e3,e4": "BLOCKED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00128",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "47850.550000",
+    "e1,e2": "66988.970000",
+    "e1,e2,e3": null,
+    "e1,e3": "59908.570000",
+    "e2": "19138.420000",
+    "e2,e3": null,
+    "e3": "3444.920000"
+   },
+   "compliant_net": "282296.950000",
+   "family": "non_confluent",
+   "realized_loss": "82491.900000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ],
+    [
+     "e1",
+     "e5"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "BLOCKED",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "BLOCKED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00129",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "306398.750000",
+    "e1,e2": "413174.810000",
+    "e1,e2,e3": null,
+    "e1,e3": "361550.530000",
+    "e2": "122096.000000",
+    "e2,e3": null,
+    "e3": "0.000000"
+   },
+   "compliant_net": "1321113.070000",
+   "family": "non_confluent",
+   "realized_loss": "487546.270000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ],
+    [
+     "e1",
+     "e5"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "BLOCKED",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "BLOCKED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00130",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "84810.442500",
+    "e1,e2": "122657.102466",
+    "e1,e2,e3": null,
+    "e1,e3": "84810.530000",
+    "e2": "27669.406866",
+    "e2,e3": null,
+    "e3": "0.080000"
+   },
+   "compliant_net": "1127978.890000",
+   "family": "non_confluent",
+   "realized_loss": "122657.190000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ],
+    [
+     "e1",
+     "e5"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "BLOCKED",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "BLOCKED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00131",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "74560.305814",
+    "e1,e2": "78288.321105",
+    "e1,e2,e3": "90106.241345",
+    "e1,e2,e3,e4": null,
+    "e1,e2,e4": null,
+    "e1,e3": "86336.759667",
+    "e1,e3,e4": null,
+    "e1,e4": "74560.340000",
+    "e2": "0.000000",
+    "e2,e3": "10947.126117",
+    "e2,e3,e4": null,
+    "e2,e4": "0.040000",
+    "e3": "10947.126117",
+    "e3,e4": null,
+    "e4": "0.040000"
+   },
+   "compliant_net": "1074302.280000",
+   "family": "non_confluent",
+   "realized_loss": "90106.280000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e2,e3,e4": "BLOCKED",
+    "e1,e2,e4": "BLOCKED",
+    "e1,e3": "PASS",
+    "e1,e3,e4": "BLOCKED",
+    "e1,e4": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e2,e3,e4": "BLOCKED",
+    "e2,e4": "PASS",
+    "e3": "PASS",
+    "e3,e4": "BLOCKED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00132",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "278.055008",
+    "e1,e2,e3": null,
+    "e1,e3": "0.370000",
+    "e2": "278.055008",
+    "e2,e3": null,
+    "e3": "0.370000"
+   },
+   "compliant_net": "7944.430000",
+   "family": "non_confluent",
+   "realized_loss": "278.430000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "BLOCKED",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "BLOCKED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00133",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "0.000000",
+    "e1,e2": "61.239808",
+    "e1,e2,e3": null,
+    "e1,e3": "0.050000",
+    "e2": "61.239808",
+    "e2,e3": null,
+    "e3": "0.050000"
+   },
+   "compliant_net": "3061.990000",
+   "family": "non_confluent",
+   "realized_loss": "61.290000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "BLOCKED",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "BLOCKED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00134",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "335.466054",
+    "e1,e2": "687.693930",
+    "e1,e2,e3": null,
+    "e1,e3": null,
+    "e2": "343.272930",
+    "e2,e3": null,
+    "e3": "0.030000"
+   },
+   "compliant_net": "13547.230000",
+   "family": "non_confluent",
+   "realized_loss": "687.730000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "BLOCKED",
+    "e1,e3": "BLOCKED",
+    "e2": "PASS",
+    "e2,e3": "BLOCKED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00135",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "46038.330000",
+    "e1,e2": "301788.780000",
+    "e1,e2,e3": "337849.430000",
+    "e1,e2,e3,e4": null,
+    "e1,e2,e4": null,
+    "e1,e3": "82098.980000",
+    "e1,e3,e4": null,
+    "e1,e4": "51562.930000",
+    "e2": "240404.340000",
+    "e2,e3": "276464.990000",
+    "e2,e3,e4": null,
+    "e2,e4": null,
+    "e3": "36060.650000",
+    "e3,e4": null,
+    "e4": "0.000000"
+   },
+   "compliant_net": "1145762.020000",
+   "family": "non_confluent",
+   "realized_loss": "378391.370000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ],
+    [
+     "e1",
+     "e5"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e5",
+     "e4"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e2,e3,e4": "BLOCKED",
+    "e1,e2,e4": "BLOCKED",
+    "e1,e3": "PASS",
+    "e1,e3,e4": "BLOCKED",
+    "e1,e4": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e2,e3,e4": "BLOCKED",
+    "e2,e4": "BLOCKED",
+    "e3": "PASS",
+    "e3,e4": "BLOCKED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00136",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "4854.550000",
+    "e1,e2": "7602.280000",
+    "e1,e2,e3": null,
+    "e1,e3": "6213.820000",
+    "e2": "2747.730000",
+    "e2,e3": null,
+    "e3": "0.000000"
+   },
+   "compliant_net": "56458.090000",
+   "family": "non_confluent",
+   "realized_loss": "9730.920000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ],
+    [
+     "e1",
+     "e5"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "BLOCKED",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "BLOCKED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6"
+   ],
+   "case_id": "RSC-2026-00137",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "381.656602",
+    "e1,e2": "506.649139",
+    "e1,e2,e3": "589.862791",
+    "e1,e2,e3,e4": null,
+    "e1,e2,e4": null,
+    "e1,e3": "461.796667",
+    "e1,e3,e4": null,
+    "e1,e4": "381.730000",
+    "e2": "79.193745",
+    "e2,e3": "151.896199",
+    "e2,e3,e4": null,
+    "e2,e4": null,
+    "e3": "70.755067",
+    "e3,e4": null,
+    "e4": "0.070000"
+   },
+   "compliant_net": "3467.240000",
+   "family": "non_confluent",
+   "realized_loss": "589.940000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ],
+    [
+     "e1",
+     "e5"
+    ],
+    [
+     "e1",
+     "e6"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e6",
+     "e2"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e6",
+     "e3"
+    ],
+    [
+     "e5",
+     "e4"
+    ],
+    [
+     "e6",
+     "e4"
+    ],
+    [
+     "e5",
+     "e6"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "PASS",
+    "e1,e2,e3,e4": "BLOCKED",
+    "e1,e2,e4": "BLOCKED",
+    "e1,e3": "PASS",
+    "e1,e3,e4": "BLOCKED",
+    "e1,e4": "PASS",
+    "e2": "PASS",
+    "e2,e3": "PASS",
+    "e2,e3,e4": "BLOCKED",
+    "e2,e4": "BLOCKED",
+    "e3": "PASS",
+    "e3,e4": "BLOCKED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e7"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "case_id": "RSC-2026-00138",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "697.100000",
+    "e1,e2": "1579.430000",
+    "e1,e2,e3": null,
+    "e1,e3": "731.950000",
+    "e2": "896.270000",
+    "e2,e3": null,
+    "e3": "0.000000"
+   },
+   "compliant_net": "9939.930000",
+   "family": "non_confluent",
+   "realized_loss": "1658.400000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ],
+    [
+     "e1",
+     "e5"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e4",
+     "e5"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "BLOCKED",
+    "e1,e3": "PASS",
+    "e2": "PASS",
+    "e2,e3": "BLOCKED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e6"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6"
+   ],
+   "case_id": "RSC-2026-00139",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "1056.360000",
+    "e1,e2": "1225.377600",
+    "e1,e2,e3": null,
+    "e1,e2,e3,e4": null,
+    "e1,e2,e4": null,
+    "e1,e3": "1289.040896",
+    "e1,e3,e4": null,
+    "e1,e4": "1057.140000",
+    "e2": "169.017600",
+    "e2,e3": null,
+    "e2,e3,e4": null,
+    "e2,e4": null,
+    "e3": "105.917696",
+    "e3,e4": null,
+    "e4": "0.780000"
+   },
+   "compliant_net": "4338.120000",
+   "family": "non_confluent",
+   "realized_loss": "1479.120000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e1",
+     "e2"
+    ],
+    [
+     "e1",
+     "e3"
+    ],
+    [
+     "e1",
+     "e4"
+    ],
+    [
+     "e1",
+     "e5"
+    ],
+    [
+     "e1",
+     "e6"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e6",
+     "e2"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e6",
+     "e3"
+    ],
+    [
+     "e5",
+     "e4"
+    ],
+    [
+     "e6",
+     "e4"
+    ],
+    [
+     "e5",
+     "e6"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "PASS",
+    "e1,e2,e3": "BLOCKED",
+    "e1,e2,e3,e4": "BLOCKED",
+    "e1,e2,e4": "BLOCKED",
+    "e1,e3": "PASS",
+    "e1,e3,e4": "BLOCKED",
+    "e1,e4": "PASS",
+    "e2": "PASS",
+    "e2,e3": "BLOCKED",
+    "e2,e3,e4": "BLOCKED",
+    "e2,e4": "BLOCKED",
+    "e3": "PASS",
+    "e3,e4": "BLOCKED",
+    "e4": "PASS"
+   },
+   "target_event_id": "e7"
+  },
+  {
+   "active_event_ids": [
+    "e1",
+    "e2",
+    "e3"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e2",
+    "e3",
+    "e4"
+   ],
+   "case_id": "RSC-2026-00140",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e1": "24659.910000",
+    "e1,e2": null,
+    "e1,e2,e3": null,
+    "e1,e3": null,
+    "e2": "34026.120000",
+    "e2,e3": null,
+    "e3": "9640.730000"
+   },
+   "compliant_net": "313912.870000",
+   "family": "non_confluent",
+   "realized_loss": "70484.280000",
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e4",
+     "e1"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e1": "PASS",
+    "e1,e2": "BLOCKED",
+    "e1,e2,e3": "BLOCKED",
+    "e1,e3": "BLOCKED",
+    "e2": "PASS",
+    "e2,e3": "BLOCKED",
+    "e3": "PASS"
+   },
+   "target_event_id": "e5"
+  }
+ ]
+}

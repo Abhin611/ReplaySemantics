@@ -1,0 +1,154 @@
+{
+ "objectTypes": [
+  {
+   "name": "Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Order",
+   "attributes": []
+  },
+  {
+   "name": "Account",
+   "attributes": []
+  }
+ ],
+ "eventTypes": [
+  {
+   "name": "Apply Discount",
+   "attributes": [
+    {
+     "name": "rate",
+     "type": "string"
+    },
+    {
+     "name": "slot",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Apply Rounding",
+   "attributes": [
+    {
+     "name": "decimals",
+     "type": "string"
+    },
+    {
+     "name": "mode",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Apply Tax Code",
+   "attributes": [
+    {
+     "name": "rate",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Post Invoice",
+   "attributes": []
+  }
+ ],
+ "objects": [
+  {
+   "id": "INV-00101",
+   "type": "Invoice",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "PO-00101",
+   "type": "Order",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "ACC-0101",
+   "type": "Account",
+   "attributes": [],
+   "relationships": []
+  }
+ ],
+ "events": [
+  {
+   "id": "e1",
+   "type": "Apply Discount",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "rate",
+     "value": "0.08"
+    },
+    {
+     "name": "slot",
+     "value": "1"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00101",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "type": "Apply Tax Code",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "rate",
+     "value": "0.15"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00101",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e3",
+   "type": "Apply Rounding",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "decimals",
+     "value": "1"
+    },
+    {
+     "name": "mode",
+     "value": "ROUND_DOWN"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00101",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e4",
+   "type": "Post Invoice",
+   "time": "2026-08-03T16:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00101",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "ACC-0101",
+     "qualifier": "ledger"
+    }
+   ]
+  }
+ ]
+}

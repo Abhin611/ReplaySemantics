@@ -1,0 +1,3532 @@
+{
+ "cases": [
+  {
+   "case_id": "RSC-2026-00001",
+   "ocel_file": "RSC-2026-00001.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00001",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "143.590000",
+   "reference": {
+    "contract_price": "279.070000",
+    "ordered_quantity": "7.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00002",
+   "ocel_file": "RSC-2026-00002.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00002",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "147221.130000",
+   "reference": {
+    "contract_price": "390.450000",
+    "ordered_quantity": "48.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00003",
+   "ocel_file": "RSC-2026-00003.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00003",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "48863.790000",
+   "reference": {
+    "contract_price": "282.700000",
+    "ordered_quantity": "45.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00004",
+   "ocel_file": "RSC-2026-00004.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00004",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "28787.050000",
+   "reference": {
+    "contract_price": "254.640000",
+    "ordered_quantity": "34.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00005",
+   "ocel_file": "RSC-2026-00005.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00005",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "17023.890000",
+   "reference": {
+    "contract_price": "168.420000",
+    "ordered_quantity": "8.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00006",
+   "ocel_file": "RSC-2026-00006.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00006",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "31911.500000",
+   "reference": {
+    "contract_price": "371.310000",
+    "ordered_quantity": "32.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "22044.070000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00007",
+   "ocel_file": "RSC-2026-00007.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00007",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "55181.680000",
+   "reference": {
+    "contract_price": "128.790000",
+    "ordered_quantity": "58.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "97417.430000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00008",
+   "ocel_file": "RSC-2026-00008.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00008",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "51.820000",
+   "reference": {
+    "contract_price": "49.820000",
+    "ordered_quantity": "52.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00009",
+   "ocel_file": "RSC-2026-00009.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00009",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "5267.980000",
+   "reference": {
+    "contract_price": "74.950000",
+    "ordered_quantity": "15.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00010",
+   "ocel_file": "RSC-2026-00010.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00010",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "128601.660000",
+   "reference": {
+    "contract_price": "239.600000",
+    "ordered_quantity": "36.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00011",
+   "ocel_file": "RSC-2026-00011.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00011",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "40282.840000",
+   "reference": {
+    "contract_price": "286.120000",
+    "ordered_quantity": "39.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00012",
+   "ocel_file": "RSC-2026-00012.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00012",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "66943.280000",
+   "reference": {
+    "contract_price": "293.010000",
+    "ordered_quantity": "53.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "64331.680000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00013",
+   "ocel_file": "RSC-2026-00013.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00013",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "20731.800000",
+   "reference": {
+    "contract_price": "387.400000",
+    "ordered_quantity": "13.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "25752.780000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00014",
+   "ocel_file": "RSC-2026-00014.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00014",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "144309.800000",
+   "reference": {
+    "contract_price": "205.940000",
+    "ordered_quantity": "47.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00015",
+   "ocel_file": "RSC-2026-00015.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00015",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "357.140000",
+   "reference": {
+    "contract_price": "398.600000",
+    "ordered_quantity": "8.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00016",
+   "ocel_file": "RSC-2026-00016.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00016",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "18191.800000",
+   "reference": {
+    "contract_price": "186.640000",
+    "ordered_quantity": "54.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00017",
+   "ocel_file": "RSC-2026-00017.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00017",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "164.890000",
+   "reference": {
+    "contract_price": "133.080000",
+    "ordered_quantity": "15.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00018",
+   "ocel_file": "RSC-2026-00018.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00018",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "1242.180000",
+   "reference": {
+    "contract_price": "257.180000",
+    "ordered_quantity": "46.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00019",
+   "ocel_file": "RSC-2026-00019.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00019",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "95.430000",
+   "reference": {
+    "contract_price": "55.100000",
+    "ordered_quantity": "41.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00020",
+   "ocel_file": "RSC-2026-00020.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00020",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "0.010000",
+   "reference": {
+    "contract_price": "354.330000",
+    "ordered_quantity": "14.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00021",
+   "ocel_file": "RSC-2026-00021.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00021",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "149973.010000",
+   "reference": {
+    "contract_price": "242.890000",
+    "ordered_quantity": "45.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "61337.760000",
+     "e2": "110479.690000",
+     "e3": "117823.410000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00022",
+   "ocel_file": "RSC-2026-00022.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00022",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "74425.250000",
+   "reference": {
+    "contract_price": "356.130000",
+    "ordered_quantity": "48.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "42730.380000",
+     "e2": "5196.060000",
+     "e3": "69195.220000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00023",
+   "ocel_file": "RSC-2026-00023.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00023",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "139534.550000",
+   "reference": {
+    "contract_price": "123.900000",
+    "ordered_quantity": "30.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "53926.840000",
+     "e2": "90722.660000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00024",
+   "ocel_file": "RSC-2026-00024.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00024",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "151000.340000",
+   "reference": {
+    "contract_price": "237.830000",
+    "ordered_quantity": "36.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "11972.870000",
+     "e2": "118780.230000",
+     "e3": "34801.280000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00025",
+   "ocel_file": "RSC-2026-00025.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00025",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "102900.470000",
+   "reference": {
+    "contract_price": "291.230000",
+    "ordered_quantity": "60.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "86521.200000",
+     "e2": "10063.260000",
+     "e3": "97238.670000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00026",
+   "ocel_file": "RSC-2026-00026.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00026",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "161782.600000",
+   "reference": {
+    "contract_price": "121.080000",
+    "ordered_quantity": "27.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "66083.590000",
+     "e2": "56223.670000",
+     "e3": "94013.490000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00027",
+   "ocel_file": "RSC-2026-00027.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00027",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "124326.680000",
+   "reference": {
+    "contract_price": "70.660000",
+    "ordered_quantity": "34.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "109033.840000",
+     "e2": "54656.280000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00028",
+   "ocel_file": "RSC-2026-00028.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00028",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "209928.010000",
+   "reference": {
+    "contract_price": "358.170000",
+    "ordered_quantity": "21.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "6392.940000",
+     "e2": "46817.680000",
+     "e3": "36560.400000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00029",
+   "ocel_file": "RSC-2026-00029.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00029",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "83753.670000",
+   "reference": {
+    "contract_price": "230.790000",
+    "ordered_quantity": "38.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "98222.380000",
+     "e2": "70846.940000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00030",
+   "ocel_file": "RSC-2026-00030.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00030",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "123823.140000",
+   "reference": {
+    "contract_price": "335.220000",
+    "ordered_quantity": "5.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "113154.310000",
+     "e2": "21404.180000",
+     "e3": "97473.030000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00031",
+   "ocel_file": "RSC-2026-00031.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00031",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "174867.530000",
+   "reference": {
+    "contract_price": "274.720000",
+    "ordered_quantity": "6.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "27901.760000",
+     "e2": "68884.490000",
+     "e3": "99139.520000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00032",
+   "ocel_file": "RSC-2026-00032.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00032",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "120527.090000",
+   "reference": {
+    "contract_price": "125.310000",
+    "ordered_quantity": "37.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "53052.020000",
+     "e2": "71399.110000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00033",
+   "ocel_file": "RSC-2026-00033.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00033",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "91892.280000",
+   "reference": {
+    "contract_price": "108.150000",
+    "ordered_quantity": "14.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "25167.100000",
+     "e2": "114324.310000",
+     "e3": "78535.170000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00034",
+   "ocel_file": "RSC-2026-00034.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00034",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "174104.440000",
+   "reference": {
+    "contract_price": "180.650000",
+    "ordered_quantity": "22.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "113886.080000",
+     "e2": "86491.160000",
+     "e3": "28096.500000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00035",
+   "ocel_file": "RSC-2026-00035.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00035",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "170363.490000",
+   "reference": {
+    "contract_price": "208.370000",
+    "ordered_quantity": "13.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "82568.660000",
+     "e2": "66072.340000",
+     "e3": "49028.280000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00036",
+   "ocel_file": "RSC-2026-00036.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00036",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "61866.930000",
+   "reference": {
+    "contract_price": "136.430000",
+    "ordered_quantity": "41.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "88700.090000",
+     "e2": "54912.500000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00037",
+   "ocel_file": "RSC-2026-00037.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00037",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "178193.980000",
+   "reference": {
+    "contract_price": "197.560000",
+    "ordered_quantity": "17.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "80607.240000",
+     "e2": "43306.840000",
+     "e3": "75888.500000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00038",
+   "ocel_file": "RSC-2026-00038.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00038",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "94048.230000",
+   "reference": {
+    "contract_price": "207.100000",
+    "ordered_quantity": "13.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "115633.480000",
+     "e2": "108879.510000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00039",
+   "ocel_file": "RSC-2026-00039.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00039",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "99512.290000",
+   "reference": {
+    "contract_price": "66.200000",
+    "ordered_quantity": "60.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "72826.180000",
+     "e2": "31584.600000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00040",
+   "ocel_file": "RSC-2026-00040.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00040",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "150229.820000",
+   "reference": {
+    "contract_price": "61.260000",
+    "ordered_quantity": "25.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "39884.570000",
+     "e2": "118268.700000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00041",
+   "ocel_file": "RSC-2026-00041.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00041",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "75857.740000",
+   "reference": {
+    "contract_price": "179.510000",
+    "ordered_quantity": "31.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "117889.140000",
+     "e2": "63151.470000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "11354.600000",
+     "amount": "75857.740000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00042",
+   "ocel_file": "RSC-2026-00042.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00042",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "95826.550000",
+   "reference": {
+    "contract_price": "221.270000",
+    "ordered_quantity": "35.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "72811.570000",
+     "e2": "34715.940000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "14591.960000",
+     "amount": "95826.550000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00043",
+   "ocel_file": "RSC-2026-00043.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00043",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "169147.770000",
+   "reference": {
+    "contract_price": "333.900000",
+    "ordered_quantity": "27.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "61900.090000",
+     "e2": "114792.450000",
+     "e3": "88879.950000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "17487.440000",
+     "amount": "169147.770000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00044",
+   "ocel_file": "RSC-2026-00044.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00044",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "164097.780000",
+   "reference": {
+    "contract_price": "265.110000",
+    "ordered_quantity": "56.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "29548.290000",
+     "e2": "60585.280000",
+     "e3": "103130.590000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "20938.370000",
+     "amount": "164097.780000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00045",
+   "ocel_file": "RSC-2026-00045.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00045",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "144171.410000",
+   "reference": {
+    "contract_price": "381.200000",
+    "ordered_quantity": "10.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "34405.650000",
+     "e2": "116979.420000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "28127.560000",
+     "amount": "144171.410000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00046",
+   "ocel_file": "RSC-2026-00046.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00046",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "107314.010000",
+   "reference": {
+    "contract_price": "76.480000",
+    "ordered_quantity": "39.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "21717.670000",
+     "e2": "11514.230000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "13637.420000",
+     "amount": "107314.010000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00047",
+   "ocel_file": "RSC-2026-00047.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00047",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "171533.540000",
+   "reference": {
+    "contract_price": "171.900000",
+    "ordered_quantity": "9.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "26588.430000",
+     "e2": "116908.390000",
+     "e3": "89765.590000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "5912.800000",
+     "amount": "171533.540000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00048",
+   "ocel_file": "RSC-2026-00048.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00048",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "112638.570000",
+   "reference": {
+    "contract_price": "72.240000",
+    "ordered_quantity": "58.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "5661.820000",
+     "e2": "78912.140000",
+     "e3": "23727.460000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "4417.700000",
+     "amount": "112638.570000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00049",
+   "ocel_file": "RSC-2026-00049.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00049",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "121031.560000",
+   "reference": {
+    "contract_price": "275.160000",
+    "ordered_quantity": "50.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "56311.540000",
+     "e2": "38474.150000",
+     "e3": "40689.230000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "8162.390000",
+     "amount": "121031.560000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00050",
+   "ocel_file": "RSC-2026-00050.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00050",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "116793.030000",
+   "reference": {
+    "contract_price": "280.410000",
+    "ordered_quantity": "50.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "73214.400000",
+     "e2": "12244.250000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "18425.380000",
+     "amount": "116793.030000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00051",
+   "ocel_file": "RSC-2026-00051.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00051",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "130729.900000",
+   "reference": {
+    "contract_price": "378.330000",
+    "ordered_quantity": "40.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "39614.920000",
+     "e2": "46097.400000",
+     "e3": "95448.070000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "6531.010000",
+     "amount": "130729.900000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00052",
+   "ocel_file": "RSC-2026-00052.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00052",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "168447.070000",
+   "reference": {
+    "contract_price": "148.790000",
+    "ordered_quantity": "42.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "93612.000000",
+     "e2": "93783.700000",
+     "e3": "34458.340000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "22027.630000",
+     "amount": "168447.070000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00053",
+   "ocel_file": "RSC-2026-00053.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00053",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "116058.710000",
+   "reference": {
+    "contract_price": "92.230000",
+    "ordered_quantity": "16.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "113643.260000",
+     "e2": "38822.930000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "25093.480000",
+     "amount": "116058.710000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00054",
+   "ocel_file": "RSC-2026-00054.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00054",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "157517.410000",
+   "reference": {
+    "contract_price": "198.940000",
+    "ordered_quantity": "20.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "83952.910000",
+     "e2": "24868.850000",
+     "e3": "17868.340000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "6647.960000",
+     "amount": "157517.410000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00055",
+   "ocel_file": "RSC-2026-00055.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00055",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "186573.990000",
+   "reference": {
+    "contract_price": "332.020000",
+    "ordered_quantity": "20.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "108637.760000",
+     "e2": "15436.970000",
+     "e3": "42646.740000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "3477.880000",
+     "amount": "186573.990000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00056",
+   "ocel_file": "RSC-2026-00056.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00056",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "108813.770000",
+   "reference": {
+    "contract_price": "139.040000",
+    "ordered_quantity": "5.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "75714.400000",
+     "e2": "28013.720000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "15037.380000",
+     "amount": "108813.770000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00057",
+   "ocel_file": "RSC-2026-00057.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00057",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "70555.380000",
+   "reference": {
+    "contract_price": "96.990000",
+    "ordered_quantity": "16.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "47653.860000",
+     "e2": "90389.270000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "15724.170000",
+     "amount": "70555.380000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00058",
+   "ocel_file": "RSC-2026-00058.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00058",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "175918.270000",
+   "reference": {
+    "contract_price": "397.750000",
+    "ordered_quantity": "8.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "56555.390000",
+     "e2": "86364.000000",
+     "e3": "114831.550000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "6877.440000",
+     "amount": "175918.270000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00059",
+   "ocel_file": "RSC-2026-00059.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00059",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "86571.660000",
+   "reference": {
+    "contract_price": "292.110000",
+    "ordered_quantity": "60.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "117488.300000",
+     "e2": "94258.020000",
+     "e3": "21008.300000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "1795.890000",
+     "amount": "86571.660000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00060",
+   "ocel_file": "RSC-2026-00060.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00060",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "103600.600000",
+   "reference": {
+    "contract_price": "277.140000",
+    "ordered_quantity": "21.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "35854.830000",
+     "e2": "55521.900000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "14871.700000",
+     "amount": "103600.600000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00061",
+   "ocel_file": "RSC-2026-00061.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00061",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "88296.900000",
+   "reference": {
+    "contract_price": "167.890000",
+    "ordered_quantity": "18.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "97253.360000",
+     "e2": "91396.650000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "73930.870000",
+     "amount": "88296.900000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00062",
+   "ocel_file": "RSC-2026-00062.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00062",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "92345.670000",
+   "reference": {
+    "contract_price": "351.270000",
+    "ordered_quantity": "33.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "86917.590000",
+     "e2": "27355.600000",
+     "e3": "57064.590000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "89735.250000",
+     "amount": "92345.670000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00063",
+   "ocel_file": "RSC-2026-00063.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00063",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "218981.300000",
+   "reference": {
+    "contract_price": "184.410000",
+    "ordered_quantity": "36.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "79698.830000",
+     "e2": "81004.410000",
+     "e3": "54395.030000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "205282.730000",
+     "amount": "218981.300000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00064",
+   "ocel_file": "RSC-2026-00064.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00064",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "205304.750000",
+   "reference": {
+    "contract_price": "220.480000",
+    "ordered_quantity": "43.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "48463.870000",
+     "e2": "25623.050000",
+     "e3": "99463.670000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "185217.830000",
+     "amount": "205304.750000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00065",
+   "ocel_file": "RSC-2026-00065.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00065",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "122467.850000",
+   "reference": {
+    "contract_price": "41.530000",
+    "ordered_quantity": "50.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "6771.410000",
+     "e2": "28499.640000",
+     "e3": "74953.020000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "116841.780000",
+     "amount": "122467.850000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00066",
+   "ocel_file": "RSC-2026-00066.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00066",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "88985.330000",
+   "reference": {
+    "contract_price": "162.690000",
+    "ordered_quantity": "43.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "92508.590000",
+     "e2": "84449.360000",
+     "e3": "77390.830000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "86630.280000",
+     "amount": "88985.330000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00067",
+   "ocel_file": "RSC-2026-00067.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00067",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "45308.570000",
+   "reference": {
+    "contract_price": "76.800000",
+    "ordered_quantity": "60.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "64133.490000",
+     "e2": "53685.390000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "37105.760000",
+     "amount": "45308.570000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00068",
+   "ocel_file": "RSC-2026-00068.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00068",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "106655.930000",
+   "reference": {
+    "contract_price": "232.680000",
+    "ordered_quantity": "22.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "48436.240000",
+     "e2": "113449.700000",
+     "e3": "63672.020000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "100212.760000",
+     "amount": "106655.930000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00069",
+   "ocel_file": "RSC-2026-00069.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00069",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "85619.530000",
+   "reference": {
+    "contract_price": "279.430000",
+    "ordered_quantity": "13.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "20707.520000",
+     "e2": "102605.100000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "81381.860000",
+     "amount": "85619.530000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00070",
+   "ocel_file": "RSC-2026-00070.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00070",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "73267.090000",
+   "reference": {
+    "contract_price": "375.360000",
+    "ordered_quantity": "12.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "57635.140000",
+     "e2": "23459.050000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "67221.770000",
+     "amount": "73267.090000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00071",
+   "ocel_file": "RSC-2026-00071.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00071",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "195963.450000",
+   "reference": {
+    "contract_price": "351.500000",
+    "ordered_quantity": "46.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "50069.000000",
+     "e2": "116731.410000",
+     "e3": "98650.320000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "179913.950000",
+     "amount": "195963.450000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00072",
+   "ocel_file": "RSC-2026-00072.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00072",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "76860.590000",
+   "reference": {
+    "contract_price": "180.630000",
+    "ordered_quantity": "28.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "106467.550000",
+     "e2": "96712.620000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "71342.160000",
+     "amount": "76860.590000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00073",
+   "ocel_file": "RSC-2026-00073.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00073",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "77524.900000",
+   "reference": {
+    "contract_price": "178.590000",
+    "ordered_quantity": "56.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "83010.700000",
+     "e2": "12523.250000",
+     "e3": "36801.920000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "74595.220000",
+     "amount": "77524.900000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00074",
+   "ocel_file": "RSC-2026-00074.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00074",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "143280.340000",
+   "reference": {
+    "contract_price": "119.840000",
+    "ordered_quantity": "59.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "42572.660000",
+     "e2": "48688.060000",
+     "e3": "15683.160000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "135572.880000",
+     "amount": "143280.340000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00075",
+   "ocel_file": "RSC-2026-00075.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00075",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "114115.180000",
+   "reference": {
+    "contract_price": "127.090000",
+    "ordered_quantity": "52.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "96341.050000",
+     "e2": "113719.300000",
+     "e3": "70602.790000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "103969.060000",
+     "amount": "114115.180000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00076",
+   "ocel_file": "RSC-2026-00076.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00076",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "133388.510000",
+   "reference": {
+    "contract_price": "176.500000",
+    "ordered_quantity": "49.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "77775.430000",
+     "e2": "6570.450000",
+     "e3": "38909.990000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "121967.630000",
+     "amount": "133388.510000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00077",
+   "ocel_file": "RSC-2026-00077.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00077",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "142971.790000",
+   "reference": {
+    "contract_price": "222.880000",
+    "ordered_quantity": "16.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "19812.460000",
+     "e2": "112587.430000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "133332.400000",
+     "amount": "142971.790000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00078",
+   "ocel_file": "RSC-2026-00078.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00078",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "128397.360000",
+   "reference": {
+    "contract_price": "54.180000",
+    "ordered_quantity": "5.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "50192.870000",
+     "e2": "94412.200000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "119057.630000",
+     "amount": "128397.360000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00079",
+   "ocel_file": "RSC-2026-00079.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00079",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "50552.000000",
+   "reference": {
+    "contract_price": "180.310000",
+    "ordered_quantity": "32.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "55463.450000",
+     "e2": "101231.500000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "38048.320000",
+     "amount": "50552.000000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00080",
+   "ocel_file": "RSC-2026-00080.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00080",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "94679.160000",
+   "reference": {
+    "contract_price": "384.710000",
+    "ordered_quantity": "50.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e1": "34046.420000",
+     "e2": "87366.550000",
+     "e3": "117801.250000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "74584.110000",
+     "amount": "94679.160000"
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00081",
+   "ocel_file": "RSC-2026-00081.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00081",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "69738.740000",
+   "reference": {
+    "contract_price": "99.220000",
+    "ordered_quantity": "25.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {
+     "e2": "63387.710000",
+     "e3": "60567.050000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-86831"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00082",
+   "ocel_file": "RSC-2026-00082.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00082",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "107487.940000",
+   "reference": {
+    "contract_price": "392.810000",
+    "ordered_quantity": "51.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {
+     "e2": "92627.030000",
+     "e3": "46461.210000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-25635"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00083",
+   "ocel_file": "RSC-2026-00083.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00083",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "59986.090000",
+   "reference": {
+    "contract_price": "282.240000",
+    "ordered_quantity": "21.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {
+     "e2": "105344.640000",
+     "e3": "88265.440000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-23884"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00084",
+   "ocel_file": "RSC-2026-00084.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00084",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "47561.790000",
+   "reference": {
+    "contract_price": "147.170000",
+    "ordered_quantity": "16.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {
+     "e2": "32486.540000",
+     "e3": "14636.090000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-68089"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00085",
+   "ocel_file": "RSC-2026-00085.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00085",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "104872.730000",
+   "reference": {
+    "contract_price": "380.540000",
+    "ordered_quantity": "9.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {
+     "e2": "114912.960000",
+     "e3": "79418.920000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-47073"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00086",
+   "ocel_file": "RSC-2026-00086.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00086",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "53563.870000",
+   "reference": {
+    "contract_price": "141.600000",
+    "ordered_quantity": "27.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {
+     "e2": "71926.580000",
+     "e3": "113377.340000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-38620"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00087",
+   "ocel_file": "RSC-2026-00087.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00087",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "84526.740000",
+   "reference": {
+    "contract_price": "230.250000",
+    "ordered_quantity": "46.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {
+     "e2": "54626.150000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-90885"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00088",
+   "ocel_file": "RSC-2026-00088.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00088",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "119249.060000",
+   "reference": {
+    "contract_price": "211.180000",
+    "ordered_quantity": "15.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {
+     "e2": "107010.500000",
+     "e3": "57201.090000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-90507"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00089",
+   "ocel_file": "RSC-2026-00089.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00089",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "149656.890000",
+   "reference": {
+    "contract_price": "142.550000",
+    "ordered_quantity": "45.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {
+     "e2": "6735.850000",
+     "e3": "32976.870000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-67341"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00090",
+   "ocel_file": "RSC-2026-00090.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00090",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "110424.310000",
+   "reference": {
+    "contract_price": "191.750000",
+    "ordered_quantity": "38.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {
+     "e2": "49491.450000",
+     "e3": "19029.020000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-29648"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00091",
+   "ocel_file": "RSC-2026-00091.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00091",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "78865.180000",
+   "reference": {
+    "contract_price": "104.910000",
+    "ordered_quantity": "26.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {
+     "e2": "101822.680000",
+     "e3": "115883.210000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-56629"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00092",
+   "ocel_file": "RSC-2026-00092.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00092",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "67672.820000",
+   "reference": {
+    "contract_price": "159.350000",
+    "ordered_quantity": "31.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {
+     "e2": "118410.200000",
+     "e3": "112319.910000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-96940"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00093",
+   "ocel_file": "RSC-2026-00093.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00093",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "102677.730000",
+   "reference": {
+    "contract_price": "56.030000",
+    "ordered_quantity": "9.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {
+     "e2": "100933.490000",
+     "e3": "35502.870000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-10809"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00094",
+   "ocel_file": "RSC-2026-00094.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00094",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "123003.300000",
+   "reference": {
+    "contract_price": "137.040000",
+    "ordered_quantity": "60.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {
+     "e2": "53682.630000",
+     "e3": "23768.070000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-26364"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00095",
+   "ocel_file": "RSC-2026-00095.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00095",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "125638.000000",
+   "reference": {
+    "contract_price": "380.420000",
+    "ordered_quantity": "34.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {
+     "e2": "25900.180000",
+     "e3": "57865.420000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-37264"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00096",
+   "ocel_file": "RSC-2026-00096.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00096",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "43166.720000",
+   "reference": {
+    "contract_price": "240.510000",
+    "ordered_quantity": "48.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {
+     "e2": "83260.700000",
+     "e3": "22863.240000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-85686"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00097",
+   "ocel_file": "RSC-2026-00097.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00097",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "16308.460000",
+   "reference": {
+    "contract_price": "155.040000",
+    "ordered_quantity": "16.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {
+     "e2": "71220.290000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-13619"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00098",
+   "ocel_file": "RSC-2026-00098.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00098",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "60160.130000",
+   "reference": {
+    "contract_price": "218.320000",
+    "ordered_quantity": "54.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {
+     "e2": "106819.720000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-60236"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00099",
+   "ocel_file": "RSC-2026-00099.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00099",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "46108.090000",
+   "reference": {
+    "contract_price": "174.850000",
+    "ordered_quantity": "40.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {
+     "e2": "96883.750000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-68695"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00100",
+   "ocel_file": "RSC-2026-00100.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00100",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "102252.300000",
+   "reference": {
+    "contract_price": "349.390000",
+    "ordered_quantity": "49.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {
+     "e2": "31373.090000",
+     "e3": "111849.330000"
+    },
+    "exceptions": {
+     "e1": "APR-2026-46074"
+    },
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00101",
+   "ocel_file": "RSC-2026-00101.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00101",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "176650.970000",
+   "reference": {
+    "contract_price": "341.550000",
+    "ordered_quantity": "51.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00102",
+   "ocel_file": "RSC-2026-00102.jsonocel",
+   "target_event_id": "e7",
+   "invoice_object": "INV-00102",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "299843.780000",
+   "reference": {
+    "contract_price": "374.240000",
+    "ordered_quantity": "53.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00103",
+   "ocel_file": "RSC-2026-00103.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00103",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "210222.240000",
+   "reference": {
+    "contract_price": "365.480000",
+    "ordered_quantity": "33.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.050000",
+     "2": "0.020000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00104",
+   "ocel_file": "RSC-2026-00104.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00104",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "459.930000",
+   "reference": {
+    "contract_price": "59.560000",
+    "ordered_quantity": "35.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00105",
+   "ocel_file": "RSC-2026-00105.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00105",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "506297.230000",
+   "reference": {
+    "contract_price": "311.030000",
+    "ordered_quantity": "42.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00106",
+   "ocel_file": "RSC-2026-00106.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00106",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "41843.060000",
+   "reference": {
+    "contract_price": "41.560000",
+    "ordered_quantity": "49.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00107",
+   "ocel_file": "RSC-2026-00107.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00107",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "1265.840000",
+   "reference": {
+    "contract_price": "176.720000",
+    "ordered_quantity": "21.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00108",
+   "ocel_file": "RSC-2026-00108.jsonocel",
+   "target_event_id": "e7",
+   "invoice_object": "INV-00108",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "416751.940000",
+   "reference": {
+    "contract_price": "375.000000",
+    "ordered_quantity": "20.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00109",
+   "ocel_file": "RSC-2026-00109.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00109",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "2840.600000",
+   "reference": {
+    "contract_price": "120.230000",
+    "ordered_quantity": "55.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00110",
+   "ocel_file": "RSC-2026-00110.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00110",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "155917.420000",
+   "reference": {
+    "contract_price": "79.000000",
+    "ordered_quantity": "49.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00111",
+   "ocel_file": "RSC-2026-00111.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00111",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "103547.890000",
+   "reference": {
+    "contract_price": "283.730000",
+    "ordered_quantity": "49.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00112",
+   "ocel_file": "RSC-2026-00112.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00112",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "111477.420000",
+   "reference": {
+    "contract_price": "116.800000",
+    "ordered_quantity": "53.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00113",
+   "ocel_file": "RSC-2026-00113.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00113",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "376732.480000",
+   "reference": {
+    "contract_price": "294.440000",
+    "ordered_quantity": "29.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00114",
+   "ocel_file": "RSC-2026-00114.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00114",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "239.010000",
+   "reference": {
+    "contract_price": "300.830000",
+    "ordered_quantity": "48.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00115",
+   "ocel_file": "RSC-2026-00115.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00115",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "256986.110000",
+   "reference": {
+    "contract_price": "339.920000",
+    "ordered_quantity": "25.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00116",
+   "ocel_file": "RSC-2026-00116.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00116",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "10681.930000",
+   "reference": {
+    "contract_price": "66.720000",
+    "ordered_quantity": "9.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00117",
+   "ocel_file": "RSC-2026-00117.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00117",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "192582.610000",
+   "reference": {
+    "contract_price": "297.050000",
+    "ordered_quantity": "37.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.030000",
+     "2": "0.020000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00118",
+   "ocel_file": "RSC-2026-00118.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00118",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "1594.430000",
+   "reference": {
+    "contract_price": "103.740000",
+    "ordered_quantity": "49.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00119",
+   "ocel_file": "RSC-2026-00119.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00119",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "55197.210000",
+   "reference": {
+    "contract_price": "203.070000",
+    "ordered_quantity": "9.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00120",
+   "ocel_file": "RSC-2026-00120.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00120",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "71835.540000",
+   "reference": {
+    "contract_price": "88.970000",
+    "ordered_quantity": "38.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00121",
+   "ocel_file": "RSC-2026-00121.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00121",
+   "policy_version": "P-2026-Q3-003",
+   "realized_loss": "222048.670000",
+   "reference": {
+    "contract_price": "211.900000",
+    "ordered_quantity": "56.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00122",
+   "ocel_file": "RSC-2026-00122.jsonocel",
+   "target_event_id": "e7",
+   "invoice_object": "INV-00122",
+   "policy_version": "P-2026-Q3-003",
+   "realized_loss": "300722.880000",
+   "reference": {
+    "contract_price": "327.860000",
+    "ordered_quantity": "41.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00123",
+   "ocel_file": "RSC-2026-00123.jsonocel",
+   "target_event_id": "e7",
+   "invoice_object": "INV-00123",
+   "policy_version": "P-2026-Q3-003",
+   "realized_loss": "190170.240000",
+   "reference": {
+    "contract_price": "205.460000",
+    "ordered_quantity": "50.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00124",
+   "ocel_file": "RSC-2026-00124.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00124",
+   "policy_version": "P-2026-Q3-002",
+   "realized_loss": "74929.000000",
+   "reference": {
+    "contract_price": "132.950000",
+    "ordered_quantity": "30.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00125",
+   "ocel_file": "RSC-2026-00125.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00125",
+   "policy_version": "P-2026-Q3-003",
+   "realized_loss": "59393.900000",
+   "reference": {
+    "contract_price": "395.020000",
+    "ordered_quantity": "14.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00126",
+   "ocel_file": "RSC-2026-00126.jsonocel",
+   "target_event_id": "e4",
+   "invoice_object": "INV-00126",
+   "policy_version": "P-2026-Q3-003",
+   "realized_loss": "16226.920000",
+   "reference": {
+    "contract_price": "51.740000",
+    "ordered_quantity": "8.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00127",
+   "ocel_file": "RSC-2026-00127.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00127",
+   "policy_version": "P-2026-Q3-002",
+   "realized_loss": "1275.040000",
+   "reference": {
+    "contract_price": "217.010000",
+    "ordered_quantity": "45.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00128",
+   "ocel_file": "RSC-2026-00128.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00128",
+   "policy_version": "P-2026-Q3-003",
+   "realized_loss": "82491.900000",
+   "reference": {
+    "contract_price": "265.080000",
+    "ordered_quantity": "10.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00129",
+   "ocel_file": "RSC-2026-00129.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00129",
+   "policy_version": "P-2026-Q3-003",
+   "realized_loss": "487546.270000",
+   "reference": {
+    "contract_price": "354.440000",
+    "ordered_quantity": "40.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00130",
+   "ocel_file": "RSC-2026-00130.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00130",
+   "policy_version": "P-2026-Q3-002",
+   "realized_loss": "122657.190000",
+   "reference": {
+    "contract_price": "283.410000",
+    "ordered_quantity": "45.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00131",
+   "ocel_file": "RSC-2026-00131.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00131",
+   "policy_version": "P-2026-Q3-003",
+   "realized_loss": "90106.280000",
+   "reference": {
+    "contract_price": "291.060000",
+    "ordered_quantity": "41.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00132",
+   "ocel_file": "RSC-2026-00132.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00132",
+   "policy_version": "P-2026-Q3-002",
+   "realized_loss": "278.430000",
+   "reference": {
+    "contract_price": "322.420000",
+    "ordered_quantity": "22.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00133",
+   "ocel_file": "RSC-2026-00133.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00133",
+   "policy_version": "P-2026-Q3-002",
+   "realized_loss": "61.290000",
+   "reference": {
+    "contract_price": "170.870000",
+    "ordered_quantity": "14.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00134",
+   "ocel_file": "RSC-2026-00134.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00134",
+   "policy_version": "P-2026-Q3-002",
+   "realized_loss": "687.730000",
+   "reference": {
+    "contract_price": "382.690000",
+    "ordered_quantity": "30.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00135",
+   "ocel_file": "RSC-2026-00135.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00135",
+   "policy_version": "P-2026-Q3-003",
+   "realized_loss": "378391.370000",
+   "reference": {
+    "contract_price": "236.150000",
+    "ordered_quantity": "48.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00136",
+   "ocel_file": "RSC-2026-00136.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00136",
+   "policy_version": "P-2026-Q3-003",
+   "realized_loss": "9730.920000",
+   "reference": {
+    "contract_price": "44.430000",
+    "ordered_quantity": "11.000000",
+    "tax_rate": "0.280000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00137",
+   "ocel_file": "RSC-2026-00137.jsonocel",
+   "target_event_id": "e7",
+   "invoice_object": "INV-00137",
+   "policy_version": "P-2026-Q3-002",
+   "realized_loss": "589.940000",
+   "reference": {
+    "contract_price": "79.480000",
+    "ordered_quantity": "41.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00138",
+   "ocel_file": "RSC-2026-00138.jsonocel",
+   "target_event_id": "e6",
+   "invoice_object": "INV-00138",
+   "policy_version": "P-2026-Q3-003",
+   "realized_loss": "1658.400000",
+   "reference": {
+    "contract_price": "269.150000",
+    "ordered_quantity": "37.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.030000",
+     "2": "0.020000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00139",
+   "ocel_file": "RSC-2026-00139.jsonocel",
+   "target_event_id": "e7",
+   "invoice_object": "INV-00139",
+   "policy_version": "P-2026-Q3-003",
+   "realized_loss": "1479.120000",
+   "reference": {
+    "contract_price": "352.120000",
+    "ordered_quantity": "11.000000",
+    "tax_rate": "0.120000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  },
+  {
+   "case_id": "RSC-2026-00140",
+   "ocel_file": "RSC-2026-00140.jsonocel",
+   "target_event_id": "e5",
+   "invoice_object": "INV-00140",
+   "policy_version": "P-2026-Q3-003",
+   "realized_loss": "70484.280000",
+   "reference": {
+    "contract_price": "284.590000",
+    "ordered_quantity": "12.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.030000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   }
+  }
+ ]
+}

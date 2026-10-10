@@ -1,4 +1,5 @@
 import { Handle, Position } from 'reactflow'
+import { NODE_KIND_STYLE } from '../../lib/verdict'
 
 // Renders one event as a labeled circle (id inside, activity + hop below),
 // matching the Figma "E2 / GR-Posting" node style instead of React Flow's
@@ -22,6 +23,9 @@ const CIRCLE_CENTER = CIRCLE_SIZE / 2
 
 // n.highlighted (set by the page, not stored on the API's node payload)
 // draws the amber "selected constraint" ring -- see ConstraintExplanationList.
+// n.verdictKind (set from the real stage 3-4 verdict data, see lib/verdict.js buildNodeStatus) colours
+// the node: order-sensitive & blocked / policy-ordered, order-independent, exempt, context.
+// Absent for real VBFA events (no verdict exists there), which keep the plain styling.
 
 export default function EventNode({ data }) {
   const n = data.node
@@ -29,8 +33,12 @@ export default function EventNode({ data }) {
   const disconnected = !isTarget && n.connected_to_target === false
   const highlighted = !!n.highlighted
 
+  const kind = !isTarget && n.verdictKind ? NODE_KIND_STYLE[n.verdictKind] : null
+
   const ring = isTarget
     ? { border: '#2a9d8f', bg: '#e6f6f4', text: '#0d4f47' }
+    : kind
+    ? kind
     : disconnected
     ? { border: '#b3261e', bg: '#fbe4e2', text: '#7a1a14' }
     : { border: '#c2cad2', bg: '#ffffff', text: '#101828' }
@@ -55,7 +63,9 @@ export default function EventNode({ data }) {
           width: CIRCLE_SIZE,
           height: CIRCLE_SIZE,
           borderRadius: '50%',
-          border: highlighted ? '3px solid #b5850f' : `2px solid ${ring.border}`,
+          border: highlighted
+            ? '3px solid #b5850f'
+            : `2px ${n.verdictKind === 'exempt' ? 'dashed' : 'solid'} ${ring.border}`,
           background: highlighted ? '#fff6e0' : ring.bg,
           color: highlighted ? '#7a5b0a' : ring.text,
           display: 'flex',
@@ -72,7 +82,7 @@ export default function EventNode({ data }) {
           flexShrink: 0,
           transition: 'box-shadow 150ms ease, background 150ms ease, border 150ms ease',
         }}
-        title={n.id}
+        title={kind ? `${n.id} — ${kind.label}` : n.id}
       >
         {n.id}
       </div>
@@ -94,7 +104,13 @@ export default function EventNode({ data }) {
         {n.activity || (isTarget ? 'target' : '')}
       </div>
       <div style={{ fontSize: 9.5, color: '#a3adb6', fontFamily: 'JetBrains Mono, monospace' }}>
-        {isTarget ? '★ target' : `hop ${n.hop}`}
+        {isTarget
+          ? '★ target'
+          : n.verdictKind === 'blocked' || n.verdictKind === 'ordered'
+          ? `hop ${n.hop} · ⇄ ${n.partners?.length ?? 0}`
+          : n.verdictKind === 'exempt'
+          ? `hop ${n.hop} · exempt`
+          : `hop ${n.hop}`}
       </div>
       <Handle
         type="source"

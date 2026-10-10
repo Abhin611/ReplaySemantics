@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import ReactFlow, { Background, Controls, MarkerType } from 'reactflow'
+import ReactFlow, { Background, Controls } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { CheckCircle2, Circle, PlayCircle } from 'lucide-react'
 import { useApi } from '../lib/useApi'
@@ -7,14 +7,19 @@ import { getCases, runReplay } from '../lib/api'
 import { useSelectedCase } from '../lib/SelectedCaseContext'
 import Card from '../components/Card'
 import StatusBadge from '../components/StatusBadge'
-import PreviewTag from '../components/PreviewTag'
 import EventNode from '../components/graph/EventNode'
 import ConstraintSummaryCard from '../components/ConstraintSummaryCard'
 import ConstraintExplanationList from '../components/ConstraintExplanationList'
 import PaymentRoutesCard from '../components/PaymentRoutesCard'
+import VerdictCard from '../components/VerdictCard'
+import OrderSensitivityCard from '../components/OrderSensitivityCard'
+import ReplayTraceCard from '../components/ReplayTraceCard'
+import TabBar from '../components/TabBar'
 import { LoadingState, ErrorState } from '../components/StatusStates'
 import { formatEur, formatDateTime } from '../lib/format'
 import { computePaymentRoutes } from '../lib/paymentRoutes'
+import { layoutGraph } from '../lib/graphLayout'
+import { buildNodeStatus, isApplicable, pairDetails, NODE_KIND_STYLE } from '../lib/verdict'
 
 const NODE_TYPES = { event: EventNode }
 
@@ -27,122 +32,17 @@ const STAGES = [
   { key: 'stage_5_verdict', label: 'Verdict' },
 ]
 
-const LEGEND = [
-  { label: 'Idle', color: '#8a97a3', live: true },
-  { label: 'Candidate', color: '#2563eb', live: false },
-  { label: 'Conflict', color: '#92650a', live: false },
-  { label: 'Resolved', color: '#1a7f4c', live: false },
-  { label: 'Blocked', color: '#b3261e', live: false },
+// Live once a benchmark case has a real verdict (see lib/verdict.js buildNodeStatus); real VBFA
+// results have no verdict, so the legend then explains the plain graph instead.
+const VERDICT_LEGEND = ['independent', 'ordered', 'blocked', 'exempt', 'context'].map((k) => ({
+  label: NODE_KIND_STYLE[k].label,
+  color: NODE_KIND_STYLE[k].border,
+}))
+const PLAIN_LEGEND = [
+  { label: 'Target event', color: '#2a9d8f' },
+  { label: 'Candidate event', color: '#c2cad2' },
+  { label: 'Pruned parent (not connected to target)', color: '#b3261e' },
 ]
-
-// Lay nodes out left-to-right by hop distance (target = rightmost column).
-// `highlight` (optional) marks matching nodes with `highlighted: true`
-// (EventNode draws the amber ring) and restyles matching edges -- driven
-// by clicking a line in ConstraintExplanationList ({type:'constraint',
-// before, after}) or a route in PaymentRoutesCard ({type:'route',
-// eventIds}, the whole leaf-to-target chain).
-function pairKey(a, b) {
-  return [a, b].sort().join('::')
-}
-
-function buildHighlight(highlight) {
-  if (!highlight) return null
-  if (highlight.type === 'route') {
-    const ids = new Set(highlight.eventIds)
-    const edgeKeys = new Set()
-    for (let i = 0; i < highlight.eventIds.length - 1; i++) {
-      edgeKeys.add(pairKey(highlight.eventIds[i], highlight.eventIds[i + 1]))
-    }
-    return { ids, edgeKeys }
-  }
-  // {type: 'constraint', before, after}
-  return {
-    ids: new Set([highlight.before, highlight.after]),
-    edgeKeys: new Set([pairKey(highlight.before, highlight.after)]),
-  }
-}
-
-function layoutGraph(graphView, highlightSpec) {
-  if (!graphView) return { nodes: [], edges: [] }
-  const highlight = buildHighlight(highlightSpec)
-  const byHop = {}
-  graphView.nodes.forEach((n) => {
-    const hop = n.is_target ? -1 : n.hop ?? 99
-    byHop[hop] = byHop[hop] || []
-    byHop[hop].push(n)
-  })
-  const hops = Object.keys(byHop)
-    .map(Number)
-    .sort((a, b) => b - a) // furthest hop first (left), target (-1) last (right)
-
-  const COL_GAP = 260
-  const ROW_GAP = 92
-  const nodes = []
-  hops.forEach((hop, colIdx) => {
-    // `hops` is already sorted furthest-first, so the array index IS the
-    // column: farthest hop -> col 0 (left), target (-1) -> last col (right).
-    const col = colIdx
-    const rows = byHop[hop]
-    // Center each column vertically so a single-node target column
-    // sits level with the middle of a taller candidate column.
-    const colHeight = (rows.length - 1) * ROW_GAP
-    rows.forEach((n, rowIdx) => {
-      nodes.push({
-        id: n.id,
-        position: { x: col * COL_GAP, y: rowIdx * ROW_GAP - colHeight / 2 },
-        data: { node: highlight ? { ...n, highlighted: highlight.ids.has(n.id) } : n },
-        type: 'event',
-        // Not setting width/height here deliberately -- letting React
-        // Flow auto-measure via its own ResizeObserver, matching how
-        // every official custom-node example does it.
-        draggable: true,
-      })
-    })
-  })
-
-  // The API's edge direction is "discovery order": source = the event
-  // closer to the target that discovered target = the farther/earlier
-  // event (i.e. source is near-target, target is upstream). That's the
-  // right way to describe *how the backward BFS found things*, but it's
-  // the wrong way to *draw* it: we want arrows to read left-to-right,
-  // upstream cause -> target/loss event, matching the hop layout above.
-  // So we flip source/target here, for display only.
-  //
-  // Only label an edge when there's more than one shared object -- a
-  // label on every single edge (a) is mostly noise since almost every
-  // edge has exactly one shared doc, and (b) its background chip is wide
-  // enough to fully cover a short line between adjacent columns, which is
-  // why edges could look completely missing even though they were drawn.
-  const edges = graphView.edges.map((e, i) => {
-    // Checked via the direction-agnostic pairKey against the RAW
-    // (unflipped) source/target -- a route's consecutive-link edgeKeys
-    // and a constraint's {before, after} both resolve the same way.
-    const isHighlighted = highlight && highlight.edgeKeys.has(pairKey(e.source, e.target))
-    return {
-      id: `${e.source}-${e.target}-${i}`,
-      source: e.target,
-      target: e.source,
-      label: e.shared_objects?.length > 1 ? `${e.shared_objects.length} shared objects` : undefined,
-      labelStyle: { fontSize: 9, fill: '#5c6b7a', fontWeight: 600 },
-      labelBgStyle: { fill: '#f4f6f8' },
-      labelBgPadding: [3, 2],
-      animated: false,
-      markerEnd: {
-        type: MarkerType.ArrowClosed,
-        color: isHighlighted ? '#b5850f' : '#64748b',
-        width: isHighlighted ? 24 : 20,
-        height: isHighlighted ? 24 : 20,
-      },
-      style: {
-        stroke: isHighlighted ? '#b5850f' : '#64748b',
-        strokeWidth: isHighlighted ? 3.5 : 2,
-      },
-      zIndex: isHighlighted ? 10 : 0,
-    }
-  })
-
-  return { nodes, edges }
-}
 
 export default function ReplayConsole() {
   const { selectedCaseId, setSelectedCaseId } = useSelectedCase()
@@ -156,6 +56,9 @@ export default function ReplayConsole() {
   const [selectedNode, setSelectedNode] = useState(null)
   const [selectedConstraint, setSelectedConstraint] = useState(null)
   const [selectedRoute, setSelectedRoute] = useState(null) // { key: 'highest' | 'lowest', eventIds }
+  const [selectedPair, setSelectedPair] = useState(null) // order-sensitive pair {a, b, ...}
+  const [traceNode, setTraceNode] = useState(null) // event applied at the current replay step
+  const [tab, setTab] = useState('verdict')
 
   const cases = casesApi.data?.cases || []
 
@@ -172,6 +75,8 @@ export default function ReplayConsole() {
     setSelectedNode(null)
     setSelectedConstraint(null)
     setSelectedRoute(null)
+    setSelectedPair(null)
+    setTraceNode(null)
     try {
       const data = await runReplay(selectedCaseId, { maxEvents, minEvents, maxHops })
       setResult(data)
@@ -185,16 +90,52 @@ export default function ReplayConsole() {
   // Only one highlight is active at a time -- picking a constraint clears
   // any selected route and vice versa (see the two onSelect handlers
   // passed to the cards below), so this is a simple either/or.
-  const highlightSpec = selectedConstraint
-    ? { type: 'constraint', before: selectedConstraint.before, after: selectedConstraint.after }
-    : selectedRoute
-    ? { type: 'route', eventIds: selectedRoute.eventIds }
-    : null
+  // A highlight belongs to the tab it was made in: it shows only while that tab is open, so the
+  // graph never carries an unexplained gold ring.
+  const highlightSpec =
+    tab === 'rules' && selectedConstraint
+      ? { type: 'constraint', before: selectedConstraint.before, after: selectedConstraint.after }
+      : tab === 'rules' && selectedRoute
+      ? { type: 'route', eventIds: selectedRoute.eventIds }
+      : tab === 'pairs' && selectedPair
+      ? { type: 'pair', a: selectedPair.a, b: selectedPair.b }
+      : tab === 'replay' && traceNode
+      ? { type: 'nodes', ids: [traceNode] }
+      : null
+
+  // Verdict colouring comes from the real stage 3-4 output; null for real VBFA results.
+  const nodeStatus = useMemo(() => buildNodeStatus(result), [result])
 
   const { nodes, edges } = useMemo(
-    () => layoutGraph(result?.replay_graph, highlightSpec),
-    [result, selectedConstraint, selectedRoute]
+    () => layoutGraph(result?.replay_graph, highlightSpec, nodeStatus),
+    [result, nodeStatus, selectedConstraint, selectedRoute, selectedPair, traceNode, tab]
   )
+
+  // Right-hand tabs. Real SAP results have no verdict, pairs or replay, so they get fewer tabs and
+  // open on the order rules instead.
+  const applicable = isApplicable(result)
+  const tabs = [
+    { key: 'verdict', label: 'Verdict' },
+    ...(applicable
+      ? [
+          { key: 'pairs', label: 'Pairs', badge: pairDetails(result).length },
+          { key: 'replay', label: 'Replay' },
+        ]
+      : []),
+    { key: 'rules', label: 'Rules', badge: result?.stage_2b_constraint_extraction?.given_constraints?.length },
+    { key: 'stages', label: 'Stages' },
+  ]
+  useEffect(() => {
+    setTab(result && !isApplicable(result) ? 'rules' : 'verdict')
+  }, [result])
+
+  // Exactly one highlight at a time: choosing anything clears the others.
+  const clearSelections = () => {
+    setSelectedConstraint(null)
+    setSelectedRoute(null)
+    setSelectedPair(null)
+    setTraceNode(null)
+  }
 
   const eventLookup = useMemo(() => {
     const lookup = {}
@@ -249,7 +190,7 @@ export default function ReplayConsole() {
         </div>
       </Card>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_300px]">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_400px]">
         {/* Main panel */}
         <div className="flex flex-col gap-4">
           <Card>
@@ -307,9 +248,18 @@ export default function ReplayConsole() {
             </div>
             {activeCase && (
               <div className="mt-3 text-[12.5px] text-[#8a97a3]">
-                {activeCase.max_candidates_at_default_hops} candidates reachable at max_hops=3
-                (true ceiling, before max_events trims the result) · value{' '}
-                {formatEur(activeCase.value_eur)}
+                {activeCase.source === 'benchmark (synthetic)' ? (
+                  <>
+                    Synthetic benchmark case · policy {activeCase.policy_version} · max_events / min_events /
+                    max_hops apply to real VBFA cases only
+                  </>
+                ) : (
+                  <>
+                    {activeCase.max_candidates_at_default_hops} candidates reachable at max_hops=3
+                    (true ceiling, before max_events trims the result) · value {formatEur(activeCase.value_eur)} ·
+                    real SAP data: stages 1–2b only
+                  </>
+                )}
               </div>
             )}
             {runError && (
@@ -319,25 +269,19 @@ export default function ReplayConsole() {
             )}
           </Card>
 
-          {result && (
-            <ConstraintSummaryCard
-              constraintData={result.stage_2b_constraint_extraction}
-              eventLookup={eventLookup}
-            />
-          )}
-
           <Card className="!p-0 overflow-hidden">
-            <div className="flex items-center justify-between border-b border-[#e2e6ea] px-5 py-3">
-              <div className="text-[14px] font-bold">
-                {selectedCaseId || 'Select a case'}
+            <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-b border-[#e2e6ea] px-5 py-2.5">
+              <div className="text-[14px] font-bold">{selectedCaseId || 'Select a case'}</div>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                {(nodeStatus ? VERDICT_LEGEND : PLAIN_LEGEND).map((l) => (
+                  <div key={l.label} className="flex items-center gap-1.5 text-[11.5px] text-[#5c6b7a]">
+                    <span className="h-2.5 w-2.5 rounded-full" style={{ background: l.color }} />
+                    {l.label}
+                  </div>
+                ))}
               </div>
-              {activeCase && (
-                <div className="text-[12.5px] text-[#8a97a3]">
-                  {formatDateTime(activeCase.timestamp)}
-                </div>
-              )}
             </div>
-            <div style={{ height: 560 }}>
+            <div style={{ height: 'clamp(340px, calc(100vh - 400px), 620px)' }}>
               {result ? (
                 <ReactFlow
                   key={`${selectedCaseId}-${nodes.length}`}
@@ -360,23 +304,113 @@ export default function ReplayConsole() {
                 </div>
               )}
             </div>
-            <div className="flex flex-wrap items-center gap-4 border-t border-[#e2e6ea] px-5 py-3">
-              {LEGEND.map((l) => (
-                <div key={l.label} className="flex items-center gap-1.5 text-[12px] text-[#5c6b7a]">
-                  <span
-                    className="h-2.5 w-2.5 rounded-full"
-                    style={{ background: l.color, opacity: l.live ? 1 : 0.4 }}
-                  />
-                  {l.label}
-                  {!l.live && <PreviewTag label="Month 4" className="ml-0.5" />}
+            <div className="border-t border-[#e2e6ea] px-5 py-2.5 text-[12.5px]">
+              {!selectedNode ? (
+                <span className="text-[#8a97a3]">
+                  {result ? 'Click an event on the graph to inspect it.' : 'Run a replay, then click any event to inspect it.'}
+                </span>
+              ) : (
+                <div className="flex flex-wrap gap-x-6 gap-y-1">
+                  <Chip label="Event" value={`${selectedNode.id} · ${selectedNode.activity}`} />
+                  <Chip label="Hop" value={selectedNode.is_target ? 'target' : selectedNode.hop} />
+                  {selectedNode.value_eur != null && <Chip label="Value" value={formatEur(selectedNode.value_eur)} />}
+                  <Chip label="Time" value={formatDateTime(selectedNode.timestamp)} />
+                  <Chip label="Connected" value={selectedNode.connected_to_target ? 'yes' : 'no (pruned parent)'} />
+                  {selectedNode.verdictKind && (
+                    <Chip label="Role" value={NODE_KIND_STYLE[selectedNode.verdictKind]?.label} />
+                  )}
+                  {selectedNode.partners?.length > 0 && (
+                    <Chip label="Order-sensitive with" value={selectedNode.partners.join(', ')} />
+                  )}
                 </div>
-              ))}
+              )}
             </div>
           </Card>
+
+          {result && (
+            <ConstraintSummaryCard
+              constraintData={result.stage_2b_constraint_extraction}
+              eventLookup={eventLookup}
+            />
+          )}
         </div>
 
-        {/* Right panel */}
-        <div className="flex flex-col gap-4">
+        {/* Right panel: tabs keep it to one screen; sticky, scrolls inside */}
+        <div className="lg:sticky lg:top-2 lg:self-start">
+          <TabBar tabs={tabs} active={tab} onChange={setTab} />
+          <div className="mt-3 flex flex-col gap-4 lg:max-h-[calc(100vh-10.5rem)] lg:overflow-y-auto lg:pr-1">
+            <div className={tab === 'verdict' ? 'flex flex-col gap-4' : 'hidden'}>
+              {result ? (
+                <VerdictCard result={result} />
+              ) : (
+                <Card>
+                  <p className="text-[12.5px] text-[#8a97a3]">Run a replay to see the verdict.</p>
+                </Card>
+              )}
+            </div>
+
+            {result && isApplicable(result) && (
+              <div className={tab === 'pairs' ? 'flex flex-col gap-4' : 'hidden'}>
+                <OrderSensitivityCard
+                  result={result}
+                  nodeStatus={nodeStatus}
+                  eventLookup={eventLookup}
+                  selected={selectedPair}
+                  onSelect={(p) => {
+                    clearSelections()
+                    setSelectedPair(p)
+                  }}
+                />
+              </div>
+            )}
+
+            {result && isApplicable(result) && (
+              <div className={tab === 'replay' ? 'flex flex-col gap-4' : 'hidden'}>
+                <ReplayTraceCard
+                  replay={result.stage_5_verdict.replay_of_all_corrections}
+                  nodeStatus={nodeStatus}
+                  onStepNode={(id) => {
+                    if (id) {
+                      clearSelections()
+                      setTraceNode(id)
+                    } else {
+                      setTraceNode(null)
+                    }
+                  }}
+                />
+              </div>
+            )}
+
+            <div className={tab === 'rules' ? 'flex flex-col gap-4' : 'hidden'}>
+              {result ? (
+                <ConstraintExplanationList
+                  constraints={result.stage_2b_constraint_extraction.given_constraints}
+                  eventLookup={eventLookup}
+                  selected={selectedConstraint}
+                  onSelect={(c) => {
+                    clearSelections()
+                    setSelectedConstraint(c)
+                  }}
+                />
+              ) : (
+                <Card>
+                  <p className="text-[12.5px] text-[#8a97a3]">Run a replay to see the order rules.</p>
+                </Card>
+              )}
+              {result && !isApplicable(result) && (
+                <PaymentRoutesCard
+                  routes={paymentRoutes}
+                  eventLookup={eventLookup}
+                  selectedRouteKey={selectedRoute?.key}
+                  onSelectRoute={(key, route) => {
+                    clearSelections()
+                    setSelectedRoute(key ? { key, eventIds: route.eventIds } : null)
+                  }}
+                />
+              )}
+            </div>
+
+            <div className={tab === 'stages' ? 'flex flex-col gap-4' : 'hidden'}>
           <Card>
             <div className="mb-2 text-[13px] font-bold text-[#101828]">Stage Summary</div>
             {!result ? (
@@ -414,60 +448,26 @@ export default function ReplayConsole() {
                     {result.stage_2b_constraint_extraction.num_permutable_pairs} permutable
                   </div>
                 </div>
-                {STAGES.filter((s) => ['stage_3_confluence_checks', 'stage_4_policy_resolution', 'stage_5_verdict'].includes(s.key)).map((s) => (
-                  <div key={s.key}>
-                    <div className="font-semibold text-[#8a97a3]">{s.label}</div>
-                    <div className="text-[#8a97a3]">{result[s.key]?.message}</div>
-                  </div>
-                ))}
+                {STAGES.filter((s) => ['stage_3_confluence_checks', 'stage_4_policy_resolution', 'stage_5_verdict'].includes(s.key)).map((s) => {
+                  const done = result[s.key]?.status === 'complete'
+                  return (
+                    <div key={s.key}>
+                      <div className={`font-semibold ${done ? 'text-[#101828]' : 'text-[#8a97a3]'}`}>
+                        {s.label}
+                      </div>
+                      <div className={done ? 'text-[#5c6b7a]' : 'text-[#8a97a3]'}>
+                        {result[s.key]?.status === 'not_applicable'
+                          ? 'Not applicable to real SAP data (no pricing fields to replay).'
+                          : result[s.key]?.message}
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             )}
           </Card>
-
-          {result && (
-            <ConstraintExplanationList
-              constraints={result.stage_2b_constraint_extraction.given_constraints}
-              eventLookup={eventLookup}
-              selected={selectedConstraint}
-              onSelect={(c) => {
-                setSelectedRoute(null)
-                setSelectedConstraint(c)
-              }}
-            />
-          )}
-
-          {result && (
-            <PaymentRoutesCard
-              routes={paymentRoutes}
-              eventLookup={eventLookup}
-              selectedRouteKey={selectedRoute?.key}
-              onSelectRoute={(key, route) => {
-                setSelectedConstraint(null)
-                setSelectedRoute(key ? { key, eventIds: route.eventIds } : null)
-              }}
-            />
-          )}
-
-          <Card>
-            <div className="mb-2 text-[13px] font-bold text-[#101828]">Diagnostic</div>
-            {!selectedNode ? (
-              <p className="text-[12.5px] text-[#8a97a3]">
-                Run a replay, then click any node to inspect it.
-              </p>
-            ) : (
-              <div className="flex flex-col gap-1.5 text-[12.5px]">
-                <Row label="Event ID" value={selectedNode.id} />
-                <Row label="Activity" value={selectedNode.activity} />
-                <Row label="Hop" value={selectedNode.is_target ? 'target' : selectedNode.hop} />
-                <Row label="Value" value={formatEur(selectedNode.value_eur)} />
-                <Row label="Timestamp" value={formatDateTime(selectedNode.timestamp)} />
-                <Row
-                  label="Connected"
-                  value={selectedNode.connected_to_target ? 'yes' : 'no (pruned parent)'}
-                />
-              </div>
-            )}
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -483,11 +483,11 @@ function Field({ label, children }) {
   )
 }
 
-function Row({ label, value }) {
+function Chip({ label, value }) {
   return (
-    <div className="flex items-center justify-between border-b border-[#eef1f4] py-1 last:border-0">
-      <span className="text-[#8a97a3]">{label}</span>
+    <span className="text-[#5c6b7a]">
+      <span className="text-[#8a97a3]">{label}: </span>
       <span className="font-semibold text-[#101828]">{value}</span>
-    </div>
+    </span>
   )
 }

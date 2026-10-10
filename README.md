@@ -58,6 +58,46 @@ this API and writing a proper frontend against it later. Either way, this
 API is the seam — every screen in your Figma file maps to one of its
 endpoints (`/api/dashboard`, `/api/cases`, `/api/cases/{id}/replay`).
 
+## Status: Month 4 — Confluence checker (in progress) · Month 3 replay core ✅
+
+- `replay_core/confluence.py` — **the research core.** For every subset of the candidate events it decides
+  whether all legitimate application orders give one net (exact search over order ideals, only unlocked =
+  permutable pairs are swapped), then classifies PASS / POLICY_ORDERED / BLOCKED via Member 2's
+  `resolve_order`. Reproduces the sealed benchmark truth on every subset of all 140 cases and equals her
+  brute-force probe. Practical limit: ~2 s for 8 freely permutable events, ~22 s for 10 (the proposal bounds E at 3-8).
+- API: `GET /api/cases/{id}/replay` runs real stages 1-5 on benchmark cases; VBFA cases report stages 3-5 as
+  `not_applicable`. Benchmark cases are listed in `/api/cases` (labelled synthetic).
+- UI (`frontend/`): the Replay Console and Replay Graph show the real verdict (PASS / POLICY-ORDERED / BLOCKED),
+  colour each event by its real order-sensitivity, list the order-sensitive pairs (click to highlight), and step
+  through the replay. The Cases page and Dashboard no longer show the old cosmetic status badge: benchmark cases
+  get their real verdict, real SAP cases are tagged "stages 1-2b only". `npm run check:lib` tests the pure UI
+  logic against real API payloads (`node scripts/check-lib.mjs payloads.json`).
+- The Replay Console right-hand panel is tabbed (Verdict / Pairs / Replay / Rules / Stages) so it fits one screen;
+  highlights are tied to their tab. The Policies page now lists the real policy files (`GET /api/policies`): ordering
+  rules, which correction pairs a policy leaves unordered (the cause of BLOCKED cases), and the corrections table.
+- Still to do: Shapley attribution + evidence artifact (Member 3), M5 integration run.
+
+## Status: Month 3 — Core Build II ✅
+
+Built on top of Member 2's `policy_engine` (the arithmetic) — nothing here re-implements money math:
+
+- `replay_core/replay.py` — replay operator `R_P(X,S)`: apply any subset's corrections in a given
+  order (default: canonical stage order), with the state after every correction (trace) and
+  `v(S)`. Order-specific idempotence check `R(R(X,S),S) = R(X,S)`.
+- `replay_core/propagation.py` — `propagate_multi()`: edit several nodes, one cascade, a report of
+  what was recomputed. Thin validated wrapper over `policy_engine.cascade_edit`.
+- `replay_core/benchmark_io.py` — loads a synthetic benchmark case through the real pipeline
+  (public files only; never reads the sealed truth).
+- API: `GET /api/benchmark/cases`, `GET /api/cases/{id}/state`, `POST /api/cases/{id}/edit`
+  (benchmark cases only; real VBFA ids answer 422 — see `docs/real_data_scope_decision.md`).
+
+Generate the benchmark first (PowerShell: `$env:PYTHONPATH="src"` instead of the `PYTHONPATH=src` prefix):
+
+```bash
+PYTHONPATH=src python -m policy_engine.benchmark.generator --out data/benchmark --seed 7 --per-family 20
+```
+
+
 ## Status: Month 2 — Core Build I ✅
 
 Built and tested on top of Month 1:
@@ -167,7 +207,7 @@ ReplaySemantics/
 └── requirements.txt
 ```
 
-## Next up (Month 3 — Core Build II)
+## Next up (Month 3 remainder, then Month 4)
 
 - Replay operator `R_P(X,S)`: given the candidate set `E` and Member 2's
   correction functions `c(eᵢ)`, recompute financial state under any subset

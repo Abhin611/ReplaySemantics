@@ -1,0 +1,172 @@
+{
+ "objectTypes": [
+  {
+   "name": "Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Order",
+   "attributes": []
+  },
+  {
+   "name": "Account",
+   "attributes": []
+  }
+ ],
+ "eventTypes": [
+  {
+   "name": "Adjust Quantity",
+   "attributes": [
+    {
+     "name": "quantity",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Apply Discount",
+   "attributes": [
+    {
+     "name": "rate",
+     "type": "string"
+    },
+    {
+     "name": "slot",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Apply Tax Code",
+   "attributes": [
+    {
+     "name": "rate",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Override Unit Price",
+   "attributes": [
+    {
+     "name": "unit_price",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Post Invoice",
+   "attributes": []
+  }
+ ],
+ "objects": [
+  {
+   "id": "INV-00104",
+   "type": "Invoice",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "PO-00104",
+   "type": "Order",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "ACC-0104",
+   "type": "Account",
+   "attributes": [],
+   "relationships": []
+  }
+ ],
+ "events": [
+  {
+   "id": "e1",
+   "type": "Override Unit Price",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "unit_price",
+     "value": "53.60"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00104",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "type": "Adjust Quantity",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "quantity",
+     "value": "34"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00104",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e3",
+   "type": "Apply Discount",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "rate",
+     "value": "0.07"
+    },
+    {
+     "name": "slot",
+     "value": "1"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00104",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e4",
+   "type": "Apply Tax Code",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "rate",
+     "value": "0.18"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00104",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e5",
+   "type": "Post Invoice",
+   "time": "2026-08-03T16:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00104",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "ACC-0104",
+     "qualifier": "ledger"
+    }
+   ]
+  }
+ ]
+}
