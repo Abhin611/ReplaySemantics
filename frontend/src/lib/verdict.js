@@ -127,12 +127,13 @@ export function subsetRows(result) {
 // Net after each step of the full replay, with the observed net as step 0.
 export function traceSteps(replay) {
   if (!replay) return []
-  const steps = [{ index: 0, nodeId: null, net: replay.observed_net, changed: [], applied: true }]
+  const steps = [{ index: 0, nodeId: null, net: replay.observed_net, loss: replay.observed_loss ?? null, changed: [], applied: true }]
   for (const s of replay.trace ?? []) {
     steps.push({
       index: s.index + 1,
       nodeId: s.node_id,
       net: s.net_after,
+      loss: s.loss_after ?? null,
       changed: s.changed ?? [],
       applied: s.applied,
       reason: s.noop_reason,

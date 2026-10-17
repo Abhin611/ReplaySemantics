@@ -15,7 +15,27 @@ class ApiError extends Error {
   }
 }
 
-async function request(path) {
+// Every endpoint used here is deterministic for a running backend, so GET results are cached for the
+// life of the page: switching tabs back to a page you already ran is instant, with no second run.
+// A browser refresh clears the cache. Callers must treat cached results as read-only.
+const cache = new Map()
+
+// Forget every cached response (used by the pages' Refresh buttons, so the next load asks the backend again).
+export function clearApiCache() {
+  cache.clear()
+}
+
+function request(path, { cached = false, force = false } = {}) {
+  if (cached && !force && cache.has(path)) return cache.get(path)
+  const promise = fetchJson(path)
+  if (cached) {
+    cache.set(path, promise)
+    promise.catch(() => cache.delete(path)) // never cache a failure
+  }
+  return promise
+}
+
+async function fetchJson(path) {
   let res
   try {
     res = await fetch(`${API_BASE}${path}`)
@@ -50,27 +70,35 @@ export function getDashboard() {
 
 // GET /api/cases
 export function getCases() {
-  return request('/api/cases')
+  return request('/api/cases', { cached: true })
 }
 
 // GET /api/cases/{case_id}/replay?max_events=&min_events=&max_hops=
-export function runReplay(caseId, { maxEvents = 8, minEvents = 3, maxHops = 3 } = {}) {
+export function runReplay(caseId, { maxEvents = 8, minEvents = 3, maxHops = 3 } = {}, { force = false } = {}) {
   const params = new URLSearchParams({
     max_events: maxEvents,
     min_events: minEvents,
     max_hops: maxHops,
   })
-  return request(`/api/cases/${encodeURIComponent(caseId)}/replay?${params}`)
+  return request(`/api/cases/${encodeURIComponent(caseId)}/replay?${params}`, { cached: true, force })
 }
 
 // GET /api/benchmark/verdicts -- real verdict per synthetic benchmark case (404 if no benchmark generated)
 export function getBenchmarkVerdicts() {
-  return request('/api/benchmark/verdicts')
+  return request('/api/benchmark/verdicts', { cached: true })
 }
 
 // GET /api/policies -- the real versioned policy files (ordering rules, corrections, coverage)
 export function getPolicies() {
-  return request('/api/policies')
+  return request('/api/policies', { cached: true })
+}
+
+// GET /api/cases/{case_id}/scenario?subset=e1,e2[&order=e2,e1] -- "run this change": replay a set of
+// corrections and compare the corrected case with the previous one (benchmark cases only)
+export function getScenario(caseId, subset, order) {
+  const p = new URLSearchParams({ subset: subset.join(',') })
+  if (order && order.length) p.set('order', order.join(','))
+  return request(`/api/cases/${encodeURIComponent(caseId)}/scenario?${p}`, { cached: true })
 }
 
 export { ApiError, API_BASE }

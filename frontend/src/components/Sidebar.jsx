@@ -6,6 +6,7 @@ import {
   PlayCircle,
   Share2,
   PieChart,
+  FlaskConical,
   ShieldCheck,
   History,
   SlidersHorizontal,
@@ -19,6 +20,7 @@ const analysisLinks = [
   { to: '/replay-console', label: 'Replay Console', icon: PlayCircle },
   { to: '/replay-graph', label: 'Replay Graph', icon: Share2 },
   { to: '/attribution', label: 'Attribution', icon: PieChart },
+  { to: '/scenario', label: 'Corrected Scenario', icon: FlaskConical },
 ]
 
 const systemLinks = [

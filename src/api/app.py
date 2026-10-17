@@ -53,6 +53,7 @@ from replay_core.confluence import CaseVerdict, ConfluenceChecker, transitive_cl
 from replay_core.ingestion import load_ocel
 from replay_core.propagation import EDITABLE_FIELDS, PropagationError, propagate_multi
 from replay_core.replay import ReplayOperator, state_to_json
+from replay_core.scenario import ScenarioError, run_scenario
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 OCEL_PATH = REPO_ROOT / "data" / "raw" / "vbfa_o2c_2019_2021_eur.jsonocel"
@@ -423,6 +424,22 @@ def edit_case(case_id: str, body: EditRequest):
     except PropagationError as exc:
         raise HTTPException(status_code=422, detail=str(exc))
     return {"case_id": case_id, "source": BENCHMARK_SOURCE, **result.to_dict()}
+
+
+@app.get("/api/cases/{case_id}/scenario")
+def get_scenario(case_id: str, subset: str, order: str | None = None):
+    """Run a change: replay `subset` (comma-separated event ids, e.g. "e1,e2" -- usually one
+    order-sensitive pair) and compare the corrected case with the previous one. `order` picks
+    which legitimate order to headline (default: the policy's authoritative order). Pure and
+    deterministic, so the UI keeps the whole scenario in the URL; nothing is stored."""
+    _benchmark_case(case_id)  # right 404 / 422 for unknown or real-SAP ids
+    lc, cv = _checked_case_cached(str(BENCHMARK_DIR), case_id)
+    ids = [x for x in subset.split(",") if x]
+    ord_ids = [x for x in order.split(",") if x] if order else None
+    try:
+        return {"source": BENCHMARK_SOURCE, **run_scenario(lc, cv, ids, ord_ids)}
+    except ScenarioError as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
 
 
 def _is_benchmark_id(case_id: str) -> bool:

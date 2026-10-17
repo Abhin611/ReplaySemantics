@@ -7,7 +7,7 @@ import { formatAmount } from '../lib/format'
 // Step through R_P(X, E): the corrections applied one at a time, with the case total after each.
 // The step's event is highlighted on the graph (onStepNode). `replay` is
 // stage_5_verdict.replay_of_all_corrections from the real backend.
-export default function ReplayTraceCard({ replay, nodeStatus, onStepNode }) {
+export default function ReplayTraceCard({ replay, nodeStatus, onStepNode, title = 'Replay step-through', nonAuthoritativeNote }) {
   const steps = useMemo(() => traceSteps(replay), [replay])
   const [i, setI] = useState(0)
   const [playing, setPlaying] = useState(false)
@@ -39,11 +39,11 @@ export default function ReplayTraceCard({ replay, nodeStatus, onStepNode }) {
 
   return (
     <Card>
-      <div className="mb-1 text-[13px] font-bold text-[#101828]">Replay step-through</div>
+      <div className="mb-1 text-[13px] font-bold text-[#101828]">{title}</div>
       <p className="mb-3 text-[11.5px] leading-relaxed text-[#8a97a3]">
         {replay.order_is_authoritative
           ? 'Corrections applied in the authoritative order.'
-          : 'Illustrative canonical order only — the case is BLOCKED, so this is not an authoritative outcome.'}
+          : nonAuthoritativeNote || 'Illustrative canonical order only — the case is BLOCKED, so this is not an authoritative outcome.'}
       </p>
 
       <div className="mb-3 flex flex-wrap gap-1">
@@ -77,6 +77,14 @@ export default function ReplayTraceCard({ replay, nodeStatus, onStepNode }) {
           <div className="text-[11px] text-[#5c6b7a]">
             {delta === 0 ? 'no change in total' : `${delta > 0 ? '+' : ''}${formatAmount(delta)} vs previous step`}
             {nodeStatus?.[cur.nodeId]?.correction && ` · ${correctionLabel(nodeStatus[cur.nodeId].correction)}`}
+          </div>
+        )}
+        {cur.loss != null && (
+          <div className="mt-0.5 text-[11px] text-[#5c6b7a]">
+            realised loss <span className="font-mono font-semibold text-[#101828]">{formatAmount(cur.loss)}</span>
+            {prev?.loss != null && Number(cur.loss) !== Number(prev.loss) && (
+              <> ({Number(cur.loss) - Number(prev.loss) > 0 ? '+' : '−'}{formatAmount(Math.abs(Number(cur.loss) - Number(prev.loss)))} vs previous step)</>
+            )}
           </div>
         )}
         {cur.applied === false && (

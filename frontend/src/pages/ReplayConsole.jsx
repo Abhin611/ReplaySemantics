@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import ReactFlow, { Background, Controls } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { CheckCircle2, Circle, PlayCircle } from 'lucide-react'
 import { useApi } from '../lib/useApi'
-import { getCases, runReplay } from '../lib/api'
-import { useSelectedCase } from '../lib/SelectedCaseContext'
+import { clearApiCache, getCases, runReplay } from '../lib/api'
+import { useSelectedCase, usePersistentState } from '../lib/SelectedCaseContext'
 import Card from '../components/Card'
 import StatusBadge from '../components/StatusBadge'
 import EventNode from '../components/graph/EventNode'
@@ -15,13 +16,16 @@ import VerdictCard from '../components/VerdictCard'
 import OrderSensitivityCard from '../components/OrderSensitivityCard'
 import ReplayTraceCard from '../components/ReplayTraceCard'
 import TabBar from '../components/TabBar'
+import RefreshButton from '../components/RefreshButton'
 import { LoadingState, ErrorState } from '../components/StatusStates'
 import { formatEur, formatDateTime } from '../lib/format'
 import { computePaymentRoutes } from '../lib/paymentRoutes'
 import { layoutGraph } from '../lib/graphLayout'
+import { scenarioPath, togglePair, unionEvents } from '../lib/scenario'
 import { buildNodeStatus, isApplicable, pairDetails, NODE_KIND_STYLE } from '../lib/verdict'
 
 const NODE_TYPES = { event: EventNode }
+const NO_PAIRS = []
 
 const STAGES = [
   { key: 'stage_1_extraction', label: 'Extraction' },
@@ -46,19 +50,28 @@ const PLAIN_LEGEND = [
 
 export default function ReplayConsole() {
   const { selectedCaseId, setSelectedCaseId } = useSelectedCase()
+  const navigate = useNavigate()
   const casesApi = useApi(useCallback(() => getCases(), []))
-  const [maxEvents, setMaxEvents] = useState(8)
-  const [minEvents, setMinEvents] = useState(3)
-  const [maxHops, setMaxHops] = useState(3)
-  const [result, setResult] = useState(null)
+  // Kept in the app-level store so they survive switching sidebar tabs (this page unmounts on navigation).
+  const [maxEvents, setMaxEvents] = usePersistentState('console:maxEvents', 8)
+  const [minEvents, setMinEvents] = usePersistentState('console:minEvents', 3)
+  const [maxHops, setMaxHops] = usePersistentState('console:maxHops', 3)
+  const [runs, setRuns] = usePersistentState('console:runs', {}) // case id -> its last replay result
+  const [pairsByCase, setPairsByCase] = usePersistentState('console:pairs', {})
+  const [tab, setTab] = usePersistentState('console:tab', 'verdict')
+  const result = (selectedCaseId && runs[selectedCaseId]) || null
+  const selectedPairs = (selectedCaseId && pairsByCase[selectedCaseId]) || NO_PAIRS
+  const setSelectedPairs = (next) =>
+    setPairsByCase((m) => ({
+      ...m,
+      [selectedCaseId]: typeof next === 'function' ? next(m[selectedCaseId] || NO_PAIRS) : next,
+    }))
   const [running, setRunning] = useState(false)
   const [runError, setRunError] = useState(null)
   const [selectedNode, setSelectedNode] = useState(null)
   const [selectedConstraint, setSelectedConstraint] = useState(null)
   const [selectedRoute, setSelectedRoute] = useState(null) // { key: 'highest' | 'lowest', eventIds }
-  const [selectedPair, setSelectedPair] = useState(null) // order-sensitive pair {a, b, ...}
   const [traceNode, setTraceNode] = useState(null) // event applied at the current replay step
-  const [tab, setTab] = useState('verdict')
 
   const cases = casesApi.data?.cases || []
 
@@ -75,11 +88,13 @@ export default function ReplayConsole() {
     setSelectedNode(null)
     setSelectedConstraint(null)
     setSelectedRoute(null)
-    setSelectedPair(null)
+    setSelectedPairs([])
     setTraceNode(null)
+    const caseId = selectedCaseId
     try {
-      const data = await runReplay(selectedCaseId, { maxEvents, minEvents, maxHops })
-      setResult(data)
+      // Run Replay always asks the backend afresh (force); everything else reuses the cached result
+      const data = await runReplay(caseId, { maxEvents, minEvents, maxHops }, { force: true })
+      setRuns((prev) => ({ ...prev, [caseId]: data }))
     } catch (err) {
       setRunError(err)
     } finally {
@@ -97,8 +112,8 @@ export default function ReplayConsole() {
       ? { type: 'constraint', before: selectedConstraint.before, after: selectedConstraint.after }
       : tab === 'rules' && selectedRoute
       ? { type: 'route', eventIds: selectedRoute.eventIds }
-      : tab === 'pairs' && selectedPair
-      ? { type: 'pair', a: selectedPair.a, b: selectedPair.b }
+      : tab === 'pairs' && selectedPairs.length
+      ? { type: 'pairs', pairs: selectedPairs.map((p) => [p.a, p.b]) }
       : tab === 'replay' && traceNode
       ? { type: 'nodes', ids: [traceNode] }
       : null
@@ -108,7 +123,7 @@ export default function ReplayConsole() {
 
   const { nodes, edges } = useMemo(
     () => layoutGraph(result?.replay_graph, highlightSpec, nodeStatus),
-    [result, nodeStatus, selectedConstraint, selectedRoute, selectedPair, traceNode, tab]
+    [result, nodeStatus, selectedConstraint, selectedRoute, selectedPairs, traceNode, tab]
   )
 
   // Right-hand tabs. Real SAP results have no verdict, pairs or replay, so they get fewer tabs and
@@ -125,15 +140,20 @@ export default function ReplayConsole() {
     { key: 'rules', label: 'Rules', badge: result?.stage_2b_constraint_extraction?.given_constraints?.length },
     { key: 'stages', label: 'Stages' },
   ]
+  // Choose the opening tab when a DIFFERENT result appears, not when the page is re-opened with the same one
+  // (that would throw away the tab you were on).
+  const shownResult = useRef(result)
   useEffect(() => {
+    if (shownResult.current === result) return
+    shownResult.current = result
     setTab(result && !isApplicable(result) ? 'rules' : 'verdict')
-  }, [result])
+  }, [result]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Exactly one highlight at a time: choosing anything clears the others.
   const clearSelections = () => {
     setSelectedConstraint(null)
     setSelectedRoute(null)
-    setSelectedPair(null)
+    setSelectedPairs([])
     setTraceNode(null)
   }
 
@@ -148,6 +168,21 @@ export default function ReplayConsole() {
   const paymentRoutes = useMemo(() => computePaymentRoutes(result?.replay_graph), [result])
 
   const onNodeClick = (_evt, node) => setSelectedNode(node.data.node)
+
+  // Refresh: forget every case's result and selection on this page and re-read the case list, so a new
+  // case can be run from a clean page. The case dropdown and the max_* inputs are inputs, so they stay.
+  const handleRefresh = () => {
+    clearApiCache()
+    setRuns({})
+    setPairsByCase({})
+    setTab('verdict')
+    setSelectedNode(null)
+    setSelectedConstraint(null)
+    setSelectedRoute(null)
+    setTraceNode(null)
+    setRunError(null)
+    casesApi.refetch()
+  }
 
   const completedStages = result
     ? STAGES.filter((s) => result[s.key]?.status === 'complete').length
@@ -187,6 +222,7 @@ export default function ReplayConsole() {
               </div>
             )
           })}
+          <RefreshButton className="ml-auto" onClick={handleRefresh} disabled={running} />
         </div>
       </Card>
 
@@ -355,11 +391,16 @@ export default function ReplayConsole() {
                   result={result}
                   nodeStatus={nodeStatus}
                   eventLookup={eventLookup}
-                  selected={selectedPair}
-                  onSelect={(p) => {
-                    clearSelections()
-                    setSelectedPair(p)
+                  selectedPairs={selectedPairs}
+                  onToggle={(p) => {
+                    // pairs may be combined; any other highlight is dropped
+                    setSelectedConstraint(null)
+                    setSelectedRoute(null)
+                    setTraceNode(null)
+                    setSelectedPairs((cur) => togglePair(cur, p))
                   }}
+                  onClear={() => setSelectedPairs([])}
+                  onRun={(chosen) => navigate(scenarioPath(selectedCaseId, unionEvents(chosen)))}
                 />
               </div>
             )}

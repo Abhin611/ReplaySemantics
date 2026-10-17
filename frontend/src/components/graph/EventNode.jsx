@@ -16,6 +16,15 @@ import { NODE_KIND_STYLE } from '../../lib/verdict'
 //    so with labels stacked below the circle, a default 50%-vertical
 //    handle lands well below the circle's actual center. We override
 //    `top` explicitly to the circle's true center instead.
+// Corrected-scenario overlay (n.scenario, set by layoutGraph on the Corrected Scenario page):
+// corrected = this event's correction was applied in the change; cascaded = changed without being
+// corrected itself; unchanged = untouched by the change.
+const SCENARIO_STYLE = {
+  corrected: { border: '#1a7f4c', bg: '#e5f6ec', text: '#14532d' },
+  cascaded: { border: '#92650a', bg: '#fdf1d8', text: '#6b4a08' },
+  unchanged: { border: '#c2cad2', bg: '#ffffff', text: '#8a97a3' },
+}
+
 export const NODE_WIDTH = 130
 export const NODE_HEIGHT = 92
 const CIRCLE_SIZE = 56
@@ -33,10 +42,13 @@ export default function EventNode({ data }) {
   const disconnected = !isTarget && n.connected_to_target === false
   const highlighted = !!n.highlighted
 
-  const kind = !isTarget && n.verdictKind ? NODE_KIND_STYLE[n.verdictKind] : null
+  const sc = n.scenario || null
+  const kind = !isTarget && !sc && n.verdictKind ? NODE_KIND_STYLE[n.verdictKind] : null
 
   const ring = isTarget
     ? { border: '#2a9d8f', bg: '#e6f6f4', text: '#0d4f47' }
+    : sc
+    ? SCENARIO_STYLE[sc.role]
     : kind
     ? kind
     : disconnected
@@ -51,6 +63,7 @@ export default function EventNode({ data }) {
         alignItems: 'center',
         width: NODE_WIDTH,
         height: NODE_HEIGHT,
+        opacity: sc && sc.role === 'unchanged' && !isTarget ? 0.55 : 1,
       }}
     >
       <Handle
@@ -82,7 +95,7 @@ export default function EventNode({ data }) {
           flexShrink: 0,
           transition: 'box-shadow 150ms ease, background 150ms ease, border 150ms ease',
         }}
-        title={kind ? `${n.id} — ${kind.label}` : n.id}
+        title={sc ? `${n.id} — ${sc.role}` : kind ? `${n.id} — ${kind.label}` : n.id}
       >
         {n.id}
       </div>
@@ -106,6 +119,12 @@ export default function EventNode({ data }) {
       <div style={{ fontSize: 9.5, color: '#a3adb6', fontFamily: 'JetBrains Mono, monospace' }}>
         {isTarget
           ? '★ target'
+          : sc
+          ? sc.role === 'corrected'
+            ? `corrected · step ${sc.step}`
+            : sc.role === 'cascaded'
+            ? 'cascaded'
+            : `hop ${n.hop} · unchanged`
           : n.verdictKind === 'blocked' || n.verdictKind === 'ordered'
           ? `hop ${n.hop} · ⇄ ${n.partners?.length ?? 0}`
           : n.verdictKind === 'exempt'

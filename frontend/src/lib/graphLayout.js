@@ -12,6 +12,7 @@ export function pairKey(a, b) {
 //   {type:'constraint', before, after}   a structural order-lock (ConstraintExplanationList)
 //   {type:'route', eventIds}             a leaf-to-target payment chain (PaymentRoutesCard)
 //   {type:'pair', a, b}                  an order-sensitive pair (OrderSensitivityCard)
+//   {type:'pairs', pairs:[[a,b],..]}     several order-sensitive pairs at once (multi-select)
 //   {type:'nodes', ids}                  one or more events (ReplayTraceCard step)
 export function buildHighlight(h) {
   if (!h) return null
@@ -22,6 +23,12 @@ export function buildHighlight(h) {
   }
   if (h.type === 'pair') {
     return { ids: new Set([h.a, h.b]), edgeKeys: new Set([pairKey(h.a, h.b)]) }
+  }
+  if (h.type === 'pairs') {
+    return {
+      ids: new Set(h.pairs.flat()),
+      edgeKeys: new Set(h.pairs.map(([a, b]) => pairKey(a, b))),
+    }
   }
   if (h.type === 'nodes') {
     return { ids: new Set(h.ids), edgeKeys: new Set() }
@@ -34,7 +41,7 @@ export function buildHighlight(h) {
 
 // Lay nodes out left-to-right by hop distance (target = rightmost column).
 // `nodeStatus` (optional, from buildNodeStatus) adds the verdict colouring.
-export function layoutGraph(graphView, highlightSpec, nodeStatus) {
+export function layoutGraph(graphView, highlightSpec, nodeStatus, scenarioEffects) {
   if (!graphView) return { nodes: [], edges: [] }
   const highlight = buildHighlight(highlightSpec)
   const byHop = {}
@@ -61,6 +68,7 @@ export function layoutGraph(graphView, highlightSpec, nodeStatus) {
         data.verdictKind = st.kind  // not `status`: the API's graph nodes already carry a placeholder `status`
         data.partners = st.partners
       }
+      if (scenarioEffects) data.scenario = scenarioEffects[n.id] ?? { role: 'unchanged', step: null, changes: [] }
       nodes.push({
         id: n.id,
         position: { x: colIdx * COL_GAP, y: rowIdx * ROW_GAP - colHeight / 2 },

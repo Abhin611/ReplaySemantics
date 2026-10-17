@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import ReactFlow, { Background, Controls } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { useApi } from '../lib/useApi'
-import { getCases, runReplay } from '../lib/api'
-import { useSelectedCase } from '../lib/SelectedCaseContext'
+import { clearApiCache, getCases, runReplay } from '../lib/api'
+import { useSelectedCase, usePersistentState } from '../lib/SelectedCaseContext'
 import Card from '../components/Card'
 import StatusBadge from '../components/StatusBadge'
 import EventNode from '../components/graph/EventNode'
@@ -12,9 +13,11 @@ import ConstraintExplanationList from '../components/ConstraintExplanationList'
 import PaymentRoutesCard from '../components/PaymentRoutesCard'
 import OrderSensitivityCard from '../components/OrderSensitivityCard'
 import { LoadingState, ErrorState } from '../components/StatusStates'
+import RefreshButton from '../components/RefreshButton'
 import { formatDateTime } from '../lib/format'
 import { computePaymentRoutes } from '../lib/paymentRoutes'
 import { layoutGraph } from '../lib/graphLayout'
+import { scenarioPath, togglePair, unionEvents } from '../lib/scenario'
 import { badgeStatus, buildNodeStatus, isApplicable, NODE_KIND_STYLE } from '../lib/verdict'
 
 const NODE_TYPES = { event: EventNode }
@@ -33,30 +36,35 @@ export default function ReplayGraph() {
   const { selectedCaseId, setSelectedCaseId } = useSelectedCase()
   const casesApi = useApi(useCallback(() => getCases(), []))
   const cases = casesApi.data?.cases || []
-  const [result, setResult] = useState(null)
+  const navigate = useNavigate()
+  // the last result is kept in the app-level store, so coming back to this tab shows it straight away
+  const [saved, setSaved] = usePersistentState('graph:result', null) // { caseId, data }
+  const result = saved && saved.caseId === selectedCaseId ? saved.data : null
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [selectedNode, setSelectedNode] = useState(null)
   const [selectedConstraint, setSelectedConstraint] = useState(null)
   const [selectedRoute, setSelectedRoute] = useState(null) // { key: 'highest' | 'lowest', eventIds }
-  const [selectedPair, setSelectedPair] = useState(null) // order-sensitive pair {a, b, ...}
+  const [reloadTick, setReloadTick] = useState(0)
+  const [selectedPairs, setSelectedPairs] = useState([]) // order-sensitive pairs {a, b, ...}, one or several
 
   useEffect(() => {
     if (!selectedCaseId && cases.length) setSelectedCaseId(cases[0].case_id)
   }, [cases, selectedCaseId, setSelectedCaseId])
 
   useEffect(() => {
-    if (!selectedCaseId) return
+    if (!selectedCaseId) return undefined
+    if (saved && saved.caseId === selectedCaseId) return undefined // already have it: no second run
     let cancelled = false
     setLoading(true)
     setError(null)
     setSelectedNode(null)
     setSelectedConstraint(null)
     setSelectedRoute(null)
-    setSelectedPair(null)
+    setSelectedPairs([])
     runReplay(selectedCaseId)
       .then((data) => {
-        if (!cancelled) setResult(data)
+        if (!cancelled) setSaved({ caseId: selectedCaseId, data })
       })
       .catch((err) => {
         if (!cancelled) setError(err)
@@ -67,7 +75,21 @@ export default function ReplayGraph() {
     return () => {
       cancelled = true
     }
-  }, [selectedCaseId])
+  }, [selectedCaseId, reloadTick]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Refresh: drop the remembered result and selections, forget cached responses and load the selected case
+  // afresh from the backend (this page has no Run button; it always shows the selected case).
+  const handleRefresh = () => {
+    clearApiCache()
+    setSaved(null)
+    setSelectedNode(null)
+    setSelectedConstraint(null)
+    setSelectedRoute(null)
+    setSelectedPairs([])
+    setError(null)
+    casesApi.refetch()
+    setReloadTick((t) => t + 1)
+  }
 
   // Only one highlight is active at a time -- picking a constraint clears
   // any selected route and vice versa (see the two onSelect handlers
@@ -76,8 +98,8 @@ export default function ReplayGraph() {
     ? { type: 'constraint', before: selectedConstraint.before, after: selectedConstraint.after }
     : selectedRoute
     ? { type: 'route', eventIds: selectedRoute.eventIds }
-    : selectedPair
-    ? { type: 'pair', a: selectedPair.a, b: selectedPair.b }
+    : selectedPairs.length
+    ? { type: 'pairs', pairs: selectedPairs.map((p) => [p.a, p.b]) }
     : null
 
   // Verdict colouring comes from the real stage 3-4 output; null for real VBFA results.
@@ -85,14 +107,14 @@ export default function ReplayGraph() {
 
   const { nodes, edges } = useMemo(
     () => layoutGraph(result?.replay_graph, highlightSpec, nodeStatus),
-    [result, nodeStatus, selectedConstraint, selectedRoute, selectedPair]
+    [result, nodeStatus, selectedConstraint, selectedRoute, selectedPairs]
   )
 
   // Exactly one highlight at a time: choosing anything clears the others.
   const clearSelections = () => {
     setSelectedConstraint(null)
     setSelectedRoute(null)
-    setSelectedPair(null)
+    setSelectedPairs([])
   }
   const activeCase = cases.find((c) => c.case_id === selectedCaseId)
 
@@ -145,9 +167,12 @@ export default function ReplayGraph() {
                 </span>
               )}
             </div>
-            <div className="text-[12.5px] text-[#8a97a3]">
-              {result?.policy_version}
-              {activeCase?.timestamp && `${result?.policy_version ? ' · ' : ''}${formatDateTime(activeCase.timestamp)}`}
+            <div className="flex items-center gap-3">
+              <div className="text-[12.5px] text-[#8a97a3]">
+                {result?.policy_version}
+                {activeCase?.timestamp && `${result?.policy_version ? ' · ' : ''}${formatDateTime(activeCase.timestamp)}`}
+              </div>
+              <RefreshButton onClick={handleRefresh} busy={loading} />
             </div>
           </div>
 
@@ -219,11 +244,14 @@ export default function ReplayGraph() {
               result={result}
               nodeStatus={nodeStatus}
               eventLookup={eventLookup}
-              selected={selectedPair}
-              onSelect={(p) => {
-                clearSelections()
-                setSelectedPair(p)
+              selectedPairs={selectedPairs}
+              onToggle={(p) => {
+                setSelectedConstraint(null)
+                setSelectedRoute(null)
+                setSelectedPairs((cur) => togglePair(cur, p))
               }}
+              onClear={() => setSelectedPairs([])}
+              onRun={(chosen) => navigate(scenarioPath(selectedCaseId, unionEvents(chosen)))}
             />
           )}
 

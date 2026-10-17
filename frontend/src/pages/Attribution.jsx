@@ -5,6 +5,7 @@ import { getCases } from '../lib/api'
 import { useSelectedCase } from '../lib/SelectedCaseContext'
 import Card from '../components/Card'
 import PreviewTag from '../components/PreviewTag'
+import RefreshButton from '../components/RefreshButton'
 import { LoadingState, ErrorState } from '../components/StatusStates'
 import { formatEur } from '../lib/format'
 import { mockAttributionFor, previewPolicyVersionFor } from '../data/mockData'
@@ -36,7 +37,11 @@ export default function Attribution() {
           Everything on this page is illustrative sample data, wired the way the real endpoint
           will need to shape its response.
         </span>
-        <PreviewTag label="Full page preview" />
+        <div className="flex shrink-0 items-center gap-3">
+          <PreviewTag label="Full page preview" />
+          {/* inactive on purpose: nothing real to refresh until the attribution engine is wired in */}
+          <RefreshButton disabled title="Refresh is inactive: Attribution is still preview data" />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">

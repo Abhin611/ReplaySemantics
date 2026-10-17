@@ -7,7 +7,7 @@ import StatusBadge from '../components/StatusBadge'
 import { LoadingState, ErrorState, EmptyState } from '../components/StatusStates'
 import { formatEur, formatDateTime, formatAmount } from '../lib/format'
 import { badgeStatus } from '../lib/verdict'
-import { useSelectedCase } from '../lib/SelectedCaseContext'
+import { useSelectedCase, usePersistentState } from '../lib/SelectedCaseContext'
 
 const TABS = ['All', 'PASS', 'POLICY-ORDERED', 'BLOCKED', 'Real SAP data']
 const PAGE_SIZE = 10
@@ -30,8 +30,8 @@ export default function Cases() {
   const navigate = useNavigate()
   const { setSelectedCaseId } = useSelectedCase()
   const casesApi = useApi(useCallback(() => getCases(), []))
-  const [tab, setTab] = useState('All')
-  const [page, setPage] = useState(1)
+  const [tab, setTab] = usePersistentState('cases:tab', 'All')
+  const [page, setPage] = usePersistentState('cases:page', 1)
 
   // Real verdicts come from the confluence checker (runs + caches per case on the backend). Fetched
   // separately so the case list never waits on it; absent when no benchmark has been generated.

@@ -250,3 +250,48 @@ def test_policies_endpoint_works_without_a_benchmark(tmp_path, monkeypatch):
     monkeypatch.setattr(api_module, "BENCHMARK_DIR", tmp_path / "none")
     d = TestClient(api_module.app).get("/api/policies").json()["policies"]
     assert len(d) == 3 and all(p["used_by_cases"] is None for p in d)
+
+
+# ---- "Run change" scenario endpoint ---------------------------------------------------------
+def _pair_of(client, verdict):
+    for c in client.get("/api/benchmark/cases").json()["cases"]:
+        r = client.get(f"/api/cases/{c['case_id']}/replay").json()
+        for p in r["stage_4_policy_resolution"]["pair_details"]:
+            if (p["status"] == "blocked") == (verdict == "blocked"):
+                return c["case_id"], f"{p['a']},{p['b']}"
+    pytest.skip(f"no {verdict} pair in the fixture")
+
+
+def test_scenario_endpoint_policy_ordered_pair(client):
+    cid, sub = _pair_of(client, "policy_ordered")
+    r = client.get(f"/api/cases/{cid}/scenario", params={"subset": sub})
+    assert r.status_code == 200
+    d = r.json()
+    assert d["source"] == "benchmark (synthetic)" and d["selected_order"] == d["authoritative_order"]
+    assert d["shapley"]["status"] == "ok" and not d["exploratory"]
+
+
+def test_scenario_endpoint_blocked_pair_withholds_shapley(client):
+    cid, sub = _pair_of(client, "blocked")
+    d = client.get(f"/api/cases/{cid}/scenario", params={"subset": sub}).json()
+    assert d["exploratory"] and d["shapley"]["values"] is None and d["authoritative_order"] is None
+
+
+def test_scenario_endpoint_errors(client):
+    cid = first_case(client)
+    assert client.get(f"/api/cases/{cid}/scenario", params={"subset": "e99"}).status_code == 422
+    assert client.get(f"/api/cases/{cid}/scenario", params={"subset": ""}).status_code == 422
+    assert client.get("/api/cases/RSC-NOPE/scenario", params={"subset": "e1"}).status_code == 404
+
+
+def test_scenario_endpoint_accepts_a_union_of_several_pairs(client):
+    for c in client.get("/api/benchmark/cases").json()["cases"]:
+        r = client.get(f"/api/cases/{c['case_id']}/replay").json()
+        pairs = r["stage_4_policy_resolution"]["pair_details"]
+        if len(pairs) >= 2:
+            ev = sorted({e for p in pairs[:2] for e in (p["a"], p["b"])})
+            d = client.get(f"/api/cases/{c['case_id']}/scenario", params={"subset": ",".join(ev)}).json()
+            assert d["subset"] == ev and d["legit_order_count"] >= len(d["orders"])
+            assert "selected" in d and d["selected"]["trace"]
+            return
+    pytest.skip("no case with two order-sensitive pairs in the fixture")

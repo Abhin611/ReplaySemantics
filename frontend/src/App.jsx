@@ -6,6 +6,7 @@ import Cases from './pages/Cases'
 import ReplayConsole from './pages/ReplayConsole'
 import ReplayGraph from './pages/ReplayGraph'
 import Attribution from './pages/Attribution'
+import Scenario from './pages/Scenario'
 import Policies from './pages/Policies'
 import AuditLog from './pages/AuditLog'
 import Settings from './pages/Settings'
@@ -16,6 +17,7 @@ const TITLES = {
   '/replay-console': 'Replay Console',
   '/replay-graph': 'Replay Graph',
   '/attribution': 'Attribution',
+  '/scenario': 'Corrected Scenario',
   '/policies': 'Policies',
   '/audit-log': 'Audit Log',
   '/settings': 'Settings',
@@ -52,6 +54,14 @@ export default function App() {
           element={
             <Page path="/attribution">
               <Attribution />
+            </Page>
+          }
+        />
+        <Route
+          path="/scenario"
+          element={
+            <Page path="/scenario">
+              <Scenario />
             </Page>
           }
         />
