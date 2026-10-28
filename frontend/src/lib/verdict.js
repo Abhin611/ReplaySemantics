@@ -125,9 +125,28 @@ export function subsetRows(result) {
 }
 
 // Net after each step of the full replay, with the observed net as step 0.
+// Plain-English account of how the observed (as-posted) total came about, from the
+// `observed_breakdown` the backend sends with every replay:
+//   net = (gross - discounts + tax) x fx_rate + adjustments + posted rounding difference.
+// Parts that are zero (or an fx rate of 1) are left out so the sentence stays short.
+// Works for any case; falls back to a generic sentence if the backend sent no breakdown.
+export function observedExplanation(b, fmt = (x) => String(x)) {
+  const generic = 'The case total exactly as it was posted in the ERP, before any correction is applied.'
+  if (!b || b.gross == null) return generic
+  const n = (x) => Number(x)
+  const isZero = (x) => x == null || n(x) === 0
+  const parts = [`Gross value ${fmt(b.gross)} (unit price × quantity)`]
+  if (!isZero(b.discount)) parts.push(`less discounts ${fmt(b.discount)}`)
+  if (!isZero(b.tax)) parts.push(`plus tax ${fmt(b.tax)}`)
+  if (b.fx_rate != null && n(b.fx_rate) !== 1) parts.push(`converted at fx rate ${n(b.fx_rate)}`)
+  if (!isZero(b.adjustment)) parts.push(`${n(b.adjustment) > 0 ? 'plus' : 'less'} adjustments ${fmt(Math.abs(n(b.adjustment)))}`)
+  if (!isZero(b.rounding_adj)) parts.push(`${n(b.rounding_adj) > 0 ? 'plus' : 'less'} posted rounding ${fmt(Math.abs(n(b.rounding_adj)))}`)
+  return `As posted: ${parts.join(', ')}. Stages below correct these inputs one event at a time.`
+}
+
 export function traceSteps(replay) {
   if (!replay) return []
-  const steps = [{ index: 0, nodeId: null, net: replay.observed_net, loss: replay.observed_loss ?? null, changed: [], applied: true }]
+  const steps = [{ index: 0, nodeId: null, net: replay.observed_net, loss: replay.observed_loss ?? null, changed: [], applied: true, calculation: replay.observed_calculation ?? null }]
   for (const s of replay.trace ?? []) {
     steps.push({
       index: s.index + 1,
@@ -137,6 +156,7 @@ export function traceSteps(replay) {
       changed: s.changed ?? [],
       applied: s.applied,
       reason: s.noop_reason,
+      calculation: s.calculation ?? null,
     })
   }
   return steps

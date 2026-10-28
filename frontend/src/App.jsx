@@ -23,8 +23,21 @@ const TITLES = {
   '/settings': 'Settings',
 }
 
+// One line under each page title: what the page is for.
+const SUBTITLES = {
+  '/': 'Overview of the cases, verdicts and losses ReplaySemantics has examined.',
+  '/cases': 'Browse the cases and pick one to replay.',
+  '/replay-console': 'Replay corrections on one case, check whether their order matters, and read the verdict.',
+  '/replay-graph': 'The object-centric event graph behind a case.',
+  '/attribution': 'How a validated loss is split between the events that caused it.',
+  '/scenario': 'Choose corrections to apply together and see the new total and the loss avoided.',
+  '/policies': 'The rules that define a compliant posting and fix the order of corrections.',
+  '/audit-log': 'A record of what was run and when.',
+  '/settings': 'Application settings.',
+}
+
 function Page({ path, children }) {
-  return <AppLayout title={TITLES[path]}>{children}</AppLayout>
+  return <AppLayout title={TITLES[path]} subtitle={SUBTITLES[path]}>{children}</AppLayout>
 }
 
 export default function App() {

@@ -38,6 +38,7 @@ from typing import Any, Callable, Iterable, Sequence
 from policy_engine.loss import loss as loss_of
 from replay_core.benchmark_io import LoadedCase
 from replay_core.confluence import CaseVerdict, transitive_closure
+from replay_core.explain import total_calculation
 from replay_core.replay import ReplayResult, state_differences, state_to_json, subset_key
 from replay_core.run_case import provisional_shapley
 
@@ -75,7 +76,7 @@ def _order_entry(op, base_loss: Decimal, base_net: Decimal, compliant: Decimal,
             "applied": st.applied, "noop_reason": st.noop_reason,
             "net_after": _d(st.net_after), "loss_after": _d(lo),
             "delta_net": _d(st.net_after - prev_net), "delta_loss": _d(lo - prev_loss),
-            "changed": list(st.changed),
+            "changed": list(st.changed), "calculation": total_calculation(op, st.state_after),
         })
         prev_net, prev_loss = st.net_after, lo
 
@@ -103,6 +104,8 @@ def _order_entry(op, base_loss: Decimal, base_net: Decimal, compliant: Decimal,
         "reaches_compliant_net": result.reaches_compliant_net,
         # shaped like replay_of_all_corrections so the existing step-through card can render it
         "observed_net": _d(result.observed_net), "observed_loss": _d(base_loss),
+        "observed_breakdown": op.observed_breakdown(),
+        "observed_calculation": total_calculation(op, op.observed),
         "compliant_net": _d(compliant), "order_is_authoritative": authoritative,
         "trace": trace, "node_effects": effects,
     }

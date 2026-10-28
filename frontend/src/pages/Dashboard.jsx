@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { HowItWorksStrip } from '../components/HowItWorks'
 import { useApi } from '../lib/useApi'
 import { getDashboard, getCases } from '../lib/api'
 import StatCard from '../components/StatCard'
@@ -19,7 +20,7 @@ export default function Dashboard() {
   if (casesApi.error) return <ErrorState error={casesApi.error} onRetry={casesApi.refetch} />
 
   const dash = dashboardApi.data
-  const recentCases = (casesApi.data?.cases || []).slice(0, 8)
+  const recentCases = (casesApi.data?.cases || []).slice(0, 5)
 
   return (
     <div className="flex flex-col gap-6">
@@ -54,6 +55,24 @@ export default function Dashboard() {
           sublabel={formatInrCr(dash.total_case_value_inr_cr)}
         />
       </div>
+
+      <Card>
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div className="text-[15px] font-bold text-[#101828]">How ReplaySemantics works</div>
+            <div className="text-[12px] text-[#8a97a3]">
+              It replays corrections on a realised ERP loss and refuses to give a number when the order of events makes it ambiguous.
+            </div>
+          </div>
+          <Link
+            to="/replay-console"
+            className="rounded-lg bg-navy-900 px-3.5 py-2 text-[12.5px] font-semibold text-white hover:bg-navy-800"
+          >
+            Open Replay Console →
+          </Link>
+        </div>
+        <HowItWorksStrip />
+      </Card>
 
       <Card className="!p-0 overflow-hidden">
         <div className="flex items-center justify-between border-b border-[#e2e6ea] px-5 py-4">

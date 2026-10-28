@@ -42,7 +42,7 @@ from typing import Any, Iterable, Sequence
 
 from policy_engine import CaseModel, CaseState, apply_correction, compute_net, loss
 from policy_engine.corrections import compliant_state, is_exempt
-from policy_engine.domain import CONTEXT, NET, DomainContext
+from policy_engine.domain import CONTEXT, NET, DomainContext, net_components
 from policy_engine.loss import coalition_value, compliant_net
 
 
@@ -175,6 +175,11 @@ class ReplayOperator:
         self.compliant_state: CaseState = compliant_state(self.observed, self.ctx)
         self.compliant_net: Decimal = compliant_net(self.observed, self.ctx)
         self.observed_loss: Decimal = loss(self.observed, self.observed, self.ctx)  # Loss(empty)
+
+    def observed_breakdown(self) -> dict[str, str]:
+        """How the observed (as-posted) total is built: gross, discounts, tax, fx rate,
+        adjustments and the posted rounding difference. Lets the UI explain Stage 0."""
+        return {k: str(v) for k, v in net_components(self.observed.nodes, self.ctx).items()}
 
     # ---- the candidate set ---------------------------------------------------
     @property

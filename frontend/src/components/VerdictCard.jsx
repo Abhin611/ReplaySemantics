@@ -115,6 +115,12 @@ export default function VerdictCard({ result }) {
         Coalition values v(S) — {rows.length} subsets
       </button>
       {showTable && (
+        <p className="mt-2 text-[11px] leading-snug text-[#5c6b7a]">
+          <span className="font-mono font-semibold text-[#344054]">v(S) = loss before − loss after</span> correcting the events in S
+          (the loss that disappears when only those events are corrected).
+        </p>
+      )}
+      {showTable && (
         <div className="mt-2 max-h-[300px] overflow-auto rounded-lg border border-[#e2e6ea]">
           <table className="w-full text-left text-[11.5px]">
             <thead className="sticky top-0 bg-[#f7f9fa] text-[10px] uppercase tracking-wide text-[#8a97a3]">

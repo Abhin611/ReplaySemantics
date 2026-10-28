@@ -50,7 +50,7 @@ export default function Attribution() {
           <select
             value={selectedCaseId || ''}
             onChange={(e) => setSelectedCaseId(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-[#e2e6ea] px-2 py-1.5 text-[14px] font-bold"
+            className="mt-1 w-full rounded-lg border border-[#e2e6ea] bg-white px-2 py-1.5 text-[14px] font-bold"
           >
             {cases.map((c) => (
               <option key={c.case_id} value={c.case_id}>
@@ -71,6 +71,7 @@ export default function Attribution() {
         </Card>
       </div>
 
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
       <Card>
         <div className="mb-1 flex items-center gap-2">
           <div className="text-[14px] font-bold text-[#101828]">
@@ -78,6 +79,10 @@ export default function Attribution() {
           </div>
           <PreviewTag />
         </div>
+        <p className="mb-2 text-[11.5px] leading-snug text-[#5c6b7a]">
+          φ is an event's fair share of the loss: its average contribution across every order the corrections could be applied in.
+          The shares add up to the total loss. Blue-grey bars are in the coalition, red bars are excluded.
+        </p>
         <div style={{ width: '100%', height: 280 }}>
           <ResponsiveContainer>
             <BarChart data={rows} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
@@ -118,10 +123,10 @@ export default function Attribution() {
                   {r.event} <span className="text-[#8a97a3]">{r.activity}</span>
                 </td>
                 <td className="px-5 py-3">{r.phi.toFixed(2)}</td>
-                <td className="px-5 py-3">{formatEur(r.loss)}</td>
+                <td className="whitespace-nowrap px-4 py-3">{formatEur(r.loss)}</td>
                 <td className="px-5 py-3">
                   <span
-                    className={`rounded-md px-2.5 py-1 text-xs font-semibold ${
+                    className={`whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-semibold ${
                       r.inCoalition
                         ? 'bg-status-passBg text-status-pass'
                         : 'bg-status-blockedBg text-status-blocked'
@@ -135,6 +140,7 @@ export default function Attribution() {
           </tbody>
         </table>
       </Card>
+      </div>
     </div>
   )
 }

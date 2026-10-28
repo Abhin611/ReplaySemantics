@@ -5,7 +5,7 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import {
-  badgeStatus, buildNodeStatus, isApplicable, pairDetails, pairSentence, subsetRows, traceSteps, correctionLabel,
+  badgeStatus, buildNodeStatus, isApplicable, pairDetails, pairSentence, subsetRows, traceSteps, correctionLabel, observedExplanation,
 } from '../src/lib/verdict.js'
 import {
   scenarioPath, parseScenarioParams, formatPrecise, formatSigned, direction, shapleyRows, orderLabel,
@@ -22,6 +22,20 @@ eq(badgeStatus('BLOCKED'), 'BLOCKED')
 eq(badgeStatus('nonsense'), null)
 eq(correctionLabel('discount_correction'), 'discount')
 eq(correctionLabel(null), null)
+
+// Stage 0 description: zero parts and fx 1 are left out; missing breakdown falls back
+const bd = { gross: '100', discount: '10', tax: '9', fx_rate: '1', adjustment: '0', rounding_adj: '-0.1', net: '98.9' }
+const txt = observedExplanation(bd, (x) => String(x))
+ok(txt.includes('Gross value 100') && txt.includes('less discounts 10') && txt.includes('plus tax 9'), 'stage 0 text names the parts')
+ok(txt.includes('less posted rounding 0.1') && !txt.includes('fx rate') && !txt.includes('adjustments'), 'zero / identity parts omitted')
+ok(observedExplanation({ ...bd, fx_rate: '1.25', adjustment: '2' }).includes('fx rate 1.25'), 'fx shown when not 1')
+ok(observedExplanation(undefined).startsWith('The case total exactly as it was posted'), 'fallback without breakdown')
+
+// traceSteps carries the written-out calculation of every stage
+const calcReplay = { observed_net: '10', observed_calculation: { rows: [{ key: 'net', value: '10' }] },
+  trace: [{ node_id: 'e1', net_after: '12', applied: true, changed: [], calculation: { rows: [{ key: 'net', value: '12' }] } }] }
+const cs = traceSteps(calcReplay)
+ok(cs[0].calculation.rows[0].value === '10' && cs[1].calculation.rows[0].value === '12', 'steps carry their calculation')
 
 const vbfa = { stage_5_verdict: { status: 'not_applicable', message: 'n/a' } }
 ok(!isApplicable(vbfa) && !isApplicable(null))

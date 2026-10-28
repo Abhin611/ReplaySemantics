@@ -1,9 +1,12 @@
 import { Search, Bell } from 'lucide-react'
 
-export default function TopBar({ title }) {
+export default function TopBar({ title, subtitle }) {
   return (
-    <header className="flex items-center justify-between gap-4 border-b border-[#e2e6ea] bg-white px-8 py-4">
-      <h1 className="text-xl font-bold tracking-tight text-[#101828]">{title}</h1>
+    <header className="flex items-center justify-between gap-4 border-b border-[#e2e6ea] bg-white px-6 py-3">
+      <div className="min-w-0">
+        <h1 className="text-xl font-bold leading-tight tracking-tight text-[#101828]">{title}</h1>
+        {subtitle && <p className="mt-0.5 truncate text-[12px] text-[#8a97a3]">{subtitle}</p>}
+      </div>
       <div className="flex items-center gap-4">
         <div className="relative">
           <Search
@@ -13,7 +16,7 @@ export default function TopBar({ title }) {
           <input
             type="text"
             placeholder="Search cases, events..."
-            className="w-72 rounded-lg border border-[#e2e6ea] bg-[#f7f8fa] py-2 pl-9 pr-3 text-[13px] text-[#101828] placeholder:text-[#8a97a3] focus:bg-white"
+            className="w-60 rounded-lg border border-[#e2e6ea] bg-[#f7f8fa] py-2 pl-9 pr-3 text-[13px] text-[#101828] placeholder:text-[#8a97a3] focus:bg-white"
           />
         </div>
         <button

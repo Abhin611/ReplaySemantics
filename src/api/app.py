@@ -52,6 +52,7 @@ from policy_engine.schema import POLICY_DIR, list_policies
 from replay_core.confluence import CaseVerdict, ConfluenceChecker, transitive_closure
 from replay_core.ingestion import load_ocel
 from replay_core.propagation import EDITABLE_FIELDS, PropagationError, propagate_multi
+from replay_core.explain import describe_events, total_calculation
 from replay_core.replay import ReplayOperator, state_to_json
 from replay_core.scenario import ScenarioError, run_scenario
 
@@ -469,6 +470,15 @@ def _checked_case_cached(root: str, case_id: str) -> tuple[LoadedCase, CaseVerdi
     return lc, ConfluenceChecker.from_loaded(lc).check_case()
 
 
+def _with_calculations(op, replay) -> dict:
+    """replay.to_dict() plus the written-out arithmetic of the observed total and of every step."""
+    d = replay.to_dict(include_trace=True)
+    d["observed_calculation"] = total_calculation(op, op.observed)
+    for entry, step in zip(d["trace"], replay.trace):
+        entry["calculation"] = total_calculation(op, step.state_after)
+    return d
+
+
 def _benchmark_replay_response(case_id: str) -> dict:
     lc, cv = _checked_case_cached(str(BENCHMARK_DIR), case_id)
     ex, cons = lc.extraction, lc.constraints
@@ -515,11 +525,14 @@ def _benchmark_replay_response(case_id: str) -> dict:
 
     blocked_note = (f"{len(blocked)} of {len(cv.subsets)} subsets are BLOCKED: the correction orders "
                     "disagree and the policy does not fix an order. No defensible number exists; attribution is withheld.")
+    stages = _stages_1_to_2b(lc.graph, ex.target_event, ex, cons)
+    activities = {n["id"]: n["activity"] for n in stages.get("replay_graph", {}).get("nodes", [])}
     return {
         "case_id": case_id,
         "source": BENCHMARK_SOURCE,
         "policy_version": lc.entry["policy_version"],
-        **_stages_1_to_2b(lc.graph, ex.target_event, ex, cons),
+        **stages,
+        "event_descriptions": describe_events(op, activities),
         "node_status": [
             {"event_id": n, "role": ("effective" if n in effective else "exempt"),
              "correction_id": lc.model.correction_ids.get(n),
@@ -585,7 +598,8 @@ def _benchmark_replay_response(case_id: str) -> dict:
                 "order_is_authoritative": order_is_authoritative,
                 "note": None if order_is_authoritative else
                         "Illustrative canonical order only: the full set is BLOCKED, so this is NOT an authoritative outcome.",
-                **replay_all.to_dict(include_trace=True),
+                **_with_calculations(op, replay_all),
+                "observed_breakdown": op.observed_breakdown(),
             },
         },
     }

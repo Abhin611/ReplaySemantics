@@ -295,3 +295,59 @@ def test_scenario_endpoint_accepts_a_union_of_several_pairs(client):
             assert "selected" in d and d["selected"]["trace"]
             return
     pytest.skip("no case with two order-sensitive pairs in the fixture")
+
+
+def test_replay_payload_explains_the_observed_total_for_every_case(client):
+    """Stage 0 of the step-through is explained from `observed_breakdown`: its parts must
+    rebuild exactly the observed total, for every benchmark case."""
+    from decimal import Decimal
+    for c in client.get("/api/benchmark/cases").json()["cases"]:
+        v = client.get(f"/api/cases/{c['case_id']}/replay").json()["stage_5_verdict"]
+        if v.get("status") != "complete":
+            continue
+        rep = v["replay_of_all_corrections"]
+        b = rep["observed_breakdown"]
+        assert Decimal(b["net"]) == Decimal(rep["observed_net"])
+        rebuilt = (Decimal(b["gross"]) - Decimal(b["discount"]) + Decimal(b["tax"])) * Decimal(b["fx_rate"]) \
+            + Decimal(b["adjustment"]) + Decimal(b["rounding_adj"])
+        assert rebuilt == Decimal(b["net"])
+
+
+def test_event_descriptions_and_stage_calculations_match_the_engine(client):
+    """Every case: each stage's written-out sum rebuilds that stage's net exactly, and every
+    event of the case has a description whose total is a real number (or none for context)."""
+    from decimal import Decimal
+    n_cases = 0
+    for c in client.get("/api/benchmark/cases").json()["cases"]:
+        r = client.get(f"/api/cases/{c['case_id']}/replay").json()
+        v = r["stage_5_verdict"]
+        if v.get("status") != "complete":
+            continue
+        n_cases += 1
+        rep = v["replay_of_all_corrections"]
+        stages = [(rep["observed_calculation"], rep["observed_net"])] + [
+            (t["calculation"], t["net_after"]) for t in rep["trace"]
+        ]
+        for calc, net in stages:
+            rows = {x["key"]: Decimal(x["value"]) for x in calc["rows"]}
+            assert rows["net"] == Decimal(net)
+            # a case without a discount event simply has no discount row
+            assert rows["subtotal"] == rows["gross"] - rows.get("discount", 0) + rows["tax"]
+        ids = {e["node_id"] for e in r["event_descriptions"]}
+        assert ids == {n["id"] for n in r["replay_graph"]["nodes"]}
+        for e in r["event_descriptions"]:
+            assert e["title"] and e["meaning"]
+            if e["node_type"] != "context":
+                assert e["total"] and Decimal(e["total"]["value"]) is not None
+    assert n_cases > 0
+
+
+def test_scenario_steps_carry_their_calculation(client):
+    case = client.get("/api/benchmark/cases").json()["cases"][0]["case_id"]
+    pairs = client.get(f"/api/cases/{case}/replay").json()["stage_3_confluence_checks"]["order_sensitive_pairs"]
+    if not pairs:
+        return
+    s = client.get(f"/api/cases/{case}/scenario", params={"subset": ",".join(pairs[0])}).json()
+    first = s["orders"][0] if "orders" in s else s
+    assert first["observed_calculation"]["rows"]
+    assert all(t["calculation"]["rows"] for t in first["trace"])

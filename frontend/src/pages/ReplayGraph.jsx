@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 import ReactFlow, { Background, Controls } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { useApi } from '../lib/useApi'
@@ -13,6 +14,7 @@ import ConstraintExplanationList from '../components/ConstraintExplanationList'
 import PaymentRoutesCard from '../components/PaymentRoutesCard'
 import OrderSensitivityCard from '../components/OrderSensitivityCard'
 import { LoadingState, ErrorState } from '../components/StatusStates'
+import TabBar from '../components/TabBar'
 import RefreshButton from '../components/RefreshButton'
 import { formatDateTime } from '../lib/format'
 import { computePaymentRoutes } from '../lib/paymentRoutes'
@@ -117,6 +119,8 @@ export default function ReplayGraph() {
     setSelectedPairs([])
   }
   const activeCase = cases.find((c) => c.case_id === selectedCaseId)
+  const [panel, setPanel] = useState('inspector') // right-hand tab
+  const [showConstraints, setShowConstraints] = useState(false)
 
   const eventLookup = useMemo(() => {
     const lookup = {}
@@ -133,21 +137,14 @@ export default function ReplayGraph() {
 
   return (
     <div className="flex flex-col gap-4">
-      {result && (
-        <ConstraintSummaryCard
-          constraintData={result.stage_2b_constraint_extraction}
-          eventLookup={eventLookup}
-        />
-      )}
-
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_320px]">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_350px]">
         <Card className="!p-0 overflow-hidden">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#e2e6ea] px-5 py-4">
             <div className="flex items-center gap-3">
               <select
                 value={selectedCaseId || ''}
                 onChange={(e) => setSelectedCaseId(e.target.value)}
-                className="rounded-lg border border-[#e2e6ea] px-3 py-1.5 text-[13px] font-semibold"
+                className="rounded-lg border border-[#e2e6ea] bg-white px-3 py-1.5 text-[13px] font-semibold"
               >
                 {cases.map((c) => (
                   <option key={c.case_id} value={c.case_id}>
@@ -176,7 +173,7 @@ export default function ReplayGraph() {
             </div>
           </div>
 
-          <div style={{ height: 600 }}>
+          <div style={{ height: 'clamp(380px, calc(100vh - 290px), 720px)' }}>
             {loading ? (
               <LoadingState label="Running replay…" />
             ) : error ? (
@@ -210,35 +207,51 @@ export default function ReplayGraph() {
           </div>
         </Card>
 
-        <div className="flex flex-col gap-4">
-          <Card>
-            <div className="mb-2 text-[13px] font-bold text-[#101828]">Node Inspector</div>
-            {!selectedNode ? (
-              <p className="text-[12.5px] text-[#8a97a3]">
-                Click any node to inspect its role and diagnostics.
-              </p>
-            ) : (
-              <div className="flex flex-col gap-1.5 text-[12.5px]">
-                <Row label="Event ID" value={selectedNode.id} />
-                <Row label="Activity" value={selectedNode.activity} />
-                <Row label="Hop" value={selectedNode.is_target ? 'target' : selectedNode.hop} />
-                <Row label="Timestamp" value={formatDateTime(selectedNode.timestamp)} />
-                {selectedNode.verdictKind ? (
-                  <div className="mt-2 flex flex-col gap-1.5 border-t border-[#eef1f4] pt-2">
-                    <Row label="Role" value={NODE_KIND_STYLE[selectedNode.verdictKind]?.label} />
-                    {selectedNode.partners?.length > 0 && (
-                      <Row label="Order-sensitive with" value={selectedNode.partners.join(', ')} />
+        {/* Right panel: tabs instead of a long stack of cards, so nothing needs scrolling to find */}
+        <div className="lg:sticky lg:top-0 lg:self-start">
+          <TabBar
+            tabs={[
+              { key: 'inspector', label: 'Inspector' },
+              ...(result && isApplicable(result) ? [{ key: 'pairs', label: 'Pairs' }] : []),
+              { key: 'rules', label: 'Rules', badge: result?.stage_2b_constraint_extraction?.given_constraints?.length },
+              ...(result && !isApplicable(result) ? [{ key: 'routes', label: 'Payment routes' }] : []),
+            ]}
+            active={panel}
+            onChange={setPanel}
+          />
+          <div className="mt-3 flex flex-col gap-4 lg:max-h-[calc(100vh-10rem)] lg:overflow-y-auto lg:pr-1">
+            {panel === 'inspector' && (
+              <Card>
+                <div className="mb-2 text-[13px] font-bold text-[#101828]">Node Inspector</div>
+                {!selectedNode ? (
+                  <p className="text-[12.5px] text-[#8a97a3]">
+                    Click any node to inspect its role and diagnostics.
+                  </p>
+                ) : (
+                  <div className="flex flex-col gap-1.5 text-[12.5px]">
+                    <Row label="Event ID" value={selectedNode.id} />
+                    <Row label="Activity" value={selectedNode.activity} />
+                    <Row label="Hop" value={selectedNode.is_target ? 'target' : selectedNode.hop} />
+                    <Row label="Timestamp" value={formatDateTime(selectedNode.timestamp)} />
+                    {selectedNode.verdictKind ? (
+                      <div className="mt-2 flex flex-col gap-1.5 border-t border-[#eef1f4] pt-2">
+                        <Row label="Role" value={NODE_KIND_STYLE[selectedNode.verdictKind]?.label} />
+                        {selectedNode.partners?.length > 0 && (
+                          <Row label="Order-sensitive with" value={selectedNode.partners.join(', ')} />
+                        )}
+                      </div>
+                    ) : (
+                      <p className="mt-2 border-t border-[#eef1f4] pt-2 text-[11.5px] text-[#8a97a3]">
+                        No verdict for this event: real SAP data stops at stage 2b (no pricing fields to replay).
+                      </p>
                     )}
                   </div>
-                ) : (
-                  <p className="mt-2 border-t border-[#eef1f4] pt-2 text-[11.5px] text-[#8a97a3]">
-                    No verdict for this event: real SAP data stops at stage 2b (no pricing fields to replay).
-                  </p>
                 )}
-              </div>
-            )}
-          </Card>
+              </Card>
 
+            )}
+            {panel === 'pairs' && (
+              <>
           {result && isApplicable(result) && (
             <OrderSensitivityCard
               result={result}
@@ -255,6 +268,10 @@ export default function ReplayGraph() {
             />
           )}
 
+              </>
+            )}
+            {panel === 'rules' && (
+              <>
           {result && (
             <ConstraintExplanationList
               constraints={result.stage_2b_constraint_extraction.given_constraints}
@@ -267,6 +284,10 @@ export default function ReplayGraph() {
             />
           )}
 
+              </>
+            )}
+            {panel === 'routes' && (
+              <>
           {result && !isApplicable(result) && (
             <PaymentRoutesCard
               routes={paymentRoutes}
@@ -278,8 +299,33 @@ export default function ReplayGraph() {
               }}
             />
           )}
+              </>
+            )}
+          </div>
         </div>
       </div>
+
+      {result && (
+        <div>
+          <button
+            type="button"
+            onClick={() => setShowConstraints((x) => !x)}
+            className="flex w-full items-center gap-2 rounded-xl border border-[#e2e6ea] bg-white px-4 py-2.5 text-left shadow-card hover:bg-[#fafbfc]"
+          >
+            {showConstraints ? <ChevronDown size={15} /> : <ChevronRight size={15} />}
+            <span className="text-[13px] font-bold text-[#101828]">Order constraints and permutable pairs</span>
+            <span className="ml-auto text-[11.5px] text-[#8a97a3]">
+              {result.stage_2b_constraint_extraction?.num_constraints ?? 0} locked ·{' '}
+              {result.stage_2b_constraint_extraction?.num_permutable_pairs ?? 0} permutable
+            </span>
+          </button>
+          {showConstraints && (
+            <div className="mt-3">
+              <ConstraintSummaryCard constraintData={result.stage_2b_constraint_extraction} eventLookup={eventLookup} />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

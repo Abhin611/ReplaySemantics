@@ -431,6 +431,9 @@ function ShapleyCard({ shapley, subsetVerdict }) {
       )}
       <details className="mt-3">
         <summary className="cursor-pointer text-[11px] font-semibold text-[#5c6b7a]">Coalition values used</summary>
+        <p className="mt-1 text-[10.5px] leading-snug text-[#5c6b7a]">
+          <span className="font-mono font-semibold">v(S) = loss before − loss after</span> correcting the events in S.
+        </p>
         <table className="mt-1 w-full text-[11px]">
           <tbody className="font-mono">
             {shapley.coalition_table.map((t) => (
