@@ -36,8 +36,15 @@ const SUBTITLES = {
   '/settings': 'Application settings.',
 }
 
+// Pages that fit the screen exactly instead of scrolling as a whole.
+const FILL = new Set(['/replay-console'])
+
 function Page({ path, children }) {
-  return <AppLayout title={TITLES[path]} subtitle={SUBTITLES[path]}>{children}</AppLayout>
+  return (
+    <AppLayout title={TITLES[path]} subtitle={SUBTITLES[path]} fill={FILL.has(path)}>
+      {children}
+    </AppLayout>
+  )
 }
 
 export default function App() {

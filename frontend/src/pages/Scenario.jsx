@@ -41,6 +41,7 @@ export default function Scenario() {
   // The change you last ran is remembered, so the sidebar's "Corrected Scenario" reopens it instead of
   // asking you to pick again.
   const [last, setLast] = usePersistentState('scenario:last', null) // { caseId, subset, order }
+  const [watched, setWatched] = usePersistentState('scenario:watched', null) // key of the change whose animation has played
   const navigate = useNavigate()
   const hasParams = !!caseId && subset.length > 0
   // Refresh: forget the remembered change and every cached response, and go back to the empty page, so the
@@ -320,6 +321,8 @@ export default function Scenario() {
             title="How the change builds the new total"
             nonAuthoritativeNote="This order is not authoritative for the verdict — shown for comparison only."
             onStepNode={setTraceNode}
+            autoPlayKey={watched === caseId + orderKey + subsetKey ? null : caseId + orderKey + subsetKey}
+            onAutoPlayEnd={() => setWatched(caseId + orderKey + subsetKey)}
           />
 
           <Card>

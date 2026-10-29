@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ReactFlow, { Background, Controls } from 'reactflow'
 import 'reactflow/dist/style.css'
-import { CheckCircle2, ChevronDown, ChevronRight, PlayCircle } from 'lucide-react'
+import { CheckCircle2, ChevronDown, ChevronRight, FastForward, Loader2, Minus, PlayCircle, RotateCcw } from 'lucide-react'
 import { useApi } from '../lib/useApi'
 import { clearApiCache, getCases, runReplay } from '../lib/api'
 import { useSelectedCase, usePersistentState } from '../lib/SelectedCaseContext'
@@ -18,13 +18,16 @@ import ReplayTraceCard from '../components/ReplayTraceCard'
 import HowItWorks from '../components/HowItWorks'
 import EventDescriptionCard from '../components/EventDescriptionCard'
 import TabBar from '../components/TabBar'
+import SpeedControl from '../components/SpeedControl'
+import PipelineTimeline from '../components/PipelineTimeline'
+import { useReplaySpeed } from '../lib/useReplaySpeed'
 import RefreshButton from '../components/RefreshButton'
 import { LoadingState, ErrorState } from '../components/StatusStates'
 import { formatEur, formatDateTime } from '../lib/format'
 import { computePaymentRoutes } from '../lib/paymentRoutes'
 import { layoutGraph } from '../lib/graphLayout'
 import { scenarioPath, togglePair, unionEvents } from '../lib/scenario'
-import { buildNodeStatus, isApplicable, pairDetails, NODE_KIND_STYLE } from '../lib/verdict'
+import { buildNodeStatus, isApplicable, pairDetails, badgeStatus, NODE_KIND_STYLE } from '../lib/verdict'
 
 const NODE_TYPES = { event: EventNode }
 const NO_PAIRS = []
@@ -77,6 +80,75 @@ export default function ReplayConsole() {
   const [selectedRoute, setSelectedRoute] = useState(null) // { key: 'highest' | 'lowest', eventIds }
   const [traceNode, setTraceNode] = useState(null) // event applied at the current replay step
 
+  // ---- Animated run -------------------------------------------------------------------------------
+  // The backend answers in well under a second, so the stages are staged on screen instead: the six
+  // pipeline stages land one at a time (Stages tab), then the replay steps through its corrections
+  // (Replay tab), then the Verdict tab opens. `delay` is the shared playback speed (1x = 2 s per stage).
+  const { delay, speedKey, setSpeedKey } = useReplaySpeed()
+  const [anim, setAnim] = useState({ phase: 'idle', shown: STAGES.length, replayKey: null }) // phase: idle | pipeline | replay
+  const [finishKey, setFinishKey] = useState(0)
+  const [runStamp, setRunStamp] = useState(0) // bumps per run so the graph fades its nodes in again
+  const animating = anim.phase !== 'idle'
+
+  const startAnimation = (data) => {
+    setRunStamp((n) => n + 1)
+    if (delay === 0) {
+      setAnim({ phase: 'idle', shown: STAGES.length, replayKey: null })
+      setTab(isApplicable(data) ? 'verdict' : 'rules')
+      return
+    }
+    setAnim({ phase: 'pipeline', shown: 0, replayKey: null })
+    setTab('stages')
+  }
+
+  // Skip / cancel: everything appears at its final state.
+  const finishAnimation = (openTab = true) => {
+    setAnim({ phase: 'idle', shown: STAGES.length, replayKey: null })
+    setFinishKey((k) => k + 1)
+    if (openTab) setTab(isApplicable(result) ? 'verdict' : 'rules')
+  }
+
+  // Watch the same run again without asking the backend.
+  const replayAnimation = () => {
+    if (!result || delay === 0) return
+    clearSelections()
+    setRunStamp((n) => n + 1)
+    setAnim({ phase: 'pipeline', shown: 0, replayKey: null })
+    setTab('stages')
+  }
+
+  // Pipeline phase: reveal a stage every `delay` (the first after a short beat), then hand over to the replay.
+  useEffect(() => {
+    if (anim.phase !== 'pipeline' || !result) return undefined
+    const total = STAGES.length
+    if (anim.shown < total) {
+      const t = setTimeout(() => setAnim((a) => ({ ...a, shown: a.shown + 1 })), anim.shown === 0 ? 700 : delay)
+      return () => clearTimeout(t)
+    }
+    const t = setTimeout(() => {
+      if (isApplicable(result)) {
+        setAnim((a) => ({ ...a, phase: 'replay', replayKey: Date.now() }))
+        setTab('replay')
+      } else {
+        setAnim({ phase: 'idle', shown: total, replayKey: null })
+        setTab('rules')
+      }
+    }, Math.max(700, delay * 0.6))
+    return () => clearTimeout(t)
+  }, [anim.phase, anim.shown, delay, result]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // The replay card tells us how its automatic run ended.
+  const onReplayEnd = (reason) => {
+    setAnim({ phase: 'idle', shown: STAGES.length, replayKey: null })
+    if (reason === 'done') setTimeout(() => setTab((t) => (t === 'replay' ? 'verdict' : t)), 1200)
+  }
+
+  // Taking over (opening another tab) ends the show.
+  const changeTab = (k) => {
+    if (animating && k !== tab) finishAnimation(false)
+    setTab(k)
+  }
+
   const cases = casesApi.data?.cases || []
 
   useEffect(() => {
@@ -94,11 +166,13 @@ export default function ReplayConsole() {
     setSelectedRoute(null)
     setSelectedPairs([])
     setTraceNode(null)
+    setAnim({ phase: 'idle', shown: STAGES.length, replayKey: null })
     const caseId = selectedCaseId
     try {
       // Run Replay always asks the backend afresh (force); everything else reuses the cached result
       const data = await runReplay(caseId, { maxEvents, minEvents, maxHops }, { force: true })
       setRuns((prev) => ({ ...prev, [caseId]: data }))
+      startAnimation(data)
     } catch (err) {
       setRunError(err)
     } finally {
@@ -153,6 +227,7 @@ export default function ReplayConsole() {
   useEffect(() => {
     if (shownResult.current === result) return
     shownResult.current = result
+    if (anim.phase !== 'idle') return // the animated run chooses its own tabs
     setTab(result && !isApplicable(result) ? 'rules' : 'verdict')
   }, [result]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -182,6 +257,7 @@ export default function ReplayConsole() {
     clearApiCache()
     setRuns({})
     setPairsByCase({})
+    setAnim({ phase: 'idle', shown: STAGES.length, replayKey: null })
     setTab('verdict')
     setSelectedNode(null)
     setSelectedConstraint(null)
@@ -199,7 +275,7 @@ export default function ReplayConsole() {
   if (casesApi.error) return <ErrorState error={casesApi.error} onRetry={casesApi.refetch} />
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3 lg:min-h-0 lg:flex-1">
       {/* Command bar: pick a case, run it, and watch the six stages complete. One compact card. */}
       <Card className="!p-3.5">
         <div className="flex flex-wrap items-end gap-3">
@@ -243,32 +319,80 @@ export default function ReplayConsole() {
           <RefreshButton onClick={handleRefresh} disabled={running} className="!py-2.5" />
         </div>
 
-        <div className="mt-3 flex flex-wrap items-center gap-x-1.5 gap-y-1.5">
+        <div className="mt-2.5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+        <div className="flex flex-wrap items-center gap-x-1 gap-y-1.5">
           {STAGES.map((s, i) => {
             const stageResult = result?.[s.key]
-            const done = stageResult?.status === 'complete'
+            const reached = !!result && (!animating || i < anim.shown)
+            const active = animating && anim.phase === 'pipeline' && i === anim.shown
+            const done = reached && stageResult?.status === 'complete'
+            const na = reached && stageResult?.status === 'not_applicable'
             return (
-              <div key={s.key} className="flex items-center gap-1.5">
+              <div key={s.key} className="flex items-center gap-1">
                 <div
-                  className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11.5px] font-semibold ${
-                    done ? 'bg-status-passBg text-status-pass' : 'bg-[#eef1f4] text-[#8a97a3]'
+                  className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11.5px] font-semibold transition-all duration-500 ${
+                    done
+                      ? 'bg-status-passBg text-status-pass'
+                      : active
+                      ? 'rs-ring scale-105 bg-teal-50 text-teal-700 ring-1 ring-teal-300'
+                      : 'bg-[#eef1f4] text-[#8a97a3]'
                   }`}
                   title={`${s.hint}${stageResult?.message ? ` — ${stageResult.message}` : ''}`}
                 >
                   {done ? (
-                    <CheckCircle2 size={13} />
+                    <CheckCircle2 size={13} className={animating ? 'rs-pop' : ''} />
+                  ) : active ? (
+                    <Loader2 size={13} className="animate-spin" />
+                  ) : na ? (
+                    <Minus size={13} />
                   ) : (
                     <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-current text-[9px]">{i + 1}</span>
                   )}
                   {s.label}
                 </div>
-                {i < STAGES.length - 1 && <ChevronRight size={12} className="text-[#c2cad2]" />}
+                {i < STAGES.length - 1 && (
+                  <span className="relative h-0.5 w-5 overflow-hidden rounded bg-[#e2e6ea]" aria-hidden="true">
+                    <span
+                      className={`absolute inset-0 origin-left bg-teal-400 transition-transform duration-700 ${
+                        reached ? 'scale-x-100' : 'scale-x-0'
+                      }`}
+                    />
+                  </span>
+                )}
               </div>
             )
           })}
         </div>
 
-        {(activeCase || runError) && (
+        {/* Playback: speed, skip while it plays, watch-again afterwards */}
+        <div className="flex items-center gap-3">
+          <SpeedControl value={speedKey} onChange={setSpeedKey} />
+          <div className="flex items-center gap-2">
+            {animating ? (
+              <button
+                type="button"
+                onClick={() => finishAnimation()}
+                className="rs-pop inline-flex items-center gap-1.5 rounded-lg border border-[#e2e6ea] bg-white px-3 py-1.5 text-[12.5px] font-semibold text-[#101828] transition-colors hover:bg-[#f2f4f6]"
+              >
+                <FastForward size={13} /> Skip animation
+              </button>
+            ) : (
+              result &&
+              delay > 0 && (
+                <button
+                  type="button"
+                  onClick={replayAnimation}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-[#e2e6ea] bg-white px-3 py-1.5 text-[12.5px] font-semibold text-[#101828] transition-colors hover:bg-[#f2f4f6]"
+                >
+                  <RotateCcw size={13} /> Watch again
+                </button>
+              )
+            )}
+          </div>
+        </div>
+        </div>
+
+        {((activeCase && activeCase.source !== 'benchmark (synthetic)') || runError) && (
           <div className="mt-2.5 text-[11.5px] leading-snug text-[#8a97a3]">
             {activeCase?.source === 'benchmark (synthetic)' ? (
               <>Synthetic benchmark case · policy {activeCase.policy_version} · hover a stage above to see what it does</>
@@ -285,10 +409,10 @@ export default function ReplayConsole() {
         )}
       </Card>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_470px]">
-        {/* Main panel */}
-        <div className="flex flex-col gap-4">
-          <Card className="!p-0 overflow-hidden">
+      <div className="grid grid-cols-1 gap-4 lg:min-h-0 lg:flex-1 lg:grid-cols-[minmax(0,1fr)_440px] lg:grid-rows-[minmax(0,1fr)] xl:grid-cols-[minmax(0,1fr)_520px]">
+        {/* Main panel: the graph takes whatever height is left, so it is always in view */}
+        <div className="flex flex-col gap-3 lg:min-h-0">
+          <Card className="flex flex-col !p-0 overflow-hidden lg:min-h-0 lg:flex-1">
             <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-b border-[#e2e6ea] px-5 py-2">
               <div className="text-[14px] font-bold">{selectedCaseId || 'Select a case'}</div>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
@@ -300,7 +424,8 @@ export default function ReplayConsole() {
                 ))}
               </div>
             </div>
-            <div style={{ height: 'clamp(340px, calc(100vh - 400px), 680px)' }}>
+            <div key={`run-${runStamp}`} className={`${animating ? 'rs-graph-in' : ''} relative h-[420px] lg:h-auto lg:min-h-0 lg:flex-1`}>
+              <div className="absolute inset-0 overflow-y-auto">
               {result ? (
                 <ReactFlow
                   key={`${selectedCaseId}-${nodes.length}`}
@@ -320,8 +445,9 @@ export default function ReplayConsole() {
               ) : (
                 <HowItWorks />
               )}
+              </div>
             </div>
-            <div className="border-t border-[#e2e6ea] px-5 py-2.5 text-[12.5px]">
+            <div className="shrink-0 border-t border-[#e2e6ea] px-5 py-2 text-[12.5px]">
               {!selectedNode ? (
                 <span className="text-[#8a97a3]">
                   {result ? 'Click an event on the graph to inspect it.' : 'Run a replay, then click any event to inspect it.'}
@@ -345,7 +471,7 @@ export default function ReplayConsole() {
           </Card>
 
           {result && (
-            <div>
+            <div className="lg:max-h-[45%] lg:shrink-0 lg:overflow-y-auto">
               <button
                 type="button"
                 onClick={() => setShowConstraints((x) => !x)}
@@ -368,9 +494,9 @@ export default function ReplayConsole() {
         </div>
 
         {/* Right panel: tabs keep it to one screen; sticky, scrolls inside */}
-        <div className="lg:sticky lg:top-0 lg:self-start">
-          <TabBar tabs={tabs} active={tab} onChange={setTab} />
-          <div className="mt-3 flex flex-col gap-4 lg:max-h-[calc(100vh-8.5rem)] lg:overflow-y-auto lg:pr-1">
+        <div className="flex min-h-0 flex-col">
+          <TabBar tabs={tabs} active={tab} onChange={changeTab} />
+          <div className="mt-3 flex min-h-0 flex-col gap-4 lg:flex-1 lg:overflow-y-auto lg:pr-1">
             <div className={tab === 'verdict' ? 'flex flex-col gap-4' : 'hidden'}>
               {result ? (
                 <VerdictCard result={result} />
@@ -406,6 +532,9 @@ export default function ReplayConsole() {
                 <ReplayTraceCard
                   replay={result.stage_5_verdict.replay_of_all_corrections}
                   nodeStatus={nodeStatus}
+                  autoPlayKey={anim.phase === 'replay' ? anim.replayKey : null}
+                  finishKey={finishKey}
+                  onAutoPlayEnd={onReplayEnd}
                   onStepNode={(id) => {
                     if (id) {
                       clearSelections()
@@ -454,67 +583,52 @@ export default function ReplayConsole() {
             </div>
 
             <div className={tab === 'stages' ? 'flex flex-col gap-4' : 'hidden'}>
-          <Card>
-            <div className="mb-2 text-[13px] font-bold text-[#101828]">Stage Summary</div>
-            {!result ? (
-              <p className="text-[12.5px] text-[#8a97a3]">Run a replay to see stage output.</p>
-            ) : (
-              <div className="flex flex-col gap-3 text-[12.5px]">
-                <div>
-                  <div className="font-semibold text-[#101828]">Stage 1 · Extraction</div>
-                  <div className="text-[#5c6b7a]">
-                    Target: {result.stage_1_extraction.target_event.activity} (
-                    {formatEur(result.stage_1_extraction.target_event.value_eur)})
-                  </div>
-                </div>
-                <div>
-                  <div className="font-semibold text-[#101828]">
-                    Stage 2 · Candidate Identification
-                  </div>
-                  <div className="text-[#5c6b7a]">
-                    {result.stage_2_candidate_identification.num_candidates} kept of{' '}
-                    {result.stage_2_candidate_identification.total_discovered} discovered ·{' '}
-                    {result.stage_2_candidate_identification.hops_used} hops used
-                  </div>
-                  {result.stage_2_candidate_identification.warnings?.length > 0 && (
-                    <div className="mt-1 rounded-md bg-status-orderedBg px-2 py-1 text-status-ordered">
-                      {result.stage_2_candidate_identification.warnings.join('; ')}
-                    </div>
+              <Card>
+                <div className="mb-3 flex items-center justify-between gap-2">
+                  <div className="text-[13px] font-bold text-[#101828]">Stage Summary</div>
+                  {animating && anim.phase === 'pipeline' && (
+                    <span className="flex items-center gap-1.5 rounded-full bg-teal-50 px-2 py-0.5 text-[10.5px] font-semibold text-teal-700">
+                      <span className="rs-live-dot h-1.5 w-1.5 rounded-full bg-teal-500" /> running stage {Math.min(anim.shown + 1, STAGES.length)} of {STAGES.length}
+                    </span>
                   )}
                 </div>
-                <div>
-                  <div className="font-semibold text-[#101828]">
-                    Stage 2b · Order Constraints
-                  </div>
-                  <div className="text-[#5c6b7a]">
-                    {result.stage_2b_constraint_extraction.num_constraints} locked ·{' '}
-                    {result.stage_2b_constraint_extraction.num_permutable_pairs} permutable
-                  </div>
-                </div>
-                {STAGES.filter((s) => ['stage_3_confluence_checks', 'stage_4_policy_resolution', 'stage_5_verdict'].includes(s.key)).map((s) => {
-                  const done = result[s.key]?.status === 'complete'
-                  return (
-                    <div key={s.key}>
-                      <div className={`font-semibold ${done ? 'text-[#101828]' : 'text-[#8a97a3]'}`}>
-                        {s.label}
-                      </div>
-                      <div className={done ? 'text-[#5c6b7a]' : 'text-[#8a97a3]'}>
-                        {result[s.key]?.status === 'not_applicable'
-                          ? 'Not applicable to real SAP data (no pricing fields to replay).'
-                          : result[s.key]?.message}
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            )}
-          </Card>
+                {!result ? (
+                  <p className="text-[12.5px] text-[#8a97a3]">Run a replay to see stage output.</p>
+                ) : (
+                  <PipelineTimeline
+                    items={pipelineItems(result)}
+                    shown={animating ? anim.shown : STAGES.length}
+                    animating={animating && anim.phase === 'pipeline'}
+                  />
+                )}
+              </Card>
             </div>
           </div>
         </div>
       </div>
     </div>
   )
+}
+
+// One timeline entry per pipeline stage, worded from the real stage payloads.
+function pipelineItems(result) {
+  const s1 = result.stage_1_extraction
+  const s2 = result.stage_2_candidate_identification
+  const s2b = result.stage_2b_constraint_extraction
+  const msg = (k) => result[k]?.message
+  return [
+    { key: 'stage_1_extraction', label: 'Stage 1 · Extraction', status: s1?.status,
+      body: s1?.target_event ? `Target: ${s1.target_event.activity} (${formatEur(s1.target_event.value_eur)})` : msg('stage_1_extraction') },
+    { key: 'stage_2_candidate_identification', label: 'Stage 2 · Candidate Identification', status: s2?.status,
+      body: `${s2?.num_candidates} kept of ${s2?.total_discovered} discovered · ${s2?.hops_used} hops used`,
+      warning: s2?.warnings?.length ? s2.warnings.join('; ') : null },
+    { key: 'stage_2b_constraint_extraction', label: 'Stage 2b · Order Constraints', status: s2b?.status,
+      body: `${s2b?.num_constraints} locked · ${s2b?.num_permutable_pairs} permutable` },
+    { key: 'stage_3_confluence_checks', label: 'Stage 3 · Confluence Checks', status: result.stage_3_confluence_checks?.status, body: msg('stage_3_confluence_checks') },
+    { key: 'stage_4_policy_resolution', label: 'Stage 4 · Policy Resolution', status: result.stage_4_policy_resolution?.status, body: msg('stage_4_policy_resolution') },
+    { key: 'stage_5_verdict', label: 'Stage 5 · Verdict', status: result.stage_5_verdict?.status, body: msg('stage_5_verdict'),
+      badge: result.stage_5_verdict?.status === 'complete' ? badgeStatus(result.stage_5_verdict.classification) : null },
+  ]
 }
 
 function Field({ label, children, className = '' }) {

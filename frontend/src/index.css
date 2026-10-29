@@ -42,19 +42,126 @@ select:focus-visible,
   outline-offset: 2px;
 }
 
-/* Replay flowchart: each stage (and its arrow) fades/slides in as the replay reaches it */
-@keyframes rs-stage-in {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ---------- Motion ---------- */
+/* Every page: its blocks rise in one after another (top to bottom). Fill mode "backwards" so nothing is
+   left transformed afterwards (that would break sticky panels and the graph). */
+@keyframes rs-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-.rs-stage-in {
-  animation: rs-stage-in 0.35s ease-out both;
+.rs-page > * {
+  animation: rs-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.rs-page > *:nth-child(2) { animation-delay: 0.06s; }
+.rs-page > *:nth-child(3) { animation-delay: 0.12s; }
+.rs-page > *:nth-child(4) { animation-delay: 0.18s; }
+.rs-page > *:nth-child(n + 5) { animation-delay: 0.24s; }
+
+@keyframes rs-menu-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.rs-menu-in { animation: rs-menu-in 0.18s ease-out both; transform-origin: top left; }
+
+/* Replay flowchart: a stage lands with a small overshoot, its arrow draws in first */
+@keyframes rs-stage-in {
+  from { opacity: 0; transform: translateY(-10px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.rs-stage-in { animation: rs-stage-in 0.45s cubic-bezier(0.34, 1.4, 0.5, 1) both; }
+
+@keyframes rs-box-in {
+  0% { opacity: 0; transform: translateY(-14px) scale(0.95); }
+  60% { opacity: 1; transform: translateY(2px) scale(1.01); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.rs-box-in { animation: rs-box-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+
+@keyframes rs-line-draw {
+  from { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  to { stroke-dasharray: 1; stroke-dashoffset: 0; }
+}
+.rs-line-draw { animation: rs-line-draw 0.3s ease-out both; }
+
+@keyframes rs-head-pop {
+  0% { opacity: 0; transform: translateY(-6px) scale(0.4); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.rs-head-pop { animation: rs-head-pop 0.25s ease-out 0.25s both; transform-box: fill-box; transform-origin: center; }
+
+@keyframes rs-label-in {
+  from { opacity: 0; transform: translateX(-6px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.rs-label-in { animation: rs-label-in 0.35s ease-out 0.15s both; }
+
+/* Graph: events fade in one after another when a run starts (opacity only; React Flow owns each node's transform) */
+@keyframes rs-node-in { from { opacity: 0; } to { opacity: 1; } }
+.rs-graph-in .react-flow__node { animation: rs-node-in 0.5s ease-out backwards; }
+.rs-graph-in .react-flow__node:nth-child(2) { animation-delay: 0.12s; }
+.rs-graph-in .react-flow__node:nth-child(3) { animation-delay: 0.24s; }
+.rs-graph-in .react-flow__node:nth-child(4) { animation-delay: 0.36s; }
+.rs-graph-in .react-flow__node:nth-child(5) { animation-delay: 0.48s; }
+.rs-graph-in .react-flow__node:nth-child(6) { animation-delay: 0.6s; }
+.rs-graph-in .react-flow__node:nth-child(7) { animation-delay: 0.72s; }
+.rs-graph-in .react-flow__node:nth-child(n + 8) { animation-delay: 0.84s; }
+.rs-graph-in .react-flow__edge { animation: rs-node-in 0.6s ease-out 0.9s backwards; }
+
+/* Calculation rows: slide in one by one; rows whose value moved flash amber once they land */
+@keyframes rs-row-in {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.rs-row-in { animation: rs-row-in 0.4s ease-out backwards; }
+@keyframes rs-flash {
+  0%, 100% { box-shadow: inset 0 0 0 0 rgba(245, 158, 11, 0); }
+  40% { box-shadow: inset 0 0 0 2px rgba(245, 158, 11, 0.55); }
+}
+.rs-flash { animation: rs-row-in 0.4s ease-out backwards, rs-flash 1.1s ease-out 0.5s 1; }
+
+/* Small confirmations */
+@keyframes rs-pop {
+  0% { opacity: 0; transform: scale(0.5); }
+  70% { transform: scale(1.18); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.rs-pop { animation: rs-pop 0.45s cubic-bezier(0.34, 1.4, 0.5, 1) both; }
+
+@keyframes rs-live-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.7); }
+}
+.rs-live-dot { animation: rs-live-dot 1s ease-in-out infinite; }
+
+@keyframes rs-ring {
+  0% { box-shadow: 0 0 0 0 rgba(42, 157, 143, 0.45); }
+  100% { box-shadow: 0 0 0 9px rgba(42, 157, 143, 0); }
+}
+.rs-ring { animation: rs-ring 1.2s ease-out infinite; }
+
+/* Countdown to the next stage */
+@keyframes rs-countdown {
+  from { width: 0; }
+  to { width: 100%; }
+}
+.rs-countdown { animation: rs-countdown linear forwards; }
+
+/* Pipeline timeline: the connector line fills down to the stage that is running */
+@keyframes rs-grow-y {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+.rs-grow-y { animation: rs-grow-y 0.5s ease-out both; transform-origin: top; }
+
+/* Shimmer over the stage that is being worked on */
+@keyframes rs-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+.rs-shimmer {
+  background-image: linear-gradient(100deg, transparent 30%, rgba(42, 157, 143, 0.14) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: rs-shimmer 1.6s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
