@@ -4,27 +4,38 @@ import ReactFlow, { Background, Controls } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { AlertTriangle, ArrowRight, FlaskConical, TrendingDown, TrendingUp } from 'lucide-react'
 import { useApi } from '../lib/useApi'
-import { clearApiCache, getScenario, runReplay } from '../lib/api'
+import { clearApiCache, getAnalysis, getHops, getScenario, runReplay } from '../lib/api'
+import ReplayFlow from '../components/ReplayFlow'
+import ChangePanel from '../components/ChangePanel'
+import { fullGraphLimits } from '../lib/flow'
 import { useSelectedCase, usePersistentState } from '../lib/SelectedCaseContext'
 import Card from '../components/Card'
 import StatusBadge from '../components/StatusBadge'
 import EventNode from '../components/graph/EventNode'
 import ReplayTraceCard from '../components/ReplayTraceCard'
+import PropagationReport from '../components/PropagationReport'
 import RefreshButton from '../components/RefreshButton'
 import { LoadingState, ErrorState } from '../components/StatusStates'
 import { layoutGraph } from '../lib/graphLayout'
 import { buildNodeStatus, badgeStatus, correctionLabel } from '../lib/verdict'
 import {
-  direction, formatPrecise, formatSigned, nodeEffects, orderLabel, parseScenarioParams, scenarioPath, shapleyRows,
+  buildFlow, direction, formatPrecise, formatSigned, nodeEffects, orderLabel, parseScenarioParams, scenarioPath,
 } from '../lib/scenario'
 
 const NODE_TYPES = { event: EventNode }
 
 const LEGEND = [
-  { label: 'corrected in this change', color: '#1a7f4c' },
-  { label: 'cascaded (changed, not corrected)', color: '#92650a' },
+  { label: 'applied in this swap', color: '#1a7f4c' },
+  { label: 'cascaded (changed, not in the swap)', color: '#92650a' },
   { label: 'unchanged', color: '#c2cad2' },
   { label: 'target', color: '#2a9d8f' },
+]
+// shown while the step-through plays: the propagation overlay
+const FLOW_LEGEND = [
+  { label: 'being applied now', color: '#1a7f4c' },
+  { label: 'applied earlier', color: '#9ad1b1' },
+  { label: 'queued', color: '#7aa88d' },
+  { label: 'dependent left out of date (Δ)', color: '#d97706' },
 ]
 
 // "Run change" lands here: the corrected case for one set of corrections (usually an order-sensitive
@@ -32,13 +43,13 @@ const LEGEND = [
 export default function Scenario() {
   const [params, setParams] = useSearchParams()
   const { selectedCaseId } = useSelectedCase()
-  const { caseId: paramCase, subset, order } = parseScenarioParams(params)
+  const { caseId: paramCase, subset, order, limits: urlLimits } = parseScenarioParams(params)
   const caseId = paramCase || null
   const subsetKey = subset.join(',')
   const orderKey = order.join(',')
   const [traceNode, setTraceNode] = useState(null)
   const [selectedNode, setSelectedNode] = useState(null)
-  // The change you last ran is remembered, so the sidebar's "Corrected Scenario" reopens it instead of
+  // The change you last ran is remembered, so the sidebar's "Swap Scenario" reopens it instead of
   // asking you to pick again.
   const [last, setLast] = usePersistentState('scenario:last', null) // { caseId, subset, order }
   const [watched, setWatched] = usePersistentState('scenario:watched', null) // key of the change whose animation has played
@@ -59,43 +70,52 @@ export default function Scenario() {
     </div>
   )
   useEffect(() => {
-    if (hasParams) setLast({ caseId, subset, order })
-  }, [caseId, subsetKey, orderKey]) // eslint-disable-line react-hooks/exhaustive-deps
+    if (hasParams) setLast({ caseId, subset, order, limits: urlLimits })
+  }, [caseId, subsetKey, orderKey, JSON.stringify(urlLimits)]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // the candidate set the console used travels in the address; an old link without it shows the WHOLE graph
+  const hopsApi = useApi(useCallback(() => (caseId && !urlLimits ? getHops(caseId) : Promise.resolve(null)), [caseId, !!urlLimits]), [caseId, !!urlLimits]) // eslint-disable-line react-hooks/exhaustive-deps
+  const limits = urlLimits || (hopsApi.data ? fullGraphLimits(hopsApi.data) : null)
+  const limKey = limits ? `${limits.maxHops}/${limits.minEvents}/${limits.maxEvents}` : ''
+  const analysisApi = useApi(
+    useCallback(() => (caseId && limits ? getAnalysis(caseId, limits) : Promise.resolve(null)), [caseId, limKey]), // eslint-disable-line react-hooks/exhaustive-deps
+    [caseId, limKey]
+  )
   const scenarioApi = useApi(
-    useCallback(() => (caseId && subset.length ? getScenario(caseId, subset, order) : Promise.resolve(null)), [caseId, subsetKey, orderKey]), // eslint-disable-line react-hooks/exhaustive-deps
-    [caseId, subsetKey, orderKey]
+    useCallback(() => (caseId && subset.length && limits ? getScenario(caseId, subset, order, limits) : Promise.resolve(null)), [caseId, subsetKey, orderKey, limKey]), // eslint-disable-line react-hooks/exhaustive-deps
+    [caseId, subsetKey, orderKey, limKey]
   )
   const replayApi = useApi(
-    useCallback(() => (caseId && subset.length ? runReplay(caseId) : Promise.resolve(null)), [caseId, subsetKey]), // eslint-disable-line react-hooks/exhaustive-deps
-    [caseId, subsetKey]
+    useCallback(() => (caseId && subset.length && limits ? runReplay(caseId, limits) : Promise.resolve(null)), [caseId, subsetKey, limKey]), // eslint-disable-line react-hooks/exhaustive-deps
+    [caseId, subsetKey, limKey]
   )
 
   const s = scenarioApi.data
   const replay = replayApi.data
   const effects = nodeEffects(s)
   const nodeStatus = useMemo(() => buildNodeStatus(replay), [replay])
-  const highlight = traceNode ? { type: 'nodes', ids: [traceNode] } : null
+  const targetId = replay?.replay_graph?.nodes?.find((n) => n.is_target)?.id ?? null
+  const flow = useMemo(() => buildFlow(s?.influence, traceNode, targetId), [s, traceNode, targetId])
   const { nodes, edges } = useMemo(
-    () => layoutGraph(replay?.replay_graph, highlight, nodeStatus, effects),
-    [replay, nodeStatus, effects, traceNode] // eslint-disable-line react-hooks/exhaustive-deps
+    () => layoutGraph(replay?.replay_graph, null, nodeStatus, effects, flow),
+    [replay, nodeStatus, effects, flow] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
-  if (!hasParams && last) return <Navigate replace to={scenarioPath(last.caseId, last.subset, last.order)} />
+  if (!hasParams && last) return <Navigate replace to={scenarioPath(last.caseId, last.subset, last.order, last.limits)} />
   if (!hasParams) {
     return (
       <Card>
         <div className="flex flex-col items-start gap-3">
           <div className="flex w-full items-center justify-between gap-2">
             <div className="flex items-center gap-2 text-[15px] font-bold text-[#101828]">
-              <FlaskConical size={17} /> Corrected Scenario
+              <FlaskConical size={17} /> Swap Scenario
             </div>
             <RefreshButton onClick={handleRefresh} />
           </div>
           <p className="max-w-xl text-[13px] leading-relaxed text-[#5c6b7a]">
             No change selected yet. Open a benchmark case in the Replay Console, choose one or more pairs in the{' '}
-            <b>Pairs</b> tab and press <b>Run change</b>. This page then shows the corrected graph, the step-by-step replay, the new total and
-            realised loss against the previous ones, and the Shapley split within that change.
+            <b>Pairs</b> tab and press <b>Run change</b>. This page then shows each order on the recorded values, step by step, with the new total and
+            realised loss against the original graph.
           </p>
           <Link
             to="/replay-console"
@@ -109,7 +129,7 @@ export default function Scenario() {
     )
   }
 
-  if (scenarioApi.loading || replayApi.loading)
+  if (scenarioApi.loading || replayApi.loading || (!limits && !hopsApi.error))
     return (
       <div>
         {refreshRow}
@@ -133,10 +153,12 @@ export default function Scenario() {
     const c = correctionLabel(nodeStatus?.[id]?.correction)
     return c ? `${id} (${c})` : id
   }
-  const pickOrder = (o) => setParams({ case: caseId, subset: subsetKey, order: o.join(',') })
+  const pickOrder = (o) => setParams(new URLSearchParams(scenarioPath(caseId, subset, o, limits).split('?')[1]))
   const nodeInfo = selectedNode && effects?.[selectedNode.id]
 
+  const goEdit = () => document.getElementById('scenario-edit')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   return (
+    <ReplayFlow fixed={{ caseId, limits }} highlightIds={subset} onEdit={goEdit}>
     <div className="flex flex-col gap-4">
       {/* Header: what was changed, and which order */}
       <Card className="!p-4">
@@ -147,14 +169,14 @@ export default function Scenario() {
               <span className="text-[15px] font-bold text-[#101828]">{caseId}</span>
               <span className="text-[#c2cad2]">·</span>
               <span className="font-mono text-[13px] font-semibold">
-                correct {s.subset.map(label).join(' + ')}
+                swap {s.subset.map(label).join(' + ')}
               </span>
               {badge && <StatusBadge status={badge} />}
             </div>
             <div className="mt-1 text-[12px] text-[#8a97a3]">
-              policy {s.policy_version} · synthetic benchmark case · {s.subset.length} events corrected together ·{' '}
-              {s.legit_order_count} legitimate order{s.legit_order_count === 1 ? '' : 's'} · the previous case is the posted
-              (uncorrected) one
+              policy {s.policy_version} · synthetic benchmark case · {s.subset.length} events in this swap ·{' '}
+              {s.legit_order_count} legitimate order{s.legit_order_count === 1 ? '' : 's'} · the previous case is the original graph
+              (every value as recorded); only an edit or a different order can change a value
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -211,7 +233,7 @@ export default function Scenario() {
         )}
         {!s.exploratory && !s.orders_agree && !sel.authoritative && (
           <div className="mt-3 rounded-lg bg-status-orderedBg px-3 py-2 text-[12px] text-status-ordered">
-            You are viewing a non-authoritative order. The policy applies{' '}
+            You are viewing a swapped order. The policy applies{' '}
             <b className="font-mono">{orderLabel(s.authoritative_order)}</b>; that is the outcome the verdict stands behind.
           </div>
         )}
@@ -240,7 +262,7 @@ export default function Scenario() {
               foot={s.exploratory ? 'exploratory — not an authoritative loss' : 'loss after this change'}
             />
             <Card className="!p-4">
-              <div className="text-[11px] font-semibold uppercase tracking-wide text-[#8a97a3]">Loss avoided by this change</div>
+              <div className="text-[11px] font-semibold uppercase tracking-wide text-[#8a97a3]">Loss removed by this order</div>
               <div className="mt-1 font-mono text-[20px] font-bold text-[#101828]">{formatPrecise(sel.value)}</div>
               <div className="mt-1 text-[11.5px] text-[#5c6b7a]">
                 v({s.subset.join(', ')}) = previous loss − new loss
@@ -252,9 +274,14 @@ export default function Scenario() {
           {/* Corrected graph */}
           <Card className="!p-0 overflow-hidden">
             <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-b border-[#e2e6ea] px-5 py-2.5">
-              <div className="text-[14px] font-bold">Corrected graph</div>
+              <div className="text-[14px] font-bold">
+                Graph after this order
+                <span className="ml-2 text-[11px] font-normal text-[#8a97a3]">
+                  columns = hops (furthest on the left){flow ? ' · press Play to follow the change' : ''}
+                </span>
+              </div>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-                {LEGEND.map((l) => (
+                {(flow ? FLOW_LEGEND : LEGEND).map((l) => (
                   <div key={l.label} className="flex items-center gap-1.5 text-[11.5px] text-[#5c6b7a]">
                     <span className="h-2.5 w-2.5 rounded-full" style={{ background: l.color }} />
                     {l.label}
@@ -287,13 +314,17 @@ export default function Scenario() {
             </div>
             <div className="border-t border-[#e2e6ea] px-5 py-2.5 text-[12.5px]">
               {!selectedNode ? (
-                <span className="text-[#8a97a3]">Click an event to see what the change did to it.</span>
+                <span className="text-[#8a97a3]">
+                  {flow
+                    ? `Step ${flow.step + 1}: the green pulsing node is being applied; amber nodes are the dependents that differ because of the order, with the amount.`
+                    : 'Click an event to see what the change did to it, or press Play on the right to watch the change travel through the graph.'}
+                </span>
               ) : (
                 <div>
                   <span className="font-semibold text-[#101828]">{selectedNode.id}</span>
                   <span className="text-[#8a97a3]"> · {selectedNode.activity} · </span>
                   <span className="text-[#5c6b7a]">
-                    {nodeInfo?.role === 'corrected' ? `corrected at step ${nodeInfo.step}` : nodeInfo?.role ?? 'target'}
+                    {nodeInfo?.role === 'corrected' ? `applied at step ${nodeInfo.step}` : nodeInfo?.role ?? 'target'}
                   </span>
                   {nodeInfo?.changes?.length > 0 ? (
                     <ul className="mt-1 font-mono text-[11.5px] text-[#5c6b7a]">
@@ -304,7 +335,7 @@ export default function Scenario() {
                       ))}
                     </ul>
                   ) : (
-                    <span className="text-[#8a97a3]"> · no field changed</span>
+                    <span className="text-[#8a97a3]"> · same as posted</span>
                   )}
                 </div>
               )}
@@ -319,7 +350,8 @@ export default function Scenario() {
             replay={sel}
             nodeStatus={nodeStatus}
             title="How the change builds the new total"
-            nonAuthoritativeNote="This order is not authoritative for the verdict — shown for comparison only."
+            authoritativeNote="Recorded values applied in the policy order."
+            nonAuthoritativeNote="Recorded values applied in this order. It is not authoritative for the verdict — shown for comparison only."
             onStepNode={setTraceNode}
             autoPlayKey={watched === caseId + orderKey + subsetKey ? null : caseId + orderKey + subsetKey}
             onAutoPlayEnd={() => setWatched(caseId + orderKey + subsetKey)}
@@ -370,11 +402,13 @@ export default function Scenario() {
             </div>
             <p className="mt-2 text-[10.5px] text-[#8a97a3]">Small figures under each value are the change against the previous case.</p>
           </Card>
-
-          <ShapleyCard shapley={s.shapley} subsetVerdict={s.subset_verdict} />
         </div>
       </div>
+
+      <PropagationReport scenario={s} caseId={caseId} onFocusNode={setTraceNode} />
+      <ChangePanel caseId={caseId} limits={limits} analysis={analysisApi.data} defaultSwap={s.selected_order} panelId="scenario-edit" />
     </div>
+    </ReplayFlow>
   )
 }
 
@@ -395,61 +429,6 @@ function Stat({ title, now, was, delta, goodWhen, foot }) {
         {formatSigned(delta)} vs previous
       </div>
       <div className="mt-1 text-[11px] text-[#8a97a3]">{foot}</div>
-    </Card>
-  )
-}
-
-function ShapleyCard({ shapley, subsetVerdict }) {
-  const rows = shapleyRows(shapley)
-  return (
-    <Card>
-      <div className="mb-1 text-[13px] font-bold text-[#101828]">Shapley within this change</div>
-      {shapley.status !== 'ok' ? (
-        <div className="rounded-lg bg-status-blockedBg px-3 py-2 text-[12px] leading-snug text-status-blocked">
-          Withheld. {shapley.reason}
-        </div>
-      ) : (
-        <>
-          <p className="mb-2 text-[11.5px] leading-relaxed text-[#8a97a3]">
-            Splits the loss this change avoids ({formatPrecise(shapley.v_of_subset)}) between the corrected events. It is not
-            the case-level attribution, which splits the whole case.
-          </p>
-          <ul className="flex flex-col gap-2">
-            {rows.map((r) => (
-              <li key={r.id}>
-                <div className="flex items-baseline justify-between font-mono text-[12px]">
-                  <span className="font-semibold text-[#101828]">{r.id}</span>
-                  <span>{formatPrecise(r.value)} <span className="text-[#8a97a3]">({Math.round(r.share * 100)}%)</span></span>
-                </div>
-                <div className="mt-0.5 h-1.5 rounded-full bg-[#eef1f4]">
-                  <div className="h-1.5 rounded-full bg-teal-500" style={{ width: `${Math.max(0, Math.min(100, r.share * 100))}%` }} />
-                </div>
-              </li>
-            ))}
-          </ul>
-          <div className={`mt-2 text-[11px] ${shapley.efficient ? 'text-status-pass' : 'text-status-blocked'}`}>
-            sum {formatPrecise(shapley.total)} {shapley.efficient ? '= v(S) ✓' : '≠ v(S) — check'}
-          </div>
-        </>
-      )}
-      <details className="mt-3">
-        <summary className="cursor-pointer text-[11px] font-semibold text-[#5c6b7a]">Coalition values used</summary>
-        <p className="mt-1 text-[10.5px] leading-snug text-[#5c6b7a]">
-          <span className="font-mono font-semibold">v(S) = loss before − loss after</span> correcting the events in S.
-        </p>
-        <table className="mt-1 w-full text-[11px]">
-          <tbody className="font-mono">
-            {shapley.coalition_table.map((t) => (
-              <tr key={t.key || 'empty'} className="border-t border-[#eef1f4]">
-                <td className="py-0.5 pr-2">{t.key ? `{${t.subset.join(', ')}}` : '∅'}</td>
-                <td className="py-0.5 pr-2 text-[10px] text-[#8a97a3]">{t.verdict}</td>
-                <td className="py-0.5 text-right">{t.value === null ? 'withheld' : formatPrecise(t.value)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </details>
-      <p className="mt-2 text-[10.5px] text-[#8a97a3]">Shapley source: {shapley.source}.</p>
     </Card>
   )
 }

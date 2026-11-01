@@ -15,10 +15,14 @@
  ],
  "eventTypes": [
   {
-   "name": "Convert Currency",
+   "name": "Apply Rounding",
    "attributes": [
     {
-     "name": "fx_rate",
+     "name": "decimals",
+     "type": "string"
+    },
+    {
+     "name": "mode",
      "type": "string"
     }
    ]
@@ -29,10 +33,6 @@
   },
   {
    "name": "Post Invoice",
-   "attributes": []
-  },
-  {
-   "name": "Set Payment Block",
    "attributes": []
   }
  ],
@@ -59,12 +59,40 @@
  "events": [
   {
    "id": "e1",
-   "type": "Convert Currency",
+   "type": "Insert Invoice",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00003",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "type": "Insert Invoice",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00003",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e3",
+   "type": "Apply Rounding",
    "time": "2026-08-03T15:00:00+00:00",
    "attributes": [
     {
-     "name": "fx_rate",
-     "value": "86.8205"
+     "name": "decimals",
+     "value": "1"
+    },
+    {
+     "name": "mode",
+     "value": "ROUND_DOWN"
     }
    ],
    "relationships": [
@@ -75,71 +103,7 @@
    ]
   },
   {
-   "id": "e2",
-   "type": "Set Payment Block",
-   "time": "2026-08-03T11:14:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00003",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00003",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e3",
-   "type": "Insert Invoice",
-   "time": "2026-08-03T11:21:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00003",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00003",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
    "id": "e4",
-   "type": "Set Payment Block",
-   "time": "2026-08-03T11:28:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00003",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00003",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e5",
-   "type": "Set Payment Block",
-   "time": "2026-08-03T11:35:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00003",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00003",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e6",
    "type": "Post Invoice",
    "time": "2026-08-03T16:00:00+00:00",
    "attributes": [],

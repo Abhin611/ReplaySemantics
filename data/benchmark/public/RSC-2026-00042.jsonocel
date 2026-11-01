@@ -11,21 +11,51 @@
   {
    "name": "Account",
    "attributes": []
+  },
+  {
+   "name": "Document",
+   "attributes": []
   }
  ],
  "eventTypes": [
   {
-   "name": "Post Invoice",
-   "attributes": []
-  },
-  {
-   "name": "Post Manual Adjustment",
+   "name": "Adjust Quantity",
    "attributes": [
     {
-     "name": "amount",
+     "name": "quantity",
      "type": "string"
     }
    ]
+  },
+  {
+   "name": "Apply Discount",
+   "attributes": [
+    {
+     "name": "rate",
+     "type": "string"
+    },
+    {
+     "name": "slot",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Apply Tax Code",
+   "attributes": [
+    {
+     "name": "rate",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Insert Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Post Invoice",
+   "attributes": []
   },
   {
    "name": "Set Payment Block",
@@ -50,77 +80,110 @@
    "type": "Account",
    "attributes": [],
    "relationships": []
+  },
+  {
+   "id": "DOC-00042-e1",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00042-e2",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
   }
  ],
  "events": [
   {
    "id": "e1",
-   "type": "Post Manual Adjustment",
+   "type": "Set Payment Block",
    "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "6168.94"
-    }
-   ],
+   "attributes": [],
    "relationships": [
     {
      "objectId": "INV-00042",
      "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00042-e1",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e2",
-   "type": "Post Manual Adjustment",
-   "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "5532.02"
-    }
-   ],
+   "type": "Insert Invoice",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [],
    "relationships": [
     {
-     "objectId": "INV-00042",
-     "qualifier": "posting"
+     "objectId": "DOC-00042-e1",
+     "qualifier": "linked_document"
+    },
+    {
+     "objectId": "DOC-00042-e2",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e3",
-   "type": "Set Payment Block",
-   "time": "2026-08-03T11:21:00+00:00",
-   "attributes": [],
-   "relationships": [
+   "type": "Apply Discount",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [
     {
-     "objectId": "INV-00042",
-     "qualifier": "posting"
+     "name": "rate",
+     "value": "0.20"
     },
     {
-     "objectId": "PO-00042",
-     "qualifier": "order"
+     "name": "slot",
+     "value": "1"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00042-e2",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e4",
-   "type": "Set Payment Block",
-   "time": "2026-08-03T11:28:00+00:00",
-   "attributes": [],
+   "type": "Apply Tax Code",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [
+    {
+     "name": "rate",
+     "value": "0.05"
+    }
+   ],
    "relationships": [
     {
-     "objectId": "INV-00042",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00042",
-     "qualifier": "order"
+     "objectId": "DOC-00042-e2",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e5",
+   "type": "Adjust Quantity",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
+    {
+     "name": "quantity",
+     "value": "24"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00042-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e6",
    "type": "Post Invoice",
    "time": "2026-08-03T16:00:00+00:00",
    "attributes": [],

@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import {
-  Bell, ChevronDown, FlaskConical, Folder, GitBranch, History, LayoutDashboard, Menu, PieChart,
+  Bell, ChevronDown, Layers, FlaskConical, Folder, GitBranch, History, LayoutDashboard, Menu, PieChart,
   PlayCircle, Search, Share2, ShieldCheck, SlidersHorizontal, X,
 } from 'lucide-react'
 import { mockUser } from '../data/mockData'
@@ -10,9 +10,10 @@ const MAIN = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/cases', label: 'Cases', icon: Folder },
   { to: '/replay-console', label: 'Replay Console', icon: PlayCircle },
+  { to: '/ledger', label: 'Analysis', icon: Layers },
   { to: '/replay-graph', label: 'Replay Graph', icon: Share2 },
   { to: '/attribution', label: 'Attribution', icon: PieChart },
-  { to: '/scenario', label: 'Corrected Scenario', icon: FlaskConical },
+  { to: '/scenario', label: 'Swap Scenario', icon: FlaskConical },
 ]
 const SYSTEM = [
   { to: '/policies', label: 'Policies', icon: ShieldCheck },

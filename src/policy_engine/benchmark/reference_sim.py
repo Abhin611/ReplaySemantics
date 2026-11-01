@@ -277,3 +277,111 @@ def compute_truth(
         "coalition_values": {tuple(sorted(s)): v for s, v in values.items()},
         "shapley": phi,
     }
+
+
+# =============================================================================================
+# Corrected-ledger truth (benchmark v2). Independent of replay_core, like everything above.
+#
+# "Corrected ledger" C: every NON-EXEMPT node's INPUT is restored to its compliant value, but the
+# stored (posted) amounts of discount / tax / rounding nodes stay as originally posted (stale).
+# Only the stale amounts can make the books wrong once the inputs are right, and only the order in
+# which posted-amount nodes are re-derived can change the outcome.
+# =============================================================================================
+POSTED_KINDS = frozenset({"discount", "tax", "rounding"})
+INPUT_KINDS = frozenset({"price", "qty", "currency", "adjustment"})
+MAX_ACTIVE_NODES = 7  # soft cap on ACTIVE nodes only (context events are free); the oracle is exponential in them
+RESOLUTION_CLASSES = ("SWAP_ONLY", "MULTI_EDIT_ONLY", "BOTH", "DIRECT_FIX")
+
+
+class OracleTooLarge(RuntimeError):
+    pass
+
+
+def _corrected_ledger(base, events) -> _Ledger:
+    led = _Ledger(base, events, _observed_fields(events))
+    led.post_all()  # as originally posted
+    for nid, e in events.items():
+        if e["kind"] in ACTIVE_KINDS and not e.get("exempt"):
+            led.raw[nid].update(e["compliant"])  # inputs corrected, posted amounts untouched
+    return led
+
+
+def _simulate_from_corrected(base, events, order) -> Decimal:
+    led = _corrected_ledger(base, events)
+    for nid in order:
+        e = events[nid]
+        if e["kind"] in ACTIVE_KINDS and not e.get("exempt"):
+            led.derive(nid)
+    return led.net()
+
+
+def ledger_truth(base, events, loss_spec, policy_dict, structural_pairs_all) -> dict:
+    """structural_pairs_all: (before, after) log locks over ALL events (contexts included); they are closed
+    transitively BEFORE being restricted to the posted nodes, so a lock through a context event still holds."""
+    active = sorted(i for i, e in events.items() if e["kind"] in ACTIVE_KINDS)
+    if len(active) > MAX_ACTIVE_NODES:
+        raise OracleTooLarge(f"{len(active)} active nodes exceed the oracle cap of {MAX_ACTIVE_NODES}")
+    posted = [i for i in active if events[i]["kind"] in POSTED_KINDS and not events[i].get("exempt")]
+    locks = _closure(set(structural_pairs_all))
+    n_star = compliant_net(base, events)
+    n_obs = simulate(base, events, [])
+    led_c = _corrected_ledger(base, events)
+    n_c = led_c.net()
+    l_obs = loss_of(loss_spec, n_obs, n_star)
+    l_c = loss_of(loss_spec, n_c, n_star)
+    prec, within = policy_kind_precedence(policy_dict)
+    pol_all = _policy_pairs(posted, events, prec, within)
+
+    def locked(a, b):
+        return (a, b) in locks or (b, a) in locks
+
+    # swappable pairs: posted-amount nodes, not log-locked, whose two orders give different totals
+    pairs = []
+    for i, a in enumerate(posted):
+        for b in posted[i + 1:]:
+            if locked(a, b):
+                continue
+            n_ab = _simulate_from_corrected(base, events, [a, b])
+            n_ba = _simulate_from_corrected(base, events, [b, a])
+            if n_ab == n_ba:
+                continue
+            first = (a, b) if (a, b) in pol_all else (b, a) if (b, a) in pol_all else None
+            pairs.append({"pair": [a, b], "blocked": first is None,
+                          "authoritative_order": list(first) if first else None,
+                          "net_ab": n_ab, "net_ba": n_ba})
+
+    # verdict over every subset of the posted nodes, starting from the corrected ledger
+    counts = {"PASS": 0, "POLICY_ORDERED": 0, "BLOCKED": 0}
+    for r in range(len(posted) + 1):
+        for S in combinations(posted, r):
+            legit = _legit(S, locks)
+            nets = {o: _simulate_from_corrected(base, events, o) for o in legit}
+            if len(set(nets.values())) <= 1:
+                counts["PASS"] += 1
+                continue
+            pol = {(a, b) for (a, b) in pol_all if (b, a) not in locks}
+            ok = [o for o in legit if all(o.index(a) < o.index(b) for (a, b) in pol if a in o and b in o)]
+            counts["POLICY_ORDERED" if ok and len({nets[o] for o in ok}) == 1 else "BLOCKED"] += 1
+
+    has_input = any(events[i]["kind"] in INPUT_KINDS and not events[i].get("exempt")
+                    and events[i]["observed"] != events[i]["compliant"] for i in active)
+    has_swap = bool(pairs)
+    if has_swap and has_input:
+        cls = "BOTH"
+    elif has_swap:
+        cls = "SWAP_ONLY"
+    elif not has_input and posted:
+        cls = "DIRECT_FIX"
+    else:
+        cls = "MULTI_EDIT_ONLY"
+    return {
+        "resolution_class": cls,
+        "blocked": any(p["blocked"] for p in pairs) or counts["BLOCKED"] > 0,
+        "posted_nodes": posted,
+        "swappable_pairs": pairs,
+        "policy_summary": counts,
+        "observed_net": n_obs, "corrected_inputs_net": n_c, "compliant_net": n_star,
+        "loss_observed": l_obs,
+        "loss_from_stale_amounts": l_c,              # what only re-deriving posted amounts can remove
+        "loss_from_inputs": l_obs - l_c,             # what correcting price / qty / FX / adjustments removes
+    }

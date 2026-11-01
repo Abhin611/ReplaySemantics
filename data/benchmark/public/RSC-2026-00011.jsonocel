@@ -11,20 +11,15 @@
   {
    "name": "Account",
    "attributes": []
+  },
+  {
+   "name": "Document",
+   "attributes": []
   }
  ],
  "eventTypes": [
   {
-   "name": "Apply Tax Code",
-   "attributes": [
-    {
-     "name": "rate",
-     "type": "string"
-    }
-   ]
-  },
-  {
-   "name": "Insert Invoice",
+   "name": "Approve Order",
    "attributes": []
   },
   {
@@ -32,8 +27,13 @@
    "attributes": []
   },
   {
-   "name": "Set Payment Block",
-   "attributes": []
+   "name": "Post Manual Adjustment",
+   "attributes": [
+    {
+     "name": "amount",
+     "type": "string"
+    }
+   ]
   }
  ],
  "objects": [
@@ -54,17 +54,56 @@
    "type": "Account",
    "attributes": [],
    "relationships": []
+  },
+  {
+   "id": "DOC-00011-e1",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
   }
  ],
  "events": [
   {
    "id": "e1",
-   "type": "Apply Tax Code",
+   "type": "Approve Order",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00011",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00011-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "-20600.15"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00011-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e3",
+   "type": "Post Manual Adjustment",
    "time": "2026-08-03T15:00:00+00:00",
    "attributes": [
     {
-     "name": "rate",
-     "value": "0.14"
+     "name": "amount",
+     "value": "9398.86"
     }
    ],
    "relationships": [
@@ -75,55 +114,7 @@
    ]
   },
   {
-   "id": "e2",
-   "type": "Insert Invoice",
-   "time": "2026-08-03T11:14:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00011",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00011",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e3",
-   "type": "Set Payment Block",
-   "time": "2026-08-03T11:21:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00011",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00011",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
    "id": "e4",
-   "type": "Set Payment Block",
-   "time": "2026-08-03T11:28:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00011",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00011",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e5",
    "type": "Post Invoice",
    "time": "2026-08-03T16:00:00+00:00",
    "attributes": [],

@@ -32,6 +32,11 @@ confluence check meaningful):
     `recompute_chain` below is the reference implementation of that cascade
     for the frozen domain.
 
+    The one extension to the frozen pipeline: `discount_after_tax`. The pipeline
+    still runs discount before tax, so the compliant net and every correction are
+    unchanged. A SWAP that runs tax before a discount (replay_core/swap.py) uses
+    it, because then the discount is taken on the amount that already holds tax.
+
 Everything is exact `Decimal` arithmetic -- no floats anywhere -- so two
 orders either agree to the paisa or they do not.
 """
@@ -406,6 +411,14 @@ def transfer_function(node_id: str, inputs: Mapping[str, Mapping[str, Any]], gra
         return own
 
     raise DomainModelError(f"no transfer function for node type {t!r}")
+
+
+def discount_after_tax(node_id: str, inputs: Mapping[str, Mapping[str, Any]], tax: Decimal, graph_context: DomainContext) -> dict[str, Any]:
+    """A discount applied AFTER the tax document: its rate also applies to the tax already posted.
+    `inputs` is what transfer_function(node_id) takes; `tax` is the stored tax amount. Never used by the pipeline."""
+    own = transfer_function(node_id, inputs, graph_context)
+    own["amount"] = D(own["amount"]) + D(own["rate"]) * D(tax)
+    return own
 
 
 def _gather_inputs(state_nodes: Mapping[str, Mapping[str, Any]], node_id: str, ctx: DomainContext) -> dict[str, Mapping[str, Any]]:

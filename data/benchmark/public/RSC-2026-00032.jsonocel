@@ -11,11 +11,28 @@
   {
    "name": "Account",
    "attributes": []
+  },
+  {
+   "name": "Document",
+   "attributes": []
   }
  ],
  "eventTypes": [
   {
-   "name": "Create Purchase Order",
+   "name": "Apply Discount",
+   "attributes": [
+    {
+     "name": "rate",
+     "type": "string"
+    },
+    {
+     "name": "slot",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Insert Invoice",
    "attributes": []
   },
   {
@@ -30,6 +47,10 @@
      "type": "string"
     }
    ]
+  },
+  {
+   "name": "Set Payment Block",
+   "attributes": []
   }
  ],
  "objects": [
@@ -50,72 +71,88 @@
    "type": "Account",
    "attributes": [],
    "relationships": []
+  },
+  {
+   "id": "DOC-00032-e1",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00032-e2",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
   }
  ],
  "events": [
   {
    "id": "e1",
-   "type": "Post Manual Adjustment",
+   "type": "Set Payment Block",
    "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "-24767.26"
-    }
-   ],
+   "attributes": [],
    "relationships": [
     {
      "objectId": "INV-00032",
      "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00032-e1",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e2",
-   "type": "Post Manual Adjustment",
-   "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "28691.30"
-    }
-   ],
+   "type": "Insert Invoice",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [],
    "relationships": [
     {
-     "objectId": "INV-00032",
-     "qualifier": "posting"
+     "objectId": "DOC-00032-e1",
+     "qualifier": "linked_document"
+    },
+    {
+     "objectId": "DOC-00032-e2",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e3",
-   "type": "Create Purchase Order",
-   "time": "2026-08-03T11:21:00+00:00",
-   "attributes": [],
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "5667.44"
+    }
+   ],
    "relationships": [
     {
-     "objectId": "INV-00032",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00032",
-     "qualifier": "order"
+     "objectId": "DOC-00032-e2",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e4",
-   "type": "Create Purchase Order",
-   "time": "2026-08-03T11:28:00+00:00",
-   "attributes": [],
-   "relationships": [
+   "type": "Apply Discount",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [
     {
-     "objectId": "INV-00032",
-     "qualifier": "posting"
+     "name": "rate",
+     "value": "0.12"
     },
     {
-     "objectId": "PO-00032",
-     "qualifier": "order"
+     "name": "slot",
+     "value": "1"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00032-e2",
+     "qualifier": "linked_document"
     }
    ]
   },

@@ -45,12 +45,12 @@ export default function OrderSensitivityCard({
       </div>
       {pairs.length === 0 ? (
         <p className="text-[11.5px] leading-relaxed text-[#5c6b7a]">
-          No pair disagreed: every legitimate order of the corrections gives the same total.
+          No pair disagreed: every legitimate order gives the same total.
         </p>
       ) : (
         <>
           <p className="mb-3 text-[11.5px] leading-relaxed text-[#8a97a3]">
-            Applying these corrections in a different order changes the total. Click a line to select it; select more than
+            The corrections check finds the order of these pairs matters; each line says what a swap itself does. Click a line to select it; select more than
             one to see their combined effect.
           </p>
           <ul className="flex max-h-[360px] flex-col gap-1.5 overflow-y-auto pr-1">
@@ -85,7 +85,7 @@ export default function OrderSensitivityCard({
                     </div>
                     <div className="text-[11px] text-[#5c6b7a]">{pairSentence(p, nodeStatus, eventLookup)}</div>
                     <div className="mt-0.5 text-[10.5px] text-[#8a97a3]">
-                      swapping them matters in {p.subsets_order_sensitive} subset
+                      order matters for corrections in {p.subsets_order_sensitive} subset
                       {p.subsets_order_sensitive === 1 ? '' : 's'}
                     </div>
                   </button>
@@ -111,16 +111,16 @@ export default function OrderSensitivityCard({
                   </button>
                   <p className="mt-1.5 text-[11px] leading-snug text-[#8a97a3]">
                     {tooMany
-                      ? `These pairs involve ${events.length} events; one change can correct at most ${MAX_SCENARIO_EVENTS}. Deselect a pair.`
+                      ? `These pairs involve ${events.length} events; one swap can hold at most ${MAX_SCENARIO_EVENTS}. Deselect a pair.`
                       : chosen.length > 1
-                      ? `Corrects all ${events.length} events together (an event in two pairs is corrected once) and tries every legitimate order. ${
+                      ? `Swaps all ${events.length} events together (an event in two pairs runs once) and tries every legitimate order, keeping every recorded value. ${
                           anyBlocked
-                            ? 'A selected pair has no authoritative order, so the combined result is exploratory and no Shapley is issued.'
+                            ? 'A selected pair has no authoritative order, so the combined result is exploratory.'
                             : 'The combined verdict decides whether the result is authoritative.'
                         }`
                       : chosen[0].status === 'blocked'
-                      ? 'No authoritative order exists for this pair, so both orders are shown as exploratory and no Shapley is issued.'
-                      : `Corrects both events${chosen[0].policy_first ? `, ${chosen[0].policy_first} first (the policy order)` : ''}, then shows the new graph, total, realised loss and Shapley.`}
+                      ? 'No authoritative order exists for this pair, so both orders are shown as exploratory.'
+                      : `Opens both orders on the recorded values${chosen[0].policy_first ? `, with ${chosen[0].policy_first} first as the policy order` : ''}: the posted order is the original graph, and only the other order can move a value.`}
                   </p>
                 </>
               )}

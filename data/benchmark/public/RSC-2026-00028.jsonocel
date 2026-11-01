@@ -11,9 +11,21 @@
   {
    "name": "Account",
    "attributes": []
+  },
+  {
+   "name": "Document",
+   "attributes": []
   }
  ],
  "eventTypes": [
+  {
+   "name": "Approve Order",
+   "attributes": []
+  },
+  {
+   "name": "Insert Invoice",
+   "attributes": []
+  },
   {
    "name": "Post Invoice",
    "attributes": []
@@ -46,62 +58,106 @@
    "type": "Account",
    "attributes": [],
    "relationships": []
+  },
+  {
+   "id": "DOC-00028-e1",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00028-e2",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
   }
  ],
  "events": [
   {
    "id": "e1",
-   "type": "Post Manual Adjustment",
+   "type": "Approve Order",
    "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "-54233.67"
-    }
-   ],
+   "attributes": [],
    "relationships": [
     {
      "objectId": "INV-00028",
      "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00028-e1",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e2",
-   "type": "Post Manual Adjustment",
-   "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "-42472.61"
-    }
-   ],
+   "type": "Insert Invoice",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [],
    "relationships": [
     {
-     "objectId": "INV-00028",
-     "qualifier": "posting"
+     "objectId": "DOC-00028-e1",
+     "qualifier": "linked_document"
+    },
+    {
+     "objectId": "DOC-00028-e2",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e3",
    "type": "Post Manual Adjustment",
-   "time": "2026-08-03T15:00:00+00:00",
+   "time": "2026-08-03T13:00:00+00:00",
    "attributes": [
     {
      "name": "amount",
-     "value": "-23450.71"
+     "value": "57565.87"
     }
    ],
    "relationships": [
     {
-     "objectId": "INV-00028",
-     "qualifier": "posting"
+     "objectId": "DOC-00028-e2",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e4",
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "1606.08"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00028-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e5",
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "108590.18"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00028-e2",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e6",
    "type": "Post Invoice",
    "time": "2026-08-03T16:00:00+00:00",
    "attributes": [],

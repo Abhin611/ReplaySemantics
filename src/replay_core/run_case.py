@@ -31,7 +31,7 @@ from math import factorial
 from pathlib import Path
 from typing import Callable, Mapping, Sequence
 
-from replay_core.benchmark_io import LoadedCase, load_benchmark_case, load_benchmark_index
+from replay_core.benchmark_io import LoadedCase, load_benchmark_case, load_benchmark_index, suggested_max_hops
 from replay_core.confluence import CaseVerdict, ConfluenceChecker
 from replay_core.replay import subset_key
 
@@ -82,9 +82,13 @@ class CaseRun:
 
 
 def run_case(root: str | Path, case_id: str, shapley_fn: ShapleyFn | None = provisional_shapley,
-             max_events: int = 8) -> CaseRun:
+             max_events: int | None = None, max_hops: int | None = None) -> CaseRun:
+    """max_hops=None means: use the depth the case's public log suggests (scoring needs a COMPLETE candidate set).
+    Pass an explicit number to study a shallower, partial run."""
     t0 = time.perf_counter()
-    loaded = load_benchmark_case(root, case_id, max_events=max_events)
+    if max_hops is None:
+        max_hops = suggested_max_hops(load_benchmark_index(root)[case_id])
+    loaded = load_benchmark_case(root, case_id, max_events=max_events, max_hops=max_hops)
     verdict = ConfluenceChecker.from_loaded(loaded).check_case()
     shapley = None
     if verdict.attribution_allowed and shapley_fn is not None:  # the validity gate
@@ -93,7 +97,7 @@ def run_case(root: str | Path, case_id: str, shapley_fn: ShapleyFn | None = prov
 
 
 def run_all(root: str | Path, shapley_fn: ShapleyFn | None = provisional_shapley,
-            max_events: int = 8) -> list[CaseRun]:
+            max_events: int | None = None) -> list[CaseRun]:
     return [run_case(root, cid, shapley_fn, max_events) for cid in sorted(load_benchmark_index(root))]
 
 

@@ -11,25 +11,51 @@
   {
    "name": "Account",
    "attributes": []
+  },
+  {
+   "name": "Document",
+   "attributes": []
   }
  ],
  "eventTypes": [
   {
-   "name": "Create Purchase Order",
+   "name": "Adjust Quantity",
+   "attributes": [
+    {
+     "name": "quantity",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Apply Rounding",
+   "attributes": [
+    {
+     "name": "decimals",
+     "type": "string"
+    },
+    {
+     "name": "mode",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Apply Tax Code",
+   "attributes": [
+    {
+     "name": "rate",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Approve Order",
    "attributes": []
   },
   {
    "name": "Post Invoice",
    "attributes": []
-  },
-  {
-   "name": "Post Manual Adjustment",
-   "attributes": [
-    {
-     "name": "amount",
-     "type": "string"
-    }
-   ]
   }
  ],
  "objects": [
@@ -50,64 +76,19 @@
    "type": "Account",
    "attributes": [],
    "relationships": []
+  },
+  {
+   "id": "DOC-00021-e1",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
   }
  ],
  "events": [
   {
    "id": "e1",
-   "type": "Post Manual Adjustment",
+   "type": "Approve Order",
    "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "1711.39"
-    }
-   ],
-   "relationships": [
-    {
-     "objectId": "INV-00021",
-     "qualifier": "posting"
-    }
-   ]
-  },
-  {
-   "id": "e2",
-   "type": "Post Manual Adjustment",
-   "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "24240.14"
-    }
-   ],
-   "relationships": [
-    {
-     "objectId": "INV-00021",
-     "qualifier": "posting"
-    }
-   ]
-  },
-  {
-   "id": "e3",
-   "type": "Post Manual Adjustment",
-   "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "113716.32"
-    }
-   ],
-   "relationships": [
-    {
-     "objectId": "INV-00021",
-     "qualifier": "posting"
-    }
-   ]
-  },
-  {
-   "id": "e4",
-   "type": "Create Purchase Order",
-   "time": "2026-08-03T11:28:00+00:00",
    "attributes": [],
    "relationships": [
     {
@@ -115,8 +96,63 @@
      "qualifier": "posting"
     },
     {
-     "objectId": "PO-00021",
-     "qualifier": "order"
+     "objectId": "DOC-00021-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "type": "Apply Tax Code",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
+    {
+     "name": "rate",
+     "value": "0.01"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00021-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e3",
+   "type": "Apply Rounding",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
+    {
+     "name": "decimals",
+     "value": "1"
+    },
+    {
+     "name": "mode",
+     "value": "ROUND_DOWN"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00021-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e4",
+   "type": "Adjust Quantity",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "quantity",
+     "value": "37"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00021",
+     "qualifier": "posting"
     }
    ]
   },

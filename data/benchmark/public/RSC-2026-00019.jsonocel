@@ -11,12 +11,34 @@
   {
    "name": "Account",
    "attributes": []
+  },
+  {
+   "name": "Document",
+   "attributes": []
   }
  ],
  "eventTypes": [
   {
-   "name": "Approve Order",
-   "attributes": []
+   "name": "Apply Discount",
+   "attributes": [
+    {
+     "name": "rate",
+     "type": "string"
+    },
+    {
+     "name": "slot",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Apply Tax Code",
+   "attributes": [
+    {
+     "name": "rate",
+     "type": "string"
+    }
+   ]
   },
   {
    "name": "Convert Currency",
@@ -26,6 +48,10 @@
      "type": "string"
     }
    ]
+  },
+  {
+   "name": "Insert Invoice",
+   "attributes": []
   },
   {
    "name": "Post Invoice",
@@ -50,71 +76,83 @@
    "type": "Account",
    "attributes": [],
    "relationships": []
+  },
+  {
+   "id": "DOC-00019-e1",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
   }
  ],
  "events": [
   {
    "id": "e1",
-   "type": "Convert Currency",
+   "type": "Insert Invoice",
    "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "fx_rate",
-     "value": "0.9670"
-    }
-   ],
+   "attributes": [],
    "relationships": [
     {
      "objectId": "INV-00019",
      "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00019-e1",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e2",
-   "type": "Approve Order",
-   "time": "2026-08-03T11:14:00+00:00",
-   "attributes": [],
-   "relationships": [
+   "type": "Apply Discount",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
     {
-     "objectId": "INV-00019",
-     "qualifier": "posting"
+     "name": "rate",
+     "value": "0.10"
     },
     {
-     "objectId": "PO-00019",
-     "qualifier": "order"
+     "name": "slot",
+     "value": "1"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00019-e1",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e3",
-   "type": "Approve Order",
-   "time": "2026-08-03T11:21:00+00:00",
-   "attributes": [],
+   "type": "Apply Tax Code",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
+    {
+     "name": "rate",
+     "value": "0.14"
+    }
+   ],
    "relationships": [
     {
-     "objectId": "INV-00019",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00019",
-     "qualifier": "order"
+     "objectId": "DOC-00019-e1",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e4",
-   "type": "Approve Order",
-   "time": "2026-08-03T11:28:00+00:00",
-   "attributes": [],
+   "type": "Convert Currency",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
+    {
+     "name": "fx_rate",
+     "value": "79.2181"
+    }
+   ],
    "relationships": [
     {
-     "objectId": "INV-00019",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00019",
-     "qualifier": "order"
+     "objectId": "DOC-00019-e1",
+     "qualifier": "linked_document"
     }
    ]
   },

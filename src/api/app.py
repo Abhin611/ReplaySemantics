@@ -47,14 +47,19 @@ from pydantic import BaseModel
 from replay_core.candidate_extraction import CandidateExtractionResult, extract_candidate_events
 from replay_core.constraint_extraction import extract_constraints
 from replay_core.graph import ObjectCentricGraph
-from replay_core.benchmark_io import BenchmarkNotFound, LoadedCase, load_benchmark_case, load_benchmark_index
+from replay_core.benchmark_io import (
+    BenchmarkNotFound, LoadedCase, load_benchmark_case, load_benchmark_index, suggested_max_hops,
+)
+from replay_core.ledger import LedgerError, analyse as ledger_analyse, ledger_view, run_change, run_pair
+from replay_core.limits import hop_profile, limit_report
 from policy_engine.schema import POLICY_DIR, list_policies
-from replay_core.confluence import CaseVerdict, ConfluenceChecker, transitive_closure
+from replay_core.confluence import CaseVerdict, ConfluenceChecker, ConfluenceTooLarge, transitive_closure
 from replay_core.ingestion import load_ocel
 from replay_core.propagation import EDITABLE_FIELDS, PropagationError, propagate_multi
-from replay_core.explain import describe_events, total_calculation
+from replay_core.explain import describe_events, describe_reference, total_calculation
 from replay_core.replay import ReplayOperator, state_to_json
 from replay_core.scenario import ScenarioError, run_scenario
+from replay_core.swap import SwapOperator
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 OCEL_PATH = REPO_ROOT / "data" / "raw" / "vbfa_o2c_2019_2021_eur.jsonocel"
@@ -271,11 +276,39 @@ def _stages_1_to_2b(graph: ObjectCentricGraph, target, result, constraint_result
             ],
         },
         "replay_graph": build_case_graph(graph, target, result),
+        "event_facts": _event_facts(graph, target, result),
+        "ocel_table": _ocel_table(graph, target, result),
     }
 
 
+def _event_facts(graph: ObjectCentricGraph, target, result) -> dict:
+    """What the OCEL log itself records for every event of the graph (time, related objects, attributes). Present for
+    EVERY node, financial or not, so the graph never shows an empty event."""
+    out = {}
+    for e in [*result.candidate_events, target]:
+        out[e.event_id] = {
+            "activity": e.activity, "timestamp": e.timestamp.isoformat(),
+            "objects": [{"id": r.object_id, "type": graph.log.get_object(r.object_id).object_type,
+                         "qualifier": r.qualifier} for r in e.related_objects],
+            "attributes": dict(e.attributes),
+        }
+    return out
+
+
+def _ocel_table(graph: ObjectCentricGraph, target, result) -> dict:
+    """The case as it sits in the OCEL 2.0 log: one row per event, oldest first. The Replay Console shows this table
+    first and then turns each row into a graph node."""
+    facts = _event_facts(graph, target, result)
+    hops = result.event_hops
+    rows = [{"id": k, "activity": v["activity"], "timestamp": v["timestamp"], "hop": hops.get(k),
+             "is_target": k == target.event_id, "objects": [f"{o['type']} {o['id']}" for o in v["objects"]],
+             "attributes": v["attributes"]} for k, v in facts.items()]
+    rows.sort(key=lambda r: (r["timestamp"], r["id"]))
+    return {"columns": ["Event", "Activity", "Time", "Related objects", "Attributes"], "rows": rows}
+
+
 @app.get("/api/cases/{case_id}/replay")
-def run_replay(case_id: str, max_events: int = 8, min_events: int = 3, max_hops: int = 3):
+def run_replay(case_id: str, max_events: int | None = None, min_events: int = 3, max_hops: int = 3):
     """
     Runs the pipeline for one case.
 
@@ -283,10 +316,14 @@ def run_replay(case_id: str, max_events: int = 8, min_events: int = 3, max_hops:
       no price / discount / tax / FX fields, so there is nothing to replay (see
       docs/real_data_scope_decision.md).
     * Benchmark cases (RSC-...): all five stages run, on synthetic data labelled as such.
-      (max_events / min_events / max_hops apply to VBFA cases only.)
+    The three limits (max_events: none by default, min_events, max_hops: 3 by default) apply to EVERY case alike;
+    the response says whether the kept candidate set is complete or partial.
     """
     if _is_benchmark_id(case_id):
-        return _benchmark_replay_response(case_id)
+        try:
+            return _benchmark_replay_response(case_id, (max_events, min_events, max_hops))
+        except ConfluenceTooLarge as exc:
+            raise HTTPException(status_code=422, detail=str(exc))
 
     graph = get_graph()
     try:
@@ -303,6 +340,7 @@ def run_replay(case_id: str, max_events: int = 8, min_events: int = 3, max_hops:
     return {
         "case_id": case_id,
         "source": "real VBFA (SAP document flow)",
+        "limits": limit_report(graph, result, max_events=max_events, min_events=min_events, max_hops=max_hops),
         **_stages_1_to_2b(graph, target, result, constraint_result),
         "stage_3_confluence_checks": {"status": "not_applicable", "message": na},
         "stage_4_policy_resolution": {"status": "not_applicable", "message": na},
@@ -327,7 +365,10 @@ class EditRequest(BaseModel):
     edits: dict[str, dict[str, Any]]
 
 
-def _benchmark_case(case_id: str) -> LoadedCase:
+DEFAULT_LIMITS = (None, 3, 3)  # (max_events, min_events, max_hops): no event cap, default 3 hops, for every case
+
+
+def _benchmark_case(case_id: str, limits: tuple = DEFAULT_LIMITS) -> LoadedCase:
     """Load a benchmark case, or raise the right HTTP error."""
     try:
         index = load_benchmark_index(BENCHMARK_DIR)
@@ -345,14 +386,18 @@ def _benchmark_case(case_id: str) -> LoadedCase:
                        "so replay and editing are only available for benchmark cases (RSC-...).",
             )
         raise HTTPException(status_code=404, detail=f"Unknown case id: {case_id}")
-    return _load_benchmark_case_cached(str(BENCHMARK_DIR), case_id)
+    try:
+        return _load_benchmark_case_cached(str(BENCHMARK_DIR), case_id, *limits)
+    except ConfluenceTooLarge as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
 
 
-# maxsize must exceed the number of benchmark cases (140 by default): a smaller LRU would evict
+# maxsize must exceed the number of benchmark cases (54 by default, times the limit settings in use): a smaller LRU would evict
 # and recompute the whole benchmark on every /api/benchmark/verdicts call.
 @lru_cache(maxsize=1024)
-def _load_benchmark_case_cached(root: str, case_id: str) -> LoadedCase:
-    return load_benchmark_case(root, case_id)
+def _load_benchmark_case_cached(root: str, case_id: str, max_events=None, min_events=3, max_hops=3) -> LoadedCase:
+    # the limits are part of the cache key: a different limit is a different candidate set
+    return load_benchmark_case(root, case_id, max_events=max_events, min_events=min_events, max_hops=max_hops)
 
 
 @app.get("/api/benchmark/cases")
@@ -367,10 +412,23 @@ def list_benchmark_cases():
         "cases": [
             {"case_id": c["case_id"], "target_event_id": c["target_event_id"],
              "policy_version": c["policy_version"], "realized_loss": c["realized_loss"],
-             "source": BENCHMARK_SOURCE}
+             "source": BENCHMARK_SOURCE, **_class_chip(c["case_id"])}
             for c in index.values()
         ],
     }
+
+
+def _class_chip(case_id: str) -> dict:
+    """What the system itself finds in the case (never the sealed truth): resolution class, blocked status and the
+    depth of its deepest correctable event, read from the public log."""
+    try:
+        a = _analysis_cached(str(BENCHMARK_DIR), case_id, *_hint_limits(case_id))
+        prof = hop_profile(_load_benchmark_case_cached(str(BENCHMARK_DIR), case_id, *_hint_limits(case_id)).graph,
+                           load_benchmark_index(BENCHMARK_DIR)[case_id]["target_event_id"])
+    except Exception:  # noqa: BLE001  (a list row must never fail the whole list)
+        return {"resolution_class": None, "blocked": None, "hops": None, "suggested_max_hops": None}
+    return {"resolution_class": a.get("resolution_class"), "blocked": a.get("blocked"),
+            "hops": prof["deepest_active_hop"], "suggested_max_hops": _hint_limits(case_id)[2]}
 
 
 @app.get("/api/benchmark/verdicts")
@@ -382,21 +440,22 @@ def benchmark_verdicts():
         raise HTTPException(status_code=404, detail=str(exc))
     out = {}
     for cid in index:
-        lc, cv = _checked_case_cached(str(BENCHMARK_DIR), cid)
+        lc, cv = _checked_case_cached(str(BENCHMARK_DIR), cid, *_hint_limits(cid))
         counts = cv.to_dict(include_subsets=False)["counts"]
         out[cid] = {
             "classification": cv.classification, "attribution_allowed": cv.attribution_allowed,
             "counts": counts, "num_players": len(cv.players),
             "num_candidates": len(lc.extraction.candidate_events), "policy_version": lc.entry["policy_version"],
+            "max_hops_used": lc.limits["limits"]["max_hops"],
         }
     return {"source": BENCHMARK_SOURCE, "verdicts": out}
 
 
 @app.get("/api/cases/{case_id}/state")
-def get_case_state(case_id: str):
+def get_case_state(case_id: str, max_events: int | None = None, min_events: int = 3, max_hops: int = 3):
     """Observed state of a benchmark case, the editable fields of each node, and the
     net/loss -- what a node-edit UI needs to render its form."""
-    return _state_payload(case_id, _benchmark_case(case_id))
+    return _state_payload(case_id, _benchmark_case(case_id, (max_events, min_events, max_hops)))
 
 
 def _state_payload(case_id: str, lc: LoadedCase) -> dict:
@@ -416,10 +475,10 @@ def _state_payload(case_id: str, lc: LoadedCase) -> dict:
 
 
 @app.post("/api/cases/{case_id}/edit")
-def edit_case(case_id: str, body: EditRequest):
+def edit_case(case_id: str, body: EditRequest, max_events: int | None = None, min_events: int = 3, max_hops: int = 3):
     """Multi-node edit with a single cascade (propagate_multi): edit several nodes,
     send them all at once, get every recomputed downstream value back."""
-    lc = _benchmark_case(case_id)
+    lc = _benchmark_case(case_id, (max_events, min_events, max_hops))
     try:
         result = propagate_multi(lc.model, body.edits)
     except PropagationError as exc:
@@ -428,19 +487,97 @@ def edit_case(case_id: str, body: EditRequest):
 
 
 @app.get("/api/cases/{case_id}/scenario")
-def get_scenario(case_id: str, subset: str, order: str | None = None):
+def get_scenario(case_id: str, subset: str, order: str | None = None, max_events: int | None = None,
+                 min_events: int = 3, max_hops: int = 3):
     """Run a change: replay `subset` (comma-separated event ids, e.g. "e1,e2" -- usually one
     order-sensitive pair) and compare the corrected case with the previous one. `order` picks
     which legitimate order to headline (default: the policy's authoritative order). Pure and
     deterministic, so the UI keeps the whole scenario in the URL; nothing is stored."""
-    _benchmark_case(case_id)  # right 404 / 422 for unknown or real-SAP ids
-    lc, cv = _checked_case_cached(str(BENCHMARK_DIR), case_id)
+    lim = (max_events, min_events, max_hops)
+    _benchmark_case(case_id, lim)  # right 404 / 422 for unknown or real-SAP ids
+    try:
+        # a swap replays the books as posted; the verdict of each subset still comes from the corrected-ledger check
+        lc = _load_benchmark_case_cached(str(BENCHMARK_DIR), case_id, *lim)
+        _, cv = _ledger_view_cached(str(BENCHMARK_DIR), case_id, *lim)
+    except ConfluenceTooLarge as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
     ids = [x for x in subset.split(",") if x]
     ord_ids = [x for x in order.split(",") if x] if order else None
     try:
-        return {"source": BENCHMARK_SOURCE, **run_scenario(lc, cv, ids, ord_ids)}
+        return {"source": BENCHMARK_SOURCE, **run_scenario(lc, cv, ids, ord_ids, op=SwapOperator(lc.model))}
     except ScenarioError as exc:
+        raise HTTPException(status_code=422, detail=f"{exc}. Only posted-amount events (discount, tax, rounding) can be "
+                            "swapped; if an event is missing here, raise max_hops / max_events so it is part of the case.")
+
+
+@app.get("/api/cases/{case_id}/analysis")
+def get_analysis(case_id: str, max_events: int | None = None, min_events: int = 3, max_hops: int = 3):
+    """The corrected-ledger view: nodes with corrected inputs and posted amounts, the loss split, the policy summary
+    over the posted-amount nodes, the swappable pairs, the resolution class and the description. The limits apply to
+    every case; `complete` / `limits.partial_reasons` say when the kept candidate set is not the whole story."""
+    lim = (max_events, min_events, max_hops)
+    lc = _benchmark_case(case_id, lim)
+    try:
+        ex = lc.extraction
+        return {"source": BENCHMARK_SOURCE, **_analysis_cached(str(BENCHMARK_DIR), case_id, *lim),
+                "event_facts": _event_facts(lc.graph, ex.target_event, ex),
+                "reference_node": describe_reference(lc.operator().ctx)}
+    except ConfluenceTooLarge as exc:
         raise HTTPException(status_code=422, detail=str(exc))
+
+
+@app.get("/api/cases/{case_id}/pair")
+def get_pair_run(case_id: str, a: str, b: str, max_events: int | None = None, min_events: int = 3, max_hops: int = 3):
+    """Run one swappable pair: both orders step by step, posted vs should-be per dependent, authoritative order."""
+    lc = _benchmark_case(case_id, (max_events, min_events, max_hops))
+    try:
+        return {"source": BENCHMARK_SOURCE, **run_pair(lc, a, b)}
+    except LedgerError as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
+
+
+class ChangeRequest(BaseModel):
+    """edits: node -> {input field: value} (one cascade); swap: posted-amount nodes to re-derive, in this order;
+    sequence: swap_first | edit_first | both (compare the two)."""
+
+    edits: dict[str, dict[str, Any]] = {}
+    swap: list[str] = []
+    sequence: str = "both"
+
+
+@app.post("/api/cases/{case_id}/change")
+def post_change(case_id: str, body: ChangeRequest, max_events: int | None = None, min_events: int = 3,
+                max_hops: int = 3):
+    lc = _benchmark_case(case_id, (max_events, min_events, max_hops))
+    try:
+        return {"source": BENCHMARK_SOURCE, **run_change(lc, body.edits, body.swap, body.sequence)}
+    except LedgerError as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
+
+
+def _full_graph(prof: dict) -> dict:
+    """The limits that show EVERY reachable event: the first run of a case draws the whole graph; the user narrows it
+    afterwards. (min_events equals max_events so nothing is warned about or dropped.)"""
+    deepest = max((r["hop"] for r in prof["rows"] if r["events"]), default=1)
+    return {"max_hops": deepest, "max_events": prof["total_events"] + 1, "min_events": prof["total_events"] + 1}
+
+
+@app.get("/api/cases/{case_id}/hops")
+def get_hop_profile(case_id: str):
+    """How many events (and how many correctable ones) are reachable at 1..6 hops, from the public log. Works for the
+    real SAP events and the benchmark cases alike, and is what the limit controls are built on."""
+    graph = get_graph()
+    if _is_benchmark_id(case_id):
+        lc = _benchmark_case(case_id)
+        prof = hop_profile(lc.graph, lc.entry["target_event_id"], upto=10)
+        return {"case_id": case_id, **prof, "suggested_max_hops": suggested_max_hops(lc.entry),
+                "full_graph": _full_graph(prof)}
+    try:
+        graph.get_event(case_id)
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"Unknown case/event id: {case_id}")
+    prof = hop_profile(graph, case_id, upto=10)
+    return {"case_id": case_id, **prof, "suggested_max_hops": None, "full_graph": _full_graph(prof)}
 
 
 def _is_benchmark_id(case_id: str) -> bool:
@@ -460,14 +597,32 @@ def _benchmark_case_rows() -> list[dict]:
             "value_inr_cr": None, "objects": [], "max_candidates_at_default_hops": None,
             "note": f"benchmark (synthetic) · realized loss {float(c['realized_loss']):,.2f}",
             "source": BENCHMARK_SOURCE, "realized_loss": c["realized_loss"], "policy_version": c["policy_version"],
+            **_class_chip(c["case_id"]),
         })
     return rows
 
 
 @lru_cache(maxsize=1024)
-def _checked_case_cached(root: str, case_id: str) -> tuple[LoadedCase, CaseVerdict]:
-    lc = _load_benchmark_case_cached(root, case_id)
+def _checked_case_cached(root: str, case_id: str, max_events=None, min_events=3, max_hops=3) -> tuple[LoadedCase, CaseVerdict]:
+    lc = _load_benchmark_case_cached(root, case_id, max_events, min_events, max_hops)
     return lc, ConfluenceChecker.from_loaded(lc).check_case()
+
+
+@lru_cache(maxsize=1024)
+def _ledger_view_cached(root: str, case_id: str, max_events=None, min_events=3, max_hops=3):
+    """(lc_c, cv_c): the corrected-ledger view the Replay Console and the Corrected Scenario page run on."""
+    return ledger_view(_load_benchmark_case_cached(root, case_id, max_events, min_events, max_hops))
+
+
+@lru_cache(maxsize=1024)
+def _analysis_cached(root: str, case_id: str, max_events=None, min_events=3, max_hops=3) -> dict:
+    return ledger_analyse(_load_benchmark_case_cached(root, case_id, max_events, min_events, max_hops))
+
+
+def _hint_limits(case_id: str) -> tuple:
+    """Limits used for LIST rows (class / verdict chips): the depth the case's public log suggests, so a 5-hop case is
+    summarised on its complete candidate set. Only list rows do this; the replay pages use the user's own limits."""
+    return (None, 3, suggested_max_hops(load_benchmark_index(BENCHMARK_DIR)[case_id]))
 
 
 def _with_calculations(op, replay) -> dict:
@@ -479,10 +634,23 @@ def _with_calculations(op, replay) -> dict:
     return d
 
 
-def _benchmark_replay_response(case_id: str) -> dict:
-    lc, cv = _checked_case_cached(str(BENCHMARK_DIR), case_id)
+def _add_reference_node(stages: dict, ex) -> None:
+    """The start node REF (fixed values), drawn left of the deepest event with an edge into the net total."""
+    g = stages["replay_graph"]
+    deepest = max((n["hop"] for n in g["nodes"] if isinstance(n.get("hop"), int)), default=0)
+    target_id = ex.target_event.event_id
+    g["nodes"].append({"id": "REF", "activity": "Case reference", "timestamp": None, "value_eur": None,
+                       "hop": deepest + 1, "is_target": False, "is_reference": True, "connected_to_target": True,
+                       "status": "idle"})
+    g["edges"].append({"source": target_id, "target": "REF", "shared_objects": []})
+
+
+def _benchmark_replay_response(case_id: str, limits: tuple = DEFAULT_LIMITS) -> dict:
+    lc0 = _load_benchmark_case_cached(str(BENCHMARK_DIR), case_id, *limits)
+    lc, cv = _ledger_view_cached(str(BENCHMARK_DIR), case_id, *limits)  # authorised inputs, posted amounts as posted
     ex, cons = lc.extraction, lc.constraints
     op = lc.operator()
+    view = SwapOperator(lc0.model)  # what the console SHOWS: the original graph, every value as recorded
     effective = {n for n in cv.players if op.noop_reason(n) is None}
 
     sensitive: dict[str, set[str]] = {}
@@ -500,8 +668,7 @@ def _benchmark_replay_response(case_id: str) -> dict:
     full_key = ",".join(sorted(cv.players))
     full = cv.subsets[full_key]
     order_is_authoritative = full.order_used is not None
-    trace_order = full.order_used if order_is_authoritative else op.canonical_order(cv.players)
-    replay_all = op.replay(cv.players, trace_order)
+    replay_all = view.replay(cv.players, view.canonical_order(cv.players))  # the order that was posted: nothing moves
 
     unresolved = {tuple(sorted(p)) for sv in blocked if sv.resolution for p in sv.resolution.unresolved_pairs}
     pair_details = []
@@ -515,6 +682,7 @@ def _benchmark_replay_response(case_id: str) -> dict:
             "policy_first": (two.order_used[0] if two is not None and two.verdict == "POLICY_ORDERED" else None),
             "reason_code": reason,
             "subsets_order_sensitive": sum(1 for sv in cv.subsets.values() if (a, b) in sv.disagreeing_pairs),
+            "swap_difference": str(abs(view.replay((a, b), (a, b)).net - view.replay((a, b), (b, a)).net)),
         })
 
     from itertools import combinations
@@ -526,13 +694,16 @@ def _benchmark_replay_response(case_id: str) -> dict:
     blocked_note = (f"{len(blocked)} of {len(cv.subsets)} subsets are BLOCKED: the correction orders "
                     "disagree and the policy does not fix an order. No defensible number exists; attribution is withheld.")
     stages = _stages_1_to_2b(lc.graph, ex.target_event, ex, cons)
+    _add_reference_node(stages, ex)
     activities = {n["id"]: n["activity"] for n in stages.get("replay_graph", {}).get("nodes", [])}
     return {
-        "case_id": case_id,
+        "case_id": case_id, "limits": lc.limits,
         "source": BENCHMARK_SOURCE,
         "policy_version": lc.entry["policy_version"],
         **stages,
-        "event_descriptions": describe_events(op, activities),
+        "event_descriptions": [describe_reference(op.ctx), *describe_events(view, activities, stages["event_facts"])],
+        "reference_node": describe_reference(op.ctx),
+        "starts_from": "original graph: every value as recorded",
         "node_status": [
             {"event_id": n, "role": ("effective" if n in effective else "exempt"),
              "correction_id": lc.model.correction_ids.get(n),
@@ -542,6 +713,13 @@ def _benchmark_replay_response(case_id: str) -> dict:
             {"event_id": n, "role": "context", "correction_id": None, "order_sensitive_with": []}
             for n in sorted(op.ctx.node_types)
             if op.ctx.type_of(n) == "context"
+        ] + [
+            # input nodes (price, quantity, rates...) are not re-derived, so no order can matter for them: they are
+            # order-independent and are changed with Edit
+            {"event_id": n, "role": ("exempt" if op.noop_reason(n) == "exempt" else "effective"),
+             "correction_id": lc.model.correction_ids.get(n), "order_sensitive_with": []}
+            for n in sorted(op.ctx.node_types)
+            if op.ctx.type_of(n) not in ("context", "net") and n not in cv.players
         ],
         "stage_3_confluence_checks": {
             "status": "complete",
@@ -593,13 +771,13 @@ def _benchmark_replay_response(case_id: str) -> dict:
             "shapley": None,
             "shapley_status": ("withheld: case is BLOCKED" if not cv.attribution_allowed
                                else "pending: attribution layer (Member 3) not yet wired"),
-            "realized_loss": str(op.observed_loss),
+            "realized_loss": str(view.observed_loss),
             "replay_of_all_corrections": {
                 "order_is_authoritative": order_is_authoritative,
                 "note": None if order_is_authoritative else
                         "Illustrative canonical order only: the full set is BLOCKED, so this is NOT an authoritative outcome.",
-                **_with_calculations(op, replay_all),
-                "observed_breakdown": op.observed_breakdown(),
+                **_with_calculations(view, replay_all),
+                "observed_breakdown": view.observed_breakdown(),
             },
         },
     }
@@ -654,7 +832,8 @@ def _warm_benchmark_cache() -> None:
     Best effort only: a missing/odd benchmark must never stop the server from starting."""
     try:
         for cid in load_benchmark_index(BENCHMARK_DIR):
-            _checked_case_cached(str(BENCHMARK_DIR), cid)
+            _checked_case_cached(str(BENCHMARK_DIR), cid, *_hint_limits(cid))
+            _analysis_cached(str(BENCHMARK_DIR), cid, *_hint_limits(cid))
     except Exception:  # noqa: BLE001
         pass
 

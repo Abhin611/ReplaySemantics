@@ -11,15 +11,15 @@
   {
    "name": "Account",
    "attributes": []
+  },
+  {
+   "name": "Document",
+   "attributes": []
   }
  ],
  "eventTypes": [
   {
-   "name": "Create Purchase Order",
-   "attributes": []
-  },
-  {
-   "name": "Insert Invoice",
+   "name": "Approve Order",
    "attributes": []
   },
   {
@@ -34,10 +34,6 @@
      "type": "string"
     }
    ]
-  },
-  {
-   "name": "Set Payment Block",
-   "attributes": []
   }
  ],
  "objects": [
@@ -58,17 +54,56 @@
    "type": "Account",
    "attributes": [],
    "relationships": []
+  },
+  {
+   "id": "DOC-00012-e1",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
   }
  ],
  "events": [
   {
    "id": "e1",
+   "type": "Approve Order",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00012",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00012-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "35765.82"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00012-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e3",
    "type": "Post Manual Adjustment",
    "time": "2026-08-03T15:00:00+00:00",
    "attributes": [
     {
      "name": "amount",
-     "value": "-2611.60"
+     "value": "40458.05"
     }
    ],
    "relationships": [
@@ -79,71 +114,7 @@
    ]
   },
   {
-   "id": "e2",
-   "type": "Set Payment Block",
-   "time": "2026-08-03T11:14:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00012",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00012",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e3",
-   "type": "Insert Invoice",
-   "time": "2026-08-03T11:21:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00012",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00012",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
    "id": "e4",
-   "type": "Set Payment Block",
-   "time": "2026-08-03T11:28:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00012",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00012",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e5",
-   "type": "Create Purchase Order",
-   "time": "2026-08-03T11:35:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00012",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00012",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e6",
    "type": "Post Invoice",
    "time": "2026-08-03T16:00:00+00:00",
    "attributes": [],

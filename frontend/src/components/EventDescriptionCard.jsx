@@ -15,12 +15,13 @@ export default function EventDescriptionCard({ events, selected, onSelect }) {
   return (
     <>
       <p className="px-1 text-[11.5px] leading-relaxed text-[#8a97a3]">
-        What each event in the graph stands for, the values stored in it, and how its own total is worked out (values as posted,
-        before any correction).
+        What each event in the graph stands for, the values stored in it, and how its own total is worked out (values as posted).
       </p>
       {events.map((e) => {
         const inputs = e.lines.filter((l) => l.kind === 'input')
         const steps = e.lines.filter((l) => l.kind === 'step')
+        const recorded = e.recorded || []
+        const sources = e.sources || []
         const on = selected === e.node_id
         return (
           <Card key={e.node_id} className={`!p-3.5 ${on ? 'ring-2 ring-amber-400' : ''}`}>
@@ -38,6 +39,13 @@ export default function EventDescriptionCard({ events, selected, onSelect }) {
               <p className="mt-1 text-[11.5px] leading-relaxed text-[#5c6b7a]">{e.meaning}</p>
             </button>
 
+            {sources.length > 0 && (
+              <Section title="Where each value comes from">
+                {sources.map((l, i) => (
+                  <Row key={i} line={{ label: l.label, expr: l.source, text: l.text }} />
+                ))}
+              </Section>
+            )}
             {inputs.length > 0 && (
               <Section title="Values stored in this event">
                 {inputs.map((l, i) => <Row key={i} line={l} />)}
@@ -53,6 +61,11 @@ export default function EventDescriptionCard({ events, selected, onSelect }) {
                 <span className="text-[11.5px] font-bold text-[#101828]">{e.total.label}</span>
                 <span className="font-mono text-[13px] font-bold text-[#101828]">{e.total.text}</span>
               </div>
+            )}
+            {recorded.length > 0 && (
+              <Section title="Recorded in the OCEL log">
+                {recorded.map((l, i) => <Row key={i} line={{ label: l.label, text: l.text }} />)}
+              </Section>
             )}
             {e.note && <p className="mt-1.5 text-[11px] leading-relaxed text-status-ordered">{e.note}</p>}
           </Card>

@@ -11,21 +11,51 @@
   {
    "name": "Account",
    "attributes": []
+  },
+  {
+   "name": "Document",
+   "attributes": []
   }
  ],
  "eventTypes": [
   {
-   "name": "Post Invoice",
-   "attributes": []
-  },
-  {
-   "name": "Post Manual Adjustment",
+   "name": "Apply Discount",
    "attributes": [
     {
-     "name": "amount",
+     "name": "rate",
+     "type": "string"
+    },
+    {
+     "name": "slot",
      "type": "string"
     }
    ]
+  },
+  {
+   "name": "Apply Tax Code",
+   "attributes": [
+    {
+     "name": "rate",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Convert Currency",
+   "attributes": [
+    {
+     "name": "fx_rate",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Create Purchase Order",
+   "attributes": []
+  },
+  {
+   "name": "Post Invoice",
+   "attributes": []
   },
   {
    "name": "Set Payment Block",
@@ -50,47 +80,31 @@
    "type": "Account",
    "attributes": [],
    "relationships": []
+  },
+  {
+   "id": "DOC-00050-e1",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00050-e2",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00050-e3",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
   }
  ],
  "events": [
   {
    "id": "e1",
-   "type": "Post Manual Adjustment",
-   "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "36363.64"
-    }
-   ],
-   "relationships": [
-    {
-     "objectId": "INV-00050",
-     "qualifier": "posting"
-    }
-   ]
-  },
-  {
-   "id": "e2",
-   "type": "Post Manual Adjustment",
-   "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "-67698.02"
-    }
-   ],
-   "relationships": [
-    {
-     "objectId": "INV-00050",
-     "qualifier": "posting"
-    }
-   ]
-  },
-  {
-   "id": "e3",
    "type": "Set Payment Block",
-   "time": "2026-08-03T11:21:00+00:00",
+   "time": "2026-08-03T15:00:00+00:00",
    "attributes": [],
    "relationships": [
     {
@@ -98,13 +112,100 @@
      "qualifier": "posting"
     },
     {
-     "objectId": "PO-00050",
-     "qualifier": "order"
+     "objectId": "DOC-00050-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "type": "Set Payment Block",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "DOC-00050-e1",
+     "qualifier": "linked_document"
+    },
+    {
+     "objectId": "DOC-00050-e2",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e3",
+   "type": "Create Purchase Order",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "DOC-00050-e2",
+     "qualifier": "linked_document"
+    },
+    {
+     "objectId": "DOC-00050-e3",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e4",
+   "type": "Apply Discount",
+   "time": "2026-08-03T12:00:00+00:00",
+   "attributes": [
+    {
+     "name": "rate",
+     "value": "0.16"
+    },
+    {
+     "name": "slot",
+     "value": "1"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00050-e3",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e5",
+   "type": "Apply Tax Code",
+   "time": "2026-08-03T12:00:00+00:00",
+   "attributes": [
+    {
+     "name": "rate",
+     "value": "0.12"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00050-e3",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e6",
+   "type": "Convert Currency",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
+    {
+     "name": "fx_rate",
+     "value": "88.9865"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00050-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e7",
    "type": "Post Invoice",
    "time": "2026-08-03T16:00:00+00:00",
    "attributes": [],

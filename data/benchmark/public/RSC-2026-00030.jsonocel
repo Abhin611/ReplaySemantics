@@ -11,11 +11,15 @@
   {
    "name": "Account",
    "attributes": []
+  },
+  {
+   "name": "Document",
+   "attributes": []
   }
  ],
  "eventTypes": [
   {
-   "name": "Approve Order",
+   "name": "Create Purchase Order",
    "attributes": []
   },
   {
@@ -54,51 +58,78 @@
    "type": "Account",
    "attributes": [],
    "relationships": []
+  },
+  {
+   "id": "DOC-00030-e1",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00030-e2",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
   }
  ],
  "events": [
   {
    "id": "e1",
-   "type": "Post Manual Adjustment",
+   "type": "Create Purchase Order",
    "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "110688.30"
-    }
-   ],
+   "attributes": [],
    "relationships": [
     {
      "objectId": "INV-00030",
      "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00030-e1",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e2",
-   "type": "Post Manual Adjustment",
-   "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "-44387.61"
-    }
-   ],
+   "type": "Set Payment Block",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [],
    "relationships": [
     {
-     "objectId": "INV-00030",
-     "qualifier": "posting"
+     "objectId": "DOC-00030-e1",
+     "qualifier": "linked_document"
+    },
+    {
+     "objectId": "DOC-00030-e2",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e3",
    "type": "Post Manual Adjustment",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "64326.46"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00030-e2",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e4",
+   "type": "Post Manual Adjustment",
    "time": "2026-08-03T15:00:00+00:00",
    "attributes": [
     {
      "name": "amount",
-     "value": "41907.69"
+     "value": "17125.35"
     }
    ],
    "relationships": [
@@ -109,39 +140,7 @@
    ]
   },
   {
-   "id": "e4",
-   "type": "Approve Order",
-   "time": "2026-08-03T11:28:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00030",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00030",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
    "id": "e5",
-   "type": "Set Payment Block",
-   "time": "2026-08-03T11:35:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00030",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00030",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e6",
    "type": "Post Invoice",
    "time": "2026-08-03T16:00:00+00:00",
    "attributes": [],

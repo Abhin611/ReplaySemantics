@@ -30,6 +30,7 @@ from policy_engine.domain import (
 )
 
 _MAX_DP = 8
+REF_ID = "REF"  # the start node: the case reference (contract terms, tax table, FX table, authorised rates)
 
 
 # ---- number formatting (display only) ------------------------------------------------
@@ -71,7 +72,8 @@ def _gross_expr(ctx: DomainContext, nodes: Mapping[str, Mapping[str, Any]]) -> s
     p_ids, q_ids = ctx.nodes_of(GROSS_PRICE), ctx.nodes_of(GROSS_QTY)
     price = D(nodes[p_ids[0]]["unit_price"]) if p_ids else ctx.reference.contract_price
     qty = D(nodes[q_ids[0]]["quantity"]) if q_ids else ctx.reference.ordered_quantity
-    return f"unit price {fmt_plain(price)} × quantity {fmt_plain(qty)}"
+    return (f"unit price {fmt_plain(price)} (from {p_ids[0] if p_ids else REF_ID}) × "
+            f"quantity {fmt_plain(qty)} (from {q_ids[0] if q_ids else REF_ID})")
 
 
 # ---- the total, step by step ----------------------------------------------------------
@@ -91,7 +93,7 @@ def total_calculation(op, state: CaseState) -> dict[str, Any]:
     src = "order event" if (p_ids and q_ids) else "contract terms"
     rows: list[dict[str, Any]] = [
         _row("gross", "Gross value", "", comp["gross"],
-             f"unit price {fmt_plain(price)} × quantity {fmt_plain(qty)}", f"from {src}"),
+             _gross_expr(ctx, nodes), f"from {src}" + ("" if (p_ids and q_ids) else f" ({REF_ID})")),
     ]
 
     d_ids = ctx.nodes_of(DISCOUNT)
@@ -103,7 +105,8 @@ def total_calculation(op, state: CaseState) -> dict[str, Any]:
         rows.append(_row("tax", "Tax", "+", comp["tax"], f"event {t} (rate {pct(nodes[t]['rate'])})"))
     else:
         rows.append(_row("tax", "Tax", "+", comp["tax"],
-                         f"rate {pct(ctx.reference.tax_rate)} × (gross − discounts)", "no tax event: derived at posting"))
+                         f"rate {pct(ctx.reference.tax_rate)} (from {REF_ID}) × (gross − discounts)",
+                         f"no tax event: the contractual tax rate comes from {REF_ID}"))
 
     subtotal = comp["gross"] - comp["discount"] + comp["tax"]
     rows.append(_row("subtotal", "Subtotal", "=", subtotal,
@@ -112,7 +115,8 @@ def total_calculation(op, state: CaseState) -> dict[str, Any]:
     fx = comp["fx_rate"]
     converted = subtotal * fx
     if fx != ONE or ctx.nodes_of(CURRENCY):
-        rows.append(_row("fx", "FX rate", "×", fx, "currency event" if ctx.nodes_of(CURRENCY) else "reference rate"))
+        rows.append(_row("fx", "FX rate", "×", fx, f"currency event {ctx.nodes_of(CURRENCY)[0]}" if ctx.nodes_of(CURRENCY)
+                         else f"reference rate (from {REF_ID})"))
         rows.append(_row("converted", "Converted amount", "=", converted, f"{fmt(subtotal)} × {fmt_plain(fx)}"))
 
     adj_ids = ctx.nodes_of(ADJUSTMENT)
@@ -155,8 +159,15 @@ def _line(label: str, value: Any, kind: str, expr: str = "", text: str | None = 
             "text": text if text is not None else (fmt(value) if value is not None else ""), "kind": kind, "expr": expr}
 
 
-def describe_events(op, activities: Mapping[str, str] | None = None) -> list[dict[str, Any]]:
-    """One description per event of the case, in pipeline order, from the OBSERVED state."""
+def describe_events(op, activities: Mapping[str, str] | None = None, facts: Mapping[str, Mapping[str, Any]] | None = None,
+                    recorded: CaseState | None = None) -> list[dict[str, Any]]:
+    """One description per event of the case, in pipeline order, from the op's starting state.
+
+    facts:    event id -> what the OCEL log recorded for it (time, related objects, attributes). EVERY event gets it,
+              including context events: even when a value does not change the total the reader can still see it.
+    recorded: the books as originally posted. When the op starts from the corrected ledger, an input whose value
+              differs from what was booked says so ("booked as 13%"), so nothing changes silently.
+    """
     ctx: DomainContext = op.ctx
     nodes = op.observed.nodes
     activities = activities or {}
@@ -236,9 +247,84 @@ def describe_events(op, activities: Mapping[str, str] | None = None) -> list[dic
         else:  # CONTEXT
             note = "No stored values affect the total."
 
+        if recorded is not None:  # tell the reader where a shown input differs from what was booked
+            for ln in lines:
+                if ln["kind"] != "input":
+                    continue
+                key = {"Unit price": "unit_price", "Quantity": "quantity", "Discount rate": "rate", "Tax rate": "rate",
+                       "FX rate": "fx_rate", "Fixed amount": "amount", "Decimals kept": "decimals",
+                       "Rounding mode": "mode"}.get(ln["label"])
+                booked = recorded.nodes.get(n, {}).get(key) if key else None
+                if booked is not None and str(booked) != str(a.get(key)):
+                    shown = pct(booked) if key == "rate" else fmt_plain(booked) if key != "mode" else str(booked)
+                    ln["expr"] = (ln["expr"] + "  " if ln["expr"] else "") + f"(booked as {shown}; authorised value comes from {REF_ID})"
+        sources: list[dict[str, str]] = []
+        if t == NET:
+            p_ids, q_ids = ctx.nodes_of(GROSS_PRICE), ctx.nodes_of(GROSS_QTY)
+            tx, fx_ids, r_ids = ctx.nodes_of(TAX), ctx.nodes_of(CURRENCY), ctx.nodes_of(ROUNDING)
+            price = D(nodes[p_ids[0]]["unit_price"]) if p_ids else ctx.reference.contract_price
+            qty = D(nodes[q_ids[0]]["quantity"]) if q_ids else ctx.reference.ordered_quantity
+            rate = D(nodes[tx[0]]["rate"]) if tx else ctx.reference.tax_rate
+            fxr = D(nodes[fx_ids[0]]["fx_rate"]) if fx_ids else ctx.reference.fx_rate
+            sources = [
+                {"label": "Unit price", "text": fmt_plain(price),
+                 "source": f"event {p_ids[0]}" if p_ids else f"{REF_ID}: the contract price"},
+                {"label": "Quantity", "text": fmt_plain(qty),
+                 "source": f"event {q_ids[0]}" if q_ids else f"{REF_ID}: the ordered quantity"},
+                {"label": "Tax rate", "text": pct(rate),
+                 "source": f"event {tx[0]}" if tx else f"{REF_ID}: the contractual tax rate (tax table lookup)"},
+                {"label": "FX rate", "text": fmt_plain(fxr),
+                 "source": f"event {fx_ids[0]}" if fx_ids else f"{REF_ID}: the FX table rate"},
+                {"label": "Rounding", "text": (f"{nodes[r_ids[0]]['decimals']} dp, {nodes[r_ids[0]]['mode']}" if r_ids
+                                                else f"{ctx.rounding_decimals} dp, {ctx.rounding_mode}"),
+                 "source": f"event {r_ids[0]}" if r_ids else f"the policy {ctx.policy_version or ''}".strip()},
+            ]
         out.append({
+            "recorded": _recorded_lines(n, facts), "sources": sources,
             "node_id": n, "node_type": t, "title": title, "activity": activities.get(n) or _DEFAULT_ACTIVITY.get(t, ""),
             "meaning": meaning, "lines": lines, "total": total, "note": note,
             "exempt": op.noop_reason(n) == "exempt",
         })
     return out
+
+
+def _recorded_lines(node_id: str, facts: Mapping[str, Mapping[str, Any]] | None) -> list[dict[str, str]]:
+    """What the OCEL log itself holds for the event (shown for every node, financial or not)."""
+    f = (facts or {}).get(node_id)
+    if not f:
+        return []
+    rows = [{"label": "Time", "text": str(f.get("timestamp", ""))}]
+    objs = f.get("objects") or []
+    if objs:
+        rows.append({"label": "Related objects", "text": ", ".join(f"{o['type']} {o['id']}" for o in objs)})
+    for k, v in sorted((f.get("attributes") or {}).items()):
+        rows.append({"label": k, "text": str(v)})
+    return rows
+
+
+def describe_reference(ctx: DomainContext, facts_policy: str = "") -> dict[str, Any]:
+    """The START node REF: the fixed values every other node starts from, and where each one comes from."""
+    r = ctx.reference
+    lines = [
+        _line("Contract unit price", r.contract_price, "input", text=fmt_plain(r.contract_price)),
+        _line("Ordered quantity", r.ordered_quantity, "input", text=fmt_plain(r.ordered_quantity)),
+        _line("Tax rate", r.tax_rate, "input", text=f"{fmt_plain(r.tax_rate)}  ({pct(r.tax_rate)})"),
+        _line("FX rate", r.fx_rate, "input", text=fmt_plain(r.fx_rate)),
+    ]
+    for slot, rate in sorted(r.authorized_discount_rates.items()):
+        lines.append(_line(f"Authorised discount rate (slot {slot})", rate, "input", text=f"{fmt_plain(rate)}  ({pct(rate)})"))
+    for nid, amt in sorted(r.authorized_adjustments.items()):
+        lines.append(_line(f"Authorised adjustment {nid}", amt, "input"))
+    lines.append(_line("Rounding rule (policy)", f"{ctx.rounding_decimals} dp {ctx.rounding_mode}", "input",
+                       text=f"{ctx.rounding_decimals} dp, {ctx.rounding_mode}"))
+    for nid, ref in sorted(r.exceptions.items()):
+        lines.append(_line(f"Approved exception on {nid}", ref, "input", text=str(ref)))
+    return {
+        "node_id": REF_ID, "node_type": "reference", "title": "Case reference (fixed values)",
+        "activity": "Start node", "exempt": False, "lines": lines, "total": None, "recorded": [], "sources": [],
+        "meaning": "The fixed starting values of this case: what a compliant posting would have used. The price, quantity, "
+                   "tax rate, FX rate and authorised discount rates shown in the other events all come from here unless an "
+                   "event of the graph carries its own value.",
+        "note": "These are the contract terms and the tax / FX table lookups for this case (the case's public reference). "
+                "They are never changed by a swap; change a value with Edit.",
+    }

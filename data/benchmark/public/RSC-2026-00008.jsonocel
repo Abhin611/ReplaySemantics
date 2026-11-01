@@ -11,9 +11,26 @@
   {
    "name": "Account",
    "attributes": []
+  },
+  {
+   "name": "Document",
+   "attributes": []
   }
  ],
  "eventTypes": [
+  {
+   "name": "Apply Rounding",
+   "attributes": [
+    {
+     "name": "decimals",
+     "type": "string"
+    },
+    {
+     "name": "mode",
+     "type": "string"
+    }
+   ]
+  },
   {
    "name": "Apply Tax Code",
    "attributes": [
@@ -24,19 +41,11 @@
    ]
   },
   {
-   "name": "Approve Order",
-   "attributes": []
-  },
-  {
-   "name": "Insert Invoice",
+   "name": "Create Purchase Order",
    "attributes": []
   },
   {
    "name": "Post Invoice",
-   "attributes": []
-  },
-  {
-   "name": "Set Payment Block",
    "attributes": []
   }
  ],
@@ -58,92 +67,71 @@
    "type": "Account",
    "attributes": [],
    "relationships": []
+  },
+  {
+   "id": "DOC-00008-e1",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
   }
  ],
  "events": [
   {
    "id": "e1",
-   "type": "Apply Tax Code",
+   "type": "Create Purchase Order",
    "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "rate",
-     "value": "0.10"
-    }
-   ],
+   "attributes": [],
    "relationships": [
     {
      "objectId": "INV-00008",
      "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00008-e1",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e2",
-   "type": "Set Payment Block",
-   "time": "2026-08-03T11:14:00+00:00",
-   "attributes": [],
+   "type": "Apply Tax Code",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
+    {
+     "name": "rate",
+     "value": "0.02"
+    }
+   ],
    "relationships": [
     {
-     "objectId": "INV-00008",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00008",
-     "qualifier": "order"
+     "objectId": "DOC-00008-e1",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e3",
-   "type": "Approve Order",
-   "time": "2026-08-03T11:21:00+00:00",
-   "attributes": [],
-   "relationships": [
+   "type": "Apply Rounding",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
     {
-     "objectId": "INV-00008",
-     "qualifier": "posting"
+     "name": "decimals",
+     "value": "0"
     },
     {
-     "objectId": "PO-00008",
-     "qualifier": "order"
+     "name": "mode",
+     "value": "ROUND_DOWN"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00008-e1",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e4",
-   "type": "Set Payment Block",
-   "time": "2026-08-03T11:28:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00008",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00008",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e5",
-   "type": "Insert Invoice",
-   "time": "2026-08-03T11:35:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00008",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00008",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e6",
    "type": "Post Invoice",
    "time": "2026-08-03T16:00:00+00:00",
    "attributes": [],

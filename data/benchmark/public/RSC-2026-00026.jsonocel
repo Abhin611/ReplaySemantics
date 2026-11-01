@@ -11,21 +11,46 @@
   {
    "name": "Account",
    "attributes": []
+  },
+  {
+   "name": "Document",
+   "attributes": []
   }
  ],
  "eventTypes": [
   {
-   "name": "Post Invoice",
-   "attributes": []
-  },
-  {
-   "name": "Post Manual Adjustment",
+   "name": "Apply Rounding",
    "attributes": [
     {
-     "name": "amount",
+     "name": "decimals",
+     "type": "string"
+    },
+    {
+     "name": "mode",
      "type": "string"
     }
    ]
+  },
+  {
+   "name": "Apply Tax Code",
+   "attributes": [
+    {
+     "name": "rate",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Approve Order",
+   "attributes": []
+  },
+  {
+   "name": "Insert Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Post Invoice",
+   "attributes": []
   }
  ],
  "objects": [
@@ -46,62 +71,93 @@
    "type": "Account",
    "attributes": [],
    "relationships": []
+  },
+  {
+   "id": "DOC-00026-e1",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00026-e2",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
   }
  ],
  "events": [
   {
    "id": "e1",
-   "type": "Post Manual Adjustment",
+   "type": "Insert Invoice",
    "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "18086.83"
-    }
-   ],
+   "attributes": [],
    "relationships": [
     {
      "objectId": "INV-00026",
      "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00026-e1",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e2",
-   "type": "Post Manual Adjustment",
-   "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "23496.19"
-    }
-   ],
+   "type": "Approve Order",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [],
    "relationships": [
     {
-     "objectId": "INV-00026",
-     "qualifier": "posting"
+     "objectId": "DOC-00026-e1",
+     "qualifier": "linked_document"
+    },
+    {
+     "objectId": "DOC-00026-e2",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e3",
-   "type": "Post Manual Adjustment",
-   "time": "2026-08-03T15:00:00+00:00",
+   "type": "Apply Tax Code",
+   "time": "2026-08-03T13:00:00+00:00",
    "attributes": [
     {
-     "name": "amount",
-     "value": "12955.13"
+     "name": "rate",
+     "value": "0.10"
     }
    ],
    "relationships": [
     {
-     "objectId": "INV-00026",
-     "qualifier": "posting"
+     "objectId": "DOC-00026-e2",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e4",
+   "type": "Apply Rounding",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [
+    {
+     "name": "decimals",
+     "value": "0"
+    },
+    {
+     "name": "mode",
+     "value": "ROUND_DOWN"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00026-e2",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e5",
    "type": "Post Invoice",
    "time": "2026-08-03T16:00:00+00:00",
    "attributes": [],

@@ -99,7 +99,10 @@ export function pairSentence(pair, nodeStatus, lookup = {}) {
     const c = correctionLabel(nodeStatus?.[id]?.correction)
     return c ? `${id} (${c})` : `${id}${lookup[id] ? ` (${lookup[id]})` : ''}`
   }
-  const base = `Correcting ${name(pair.a)} and ${name(pair.b)} in different orders gives different totals.`
+  const noEffect = pair.swap_difference != null && Number(pair.swap_difference) === 0
+  const base = noEffect
+    ? `Swapping ${name(pair.a)} and ${name(pair.b)} changes no value.`
+    : `Running ${name(pair.a)} and ${name(pair.b)} in different orders gives different totals.`
   if (pair.status === 'policy_ordered') {
     return pair.policy_first
       ? `${base} The policy applies ${pair.policy_first} first.`

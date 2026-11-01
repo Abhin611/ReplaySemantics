@@ -17,7 +17,7 @@ import { formatAmount } from '../lib/format'
 // `onAutoPlayEnd(reason)` fires when an automatic run ends: 'done', 'skipped' or 'interrupted' (the person
 // took over with the buttons).
 export default function ReplayTraceCard({
-  replay, nodeStatus, onStepNode, title = 'Replay step-through', nonAuthoritativeNote,
+  replay, nodeStatus, onStepNode, title = 'Replay step-through', nonAuthoritativeNote, authoritativeNote = 'Corrections applied in the authoritative order.',
   autoPlayKey = null, finishKey = 0, onAutoPlayEnd,
 }) {
   const steps = useMemo(() => traceSteps(replay), [replay])
@@ -121,7 +121,7 @@ export default function ReplayTraceCard({
       </div>
       <p className="mb-2 text-[11.5px] leading-relaxed text-[#8a97a3]">
         {replay.order_is_authoritative
-          ? 'Corrections applied in the authoritative order.'
+          ? authoritativeNote
           : nonAuthoritativeNote || 'Illustrative canonical order only — the case is BLOCKED, so this is not an authoritative outcome.'}
       </p>
 

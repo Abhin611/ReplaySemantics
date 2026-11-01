@@ -59,6 +59,11 @@ from policy_engine.schema import CasePolicy, Policy
 from replay_core.replay import ReplayOperator, subset_key
 
 
+class ConfluenceTooLarge(RuntimeError):
+    """The exact subset search would be exponential in the number of players; refuse with a clear message
+    instead of hanging (8 free events take ~2 s, 10 take ~20 s)."""
+
+
 class ConfluenceInvariantError(RuntimeError):
     """An internal consistency check failed (a bug, never a data problem)."""
 
@@ -386,7 +391,14 @@ class ConfluenceChecker:
         for r in range(len(self.players) + 1):
             yield from combinations(self.players, r)
 
+    MAX_PLAYERS = 10  # exact search over all 2^n subsets; above this a clear error is raised
+
     def check_case(self) -> CaseVerdict:
+        if len(self.players) > self.MAX_PLAYERS:
+            raise ConfluenceTooLarge(
+                f"{len(self.players)} correctable events ({', '.join(self.players)}): the exact order check is "
+                f"exponential and is limited to {self.MAX_PLAYERS}. Lower max_events or max_hops to analyse a "
+                "smaller candidate set (the result will then be marked partial).")
         subsets = {}
         for S in self.iter_subsets():
             v = self.check_subset(S)

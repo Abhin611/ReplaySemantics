@@ -4,13 +4,18 @@
 // payloads.json = { "<case_id>": <GET /api/cases/{id}/replay response>, ... }
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
+import { fullGraphLimits, ocelRows } from '../src/lib/flow.js'
 import {
   badgeStatus, buildNodeStatus, isApplicable, pairDetails, pairSentence, subsetRows, traceSteps, correctionLabel, observedExplanation,
 } from '../src/lib/verdict.js'
 import {
   scenarioPath, parseScenarioParams, formatPrecise, formatSigned, direction, shapleyRows, orderLabel,
-  unionEvents, togglePair, samePair, MAX_SCENARIO_EVENTS,
+  unionEvents, togglePair, samePair, MAX_SCENARIO_EVENTS, buildFlow, formatSignedFine,
 } from '../src/lib/scenario.js'
+
+import {
+  classLabel, limitsQuery, lossShares, toggleSwap, partialNotice, pairBadge, cleanEdits, hopProfileText, CLASS_LABEL,
+} from '../src/lib/ledger.js'
 
 let checks = 0
 const ok = (cond, msg) => { assert.ok(cond, msg); checks++ }
@@ -85,13 +90,18 @@ eq(scenarioPath('RSC-1', ['e2', 'e1']), '/scenario?case=RSC-1&subset=e1%2Ce2')
 eq(scenarioPath('RSC-1', ['e1', 'e2'], ['e2', 'e1']), '/scenario?case=RSC-1&subset=e1%2Ce2&order=e2%2Ce1')
 {
   const parsed = parseScenarioParams(new URLSearchParams('case=RSC-1&subset=e1,e2&order=e2,e1'))
-  eq(parsed, { caseId: 'RSC-1', subset: ['e1', 'e2'], order: ['e2', 'e1'] })
-  eq(parseScenarioParams(new URLSearchParams('')), { caseId: null, subset: [], order: [] })
+  eq(parsed, { caseId: 'RSC-1', subset: ['e1', 'e2'], order: ['e2', 'e1'], limits: null })
+  eq(parseScenarioParams(new URLSearchParams('')), { caseId: null, subset: [], order: [], limits: null })
   // the path the console builds round-trips through the page's parser
   const rt = parseScenarioParams(new URLSearchParams(scenarioPath('RSC-9', ['e3', 'e1']).split('?')[1]))
-  eq(rt, { caseId: 'RSC-9', subset: ['e1', 'e3'], order: [] })
+  eq(rt, { caseId: 'RSC-9', subset: ['e1', 'e3'], order: [], limits: null })
 }
 eq(orderLabel(['e1', 'e2']), 'e1 → e2')
+// ---- flow helpers (full graph on first run, OCEL table rows) ----
+eq(fullGraphLimits({ full_graph: { max_hops: 4, max_events: 7, min_events: 7 } }), { maxHops: 4, maxEvents: 7, minEvents: 7 })
+eq(fullGraphLimits(null).maxEvents, null)
+eq(ocelRows(null), [])
+eq(ocelRows({ ocel_table: { rows: [{ id: 'e1' }] }, reference_node: { lines: [{ label: 'Tax rate', text: '28%' }] } }).map((r) => r.id), ['REF', 'e1'])
 eq(formatPrecise('1234567.5'), '1,234,567.50')
 eq(formatPrecise('0.0023928960'), '0.002393', 'sub-cent amounts are never rounded to 0.00')
 eq(formatPrecise('0'), '0.00')
@@ -153,4 +163,49 @@ if (process.argv[2]) {
   }
   console.log(`real payloads: ${blocked} BLOCKED, ${ordered} POLICY_ORDERED, ${pass} PASS, ${vb} real VBFA`)
 }
+
+// ---- propagation overlay (buildFlow) ------------------------------------------------------------
+{
+  const inf = {
+    order: ['e7', 'e6', 'e4'],
+    steps: [
+      { node_id: 'e7', delta_net: '537.12', affects: [{ node_id: 'e6', gap: '72.5088', field: 'amount', relation: 'pending' }, { node_id: 'e1', gap: '-0.02288', field: 'adj', relation: 'not_in_change' }] },
+      { node_id: 'e6', delta_net: '343.39', affects: [{ node_id: 'e4', gap: '45.717', field: 'amount', relation: 'pending' }] },
+      { node_id: 'e4', delta_net: '44.03', affects: [{ node_id: 'e1', gap: '-0.03408', field: 'adj', relation: 'not_in_change' }] },
+    ],
+  }
+  ok(buildFlow(inf, null, 'e8') === null, 'no step -> no overlay')
+  ok(buildFlow(inf, 'e9', 'e8') === null, 'unknown node -> no overlay')
+  const f = buildFlow(inf, 'e6', 'e8')
+  eq(f.nodes.e7.state, 'done', 'corrected earlier')
+  eq(f.nodes.e6.state, 'active', 'current step')
+  eq(f.nodes.e4.state, 'queued', 'corrected later')
+  eq(f.nodes.e4.affected.relation, 'pending', 'dependent of e6 is affected')
+  eq(f.nodes.e8.state, 'target', 'target gets the total change')
+  eq(f.edges.length, 2, 'one arrow per dependent plus one to the total')
+  eq(formatSignedFine('-0.02288'), '−0.0229', 'fine format keeps 4 decimals')
+  eq(formatSignedFine('45.717'), '+45.717')
+}
+
+// ---- Replay Analysis (corrected-ledger view): src/lib/ledger.js ----------------------------------
+eq(classLabel('SWAP_ONLY'), 'Swap only')
+eq(classLabel('BOTH'), 'Swap and edit')
+eq(classLabel(null), '—')
+eq(Object.keys(CLASS_LABEL).length, 4)
+eq(limitsQuery().toString(), 'min_events=3&max_hops=3', 'default: no event cap, 3 hops')
+eq(limitsQuery({ maxEvents: 5, minEvents: 2, maxHops: 4 }).toString(), 'max_events=5&min_events=2&max_hops=4')
+eq(limitsQuery({ maxEvents: '' }).has('max_events'), false, 'a blank max_events means no limit')
+eq(lossShares({ realised_loss: '100', loss_from_stale_amounts: '100', loss_from_inputs: '0' }), { stale: 100, inputs: 0 })
+eq(lossShares({ realised_loss: '200', loss_from_stale_amounts: '50', loss_from_inputs: '150' }), { stale: 25, inputs: 75 })
+eq(lossShares({ realised_loss: '0' }), { stale: 0, inputs: 0 })
+eq(toggleSwap(['e1'], 'e2'), ['e1', 'e2'], 'click order is the re-derive order')
+eq(toggleSwap(['e1', 'e2'], 'e1'), ['e2'])
+eq(partialNotice({ complete: true }), null)
+const pn = partialNotice({ complete: false, partial_reasons: ['x'], suggestion: { max_hops: 5 }, dropped: [{ event_id: 'e9' }] })
+eq(pn.suggestedHops, 5); eq(pn.dropped, ['e9']); eq(pn.reasons, ['x'])
+eq(pairBadge({ blocked: true }).tone, 'blocked')
+eq(pairBadge({ blocked: false, authoritative_order: ['e1', 'e2'], rules: ['CO-03'] }).text, 'e1 then e2 (CO-03)')
+eq(cleanEdits({ e1: { unit_price: '10', x: '' }, e2: { rate: '' } }), { e1: { unit_price: '10' } }, 'blank fields are dropped')
+eq(hopProfileText({ rows: [{ hop: 1, events: 2, active: 1 }, { hop: 2, events: 0, active: 0 }] }), 'hop 1: 2 (1 correctable)')
+
 console.log(`lib checks passed (${checks} assertions)`)

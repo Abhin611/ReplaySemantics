@@ -11,25 +11,55 @@
   {
    "name": "Account",
    "attributes": []
+  },
+  {
+   "name": "Document",
+   "attributes": []
   }
  ],
  "eventTypes": [
+  {
+   "name": "Apply Rounding",
+   "attributes": [
+    {
+     "name": "decimals",
+     "type": "string"
+    },
+    {
+     "name": "mode",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Apply Tax Code",
+   "attributes": [
+    {
+     "name": "rate",
+     "type": "string"
+    }
+   ]
+  },
   {
    "name": "Create Purchase Order",
    "attributes": []
   },
   {
-   "name": "Post Invoice",
+   "name": "Insert Invoice",
    "attributes": []
   },
   {
-   "name": "Post Manual Adjustment",
+   "name": "Override Unit Price",
    "attributes": [
     {
-     "name": "amount",
+     "name": "unit_price",
      "type": "string"
     }
    ]
+  },
+  {
+   "name": "Post Invoice",
+   "attributes": []
   },
   {
    "name": "Set Payment Block",
@@ -54,94 +84,132 @@
    "type": "Account",
    "attributes": [],
    "relationships": []
+  },
+  {
+   "id": "DOC-00051-e1",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00051-e2",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00051-e3",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
   }
  ],
  "events": [
   {
    "id": "e1",
-   "type": "Post Manual Adjustment",
+   "type": "Insert Invoice",
    "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "-47908.06"
-    }
-   ],
+   "attributes": [],
    "relationships": [
     {
      "objectId": "INV-00051",
      "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00051-e1",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e2",
-   "type": "Post Manual Adjustment",
-   "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "33035.38"
-    }
-   ],
+   "type": "Create Purchase Order",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [],
    "relationships": [
     {
-     "objectId": "INV-00051",
-     "qualifier": "posting"
+     "objectId": "DOC-00051-e1",
+     "qualifier": "linked_document"
+    },
+    {
+     "objectId": "DOC-00051-e2",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e3",
-   "type": "Post Manual Adjustment",
-   "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "amount",
-     "value": "65303.17"
-    }
-   ],
+   "type": "Set Payment Block",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [],
    "relationships": [
     {
-     "objectId": "INV-00051",
-     "qualifier": "posting"
+     "objectId": "DOC-00051-e2",
+     "qualifier": "linked_document"
+    },
+    {
+     "objectId": "DOC-00051-e3",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e4",
-   "type": "Set Payment Block",
-   "time": "2026-08-03T11:28:00+00:00",
-   "attributes": [],
+   "type": "Apply Tax Code",
+   "time": "2026-08-03T12:00:00+00:00",
+   "attributes": [
+    {
+     "name": "rate",
+     "value": "0.01"
+    }
+   ],
    "relationships": [
     {
-     "objectId": "INV-00051",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00051",
-     "qualifier": "order"
+     "objectId": "DOC-00051-e3",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e5",
-   "type": "Create Purchase Order",
-   "time": "2026-08-03T11:35:00+00:00",
-   "attributes": [],
-   "relationships": [
+   "type": "Apply Rounding",
+   "time": "2026-08-03T12:00:00+00:00",
+   "attributes": [
     {
-     "objectId": "INV-00051",
-     "qualifier": "posting"
+     "name": "decimals",
+     "value": "0"
     },
     {
-     "objectId": "PO-00051",
-     "qualifier": "order"
+     "name": "mode",
+     "value": "ROUND_DOWN"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00051-e3",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e6",
+   "type": "Override Unit Price",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [
+    {
+     "name": "unit_price",
+     "value": "254.36"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00051-e2",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e7",
    "type": "Post Invoice",
    "time": "2026-08-03T16:00:00+00:00",
    "attributes": [],

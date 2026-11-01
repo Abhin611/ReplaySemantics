@@ -15,25 +15,13 @@
  ],
  "eventTypes": [
   {
-   "name": "Apply Discount",
+   "name": "Apply Tax Code",
    "attributes": [
     {
      "name": "rate",
      "type": "string"
-    },
-    {
-     "name": "slot",
-     "type": "string"
     }
    ]
-  },
-  {
-   "name": "Approve Order",
-   "attributes": []
-  },
-  {
-   "name": "Create Purchase Order",
-   "attributes": []
   },
   {
    "name": "Insert Invoice",
@@ -41,6 +29,10 @@
   },
   {
    "name": "Post Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Set Payment Block",
    "attributes": []
   }
  ],
@@ -67,16 +59,36 @@
  "events": [
   {
    "id": "e1",
-   "type": "Apply Discount",
+   "type": "Insert Invoice",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00002",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "type": "Set Payment Block",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00002",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e3",
+   "type": "Apply Tax Code",
    "time": "2026-08-03T15:00:00+00:00",
    "attributes": [
     {
      "name": "rate",
-     "value": "0.12"
-    },
-    {
-     "name": "slot",
-     "value": "1"
+     "value": "0.09"
     }
    ],
    "relationships": [
@@ -87,71 +99,7 @@
    ]
   },
   {
-   "id": "e2",
-   "type": "Approve Order",
-   "time": "2026-08-03T11:14:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00002",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00002",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e3",
-   "type": "Insert Invoice",
-   "time": "2026-08-03T11:21:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00002",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00002",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
    "id": "e4",
-   "type": "Create Purchase Order",
-   "time": "2026-08-03T11:28:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00002",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00002",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e5",
-   "type": "Approve Order",
-   "time": "2026-08-03T11:35:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00002",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00002",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e6",
    "type": "Post Invoice",
    "time": "2026-08-03T16:00:00+00:00",
    "attributes": [],

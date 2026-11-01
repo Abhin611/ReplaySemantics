@@ -11,6 +11,10 @@
   {
    "name": "Account",
    "attributes": []
+  },
+  {
+   "name": "Document",
+   "attributes": []
   }
  ],
  "eventTypes": [
@@ -22,14 +26,6 @@
      "type": "string"
     }
    ]
-  },
-  {
-   "name": "Create Purchase Order",
-   "attributes": []
-  },
-  {
-   "name": "Insert Invoice",
-   "attributes": []
   },
   {
    "name": "Post Invoice",
@@ -58,92 +54,50 @@
    "type": "Account",
    "attributes": [],
    "relationships": []
+  },
+  {
+   "id": "DOC-00009-e1",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
   }
  ],
  "events": [
   {
    "id": "e1",
-   "type": "Convert Currency",
+   "type": "Set Payment Block",
    "time": "2026-08-03T15:00:00+00:00",
-   "attributes": [
-    {
-     "name": "fx_rate",
-     "value": "86.2790"
-    }
-   ],
+   "attributes": [],
    "relationships": [
     {
      "objectId": "INV-00009",
      "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00009-e1",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e2",
-   "type": "Insert Invoice",
-   "time": "2026-08-03T11:14:00+00:00",
-   "attributes": [],
+   "type": "Convert Currency",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
+    {
+     "name": "fx_rate",
+     "value": "80.7975"
+    }
+   ],
    "relationships": [
     {
-     "objectId": "INV-00009",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00009",
-     "qualifier": "order"
+     "objectId": "DOC-00009-e1",
+     "qualifier": "linked_document"
     }
    ]
   },
   {
    "id": "e3",
-   "type": "Create Purchase Order",
-   "time": "2026-08-03T11:21:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00009",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00009",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e4",
-   "type": "Set Payment Block",
-   "time": "2026-08-03T11:28:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00009",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00009",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e5",
-   "type": "Create Purchase Order",
-   "time": "2026-08-03T11:35:00+00:00",
-   "attributes": [],
-   "relationships": [
-    {
-     "objectId": "INV-00009",
-     "qualifier": "posting"
-    },
-    {
-     "objectId": "PO-00009",
-     "qualifier": "order"
-    }
-   ]
-  },
-  {
-   "id": "e6",
    "type": "Post Invoice",
    "time": "2026-08-03T16:00:00+00:00",
    "attributes": [],

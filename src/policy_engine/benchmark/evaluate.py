@@ -37,7 +37,8 @@ class SealError(RuntimeError):
 def verify_seal(root: str | Path) -> dict:
     root = Path(root)
     manifest = json.loads((root / "manifest.json").read_text())
-    actual = hashlib.sha256((root / "hidden" / "truth.json").read_bytes()).hexdigest()
+    # line endings are normalised first, so the seal verifies on Windows (CRLF) and Linux / CI (LF) alike
+    actual = hashlib.sha256((root / "hidden" / "truth.json").read_bytes().replace(b"\r\n", b"\n")).hexdigest()
     if actual != manifest["hidden_truth_sha256"]:
         raise SealError(f"hidden truth hash mismatch: manifest {manifest['hidden_truth_sha256'][:12]}..., file {actual[:12]}...")
     return manifest

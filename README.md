@@ -42,7 +42,7 @@ recorded during backward traversal (not a generic "these-happen-to-share-
 an-object" pairing). Every node ships as "idle" (grey) since verdict
 coloring is Month-4 confluence-checker output that doesn't exist yet.
 
-**A real finding surfaced while building this:** with the default
+**A real finding surfaced while building this:** with
 `max_events=8`, case `e977`'s graph comes back fully disconnected from the
 target — all 8 kept candidates are from a later traversal hop, and the
 hop-1 events that actually linked them back to the target got pruned by
@@ -58,12 +58,47 @@ this API and writing a proper frontend against it later. Either way, this
 API is the seam — every screen in your Figma file maps to one of its
 endpoints (`/api/dashboard`, `/api/cases`, `/api/cases/{id}/replay`).
 
+## Status: Benchmark v2 + Replay Analysis (latest)
+
+**The benchmark is now 54 cases, laid out by resolution class x hops x policy** (`docs/benchmark_v2.md`):
+
+| class | what the loss is | cases |
+|---|---|---|
+| Swap only | all stale posted amounts; a swappable pair exists | 10 (3 BLOCKED) |
+| Multi-edit only | wrong inputs; no order choice among posted amounts | 14 |
+| Swap and edit (both) | wrong inputs *and* stale amounts; you choose swap-first or edit-first | 26 (6 BLOCKED) |
+| Direct fix | one stale posted amount, nothing to order | 4 |
+
+Depth: 4 cases at 1 hop, 20 at 2, 21 at 3, 6 at 4, 3 at 5. 9 cases are BLOCKED (5 on policy P-2026-Q3-002, which leaves
+rounding unordered; 4 on P-2026-Q3-003, which orders nothing). There is **no fixed event cap**: graphs grow deep (chains of
+context events), not wide. Regenerate with `python -m policy_engine.benchmark.generator --out data/benchmark --seed 7`
+(generation FAILS if any quota is missed; the v1 design stays available with `--legacy`).
+
+**Replay Analysis page** (`/ledger`, backed by `replay_core/ledger.py`): nodes show their *corrected inputs*; discount / tax /
+rounding nodes also show the *posted amount* next to what it should be. The flow is: nodes -> loss split (stale amounts vs inputs)
+-> policy summary over every subset of the posted amounts -> swappable pairs -> description with real numbers -> click a pair and
+run both orders. A change panel edits several inputs in one cascade, re-derives chosen posted nodes, in the sequence *you* choose
+(swap first / edit first / compare), and says whether the totals agree. Shapley stays a separate stage.
+
+**Limits work on every case** (benchmark and real SAP): `min_events`, `max_events` (none by default) and `max_hops` (3 by default).
+Nothing is dropped silently: dropped events are listed, order locks are computed on all reachable events *then* restricted, and the
+result is marked **complete or partial** with what to raise. A case's public `suggested_max_hops` is a hint only; the scoring harness
+passes it explicitly. The exact checker refuses more than 10 correctable events with a clear message instead of hanging.
+
+New endpoints: `GET /api/cases/{id}/analysis`, `GET /api/cases/{id}/pair?a=&b=`, `POST /api/cases/{id}/change`,
+`GET /api/cases/{id}/hops`; `replay`, `state`, `edit`, `scenario` all accept the three limits.
+Also fixed: the benchmark seal now verifies on Windows (CRLF) and Linux alike.
+
+Tests: 248 Python tests + 81 frontend assertions (`node frontend/scripts/check-lib.mjs`).
+Score on the 54 cases: ReplaySemantics 1.00 accuracy / 0.00 false attribution; naive sequential 0.26 / 0.17; naive split 0.26 / 0.22
+(graded by the team's own oracle, see the limitations in `docs/benchmark_v2.md`).
+
 ## Status: Month 4 — Confluence checker (in progress) · Month 3 replay core ✅
 
 - `replay_core/confluence.py` — **the research core.** For every subset of the candidate events it decides
   whether all legitimate application orders give one net (exact search over order ideals, only unlocked =
   permutable pairs are swapped), then classifies PASS / POLICY_ORDERED / BLOCKED via Member 2's
-  `resolve_order`. Reproduces the sealed benchmark truth on every subset of all 140 cases and equals her
+  `resolve_order`. Reproduces the sealed benchmark truth on every subset of all 54 cases (v2; 140 in v1) and equals her
   brute-force probe. Practical limit: ~2 s for 8 freely permutable events, ~22 s for 10 (the proposal bounds E at 3-8).
 - API: `GET /api/cases/{id}/replay` runs real stages 1-5 on benchmark cases; VBFA cases report stages 3-5 as
   `not_applicable`. Benchmark cases are listed in `/api/cases` (labelled synthetic).
@@ -94,7 +129,7 @@ Built on top of Member 2's `policy_engine` (the arithmetic) — nothing here re-
 Generate the benchmark first (PowerShell: `$env:PYTHONPATH="src"` instead of the `PYTHONPATH=src` prefix):
 
 ```bash
-PYTHONPATH=src python -m policy_engine.benchmark.generator --out data/benchmark --seed 7 --per-family 20
+PYTHONPATH=src python -m policy_engine.benchmark.generator --out data/benchmark --seed 7
 ```
 
 

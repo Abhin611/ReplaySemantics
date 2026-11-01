@@ -41,7 +41,10 @@ export function buildHighlight(h) {
 
 // Lay nodes out left-to-right by hop distance (target = rightmost column).
 // `nodeStatus` (optional, from buildNodeStatus) adds the verdict colouring.
-export function layoutGraph(graphView, highlightSpec, nodeStatus, scenarioEffects) {
+// `flow` (optional, from buildFlow in lib/scenario.js) is the step-by-step propagation overlay of the
+// Corrected Scenario page: per-node state (active / done / queued / affected) plus the arrows that show
+// which nodes the current correction reaches.
+export function layoutGraph(graphView, highlightSpec, nodeStatus, scenarioEffects, flow) {
   if (!graphView) return { nodes: [], edges: [] }
   const highlight = buildHighlight(highlightSpec)
   const byHop = {}
@@ -55,7 +58,7 @@ export function layoutGraph(graphView, highlightSpec, nodeStatus, scenarioEffect
     .sort((a, b) => b - a) // furthest hop first (left), target (-1) last (right)
 
   const COL_GAP = 260
-  const ROW_GAP = 92
+  const ROW_GAP = 112
   const nodes = []
   hops.forEach((hop, colIdx) => {
     const rows = byHop[hop]
@@ -69,6 +72,7 @@ export function layoutGraph(graphView, highlightSpec, nodeStatus, scenarioEffect
         data.partners = st.partners
       }
       if (scenarioEffects) data.scenario = scenarioEffects[n.id] ?? { role: 'unchanged', step: null, changes: [] }
+      if (flow) data.flow = flow.nodes[n.id] ?? { state: 'idle' }
       nodes.push({
         id: n.id,
         position: { x: colIdx * COL_GAP, y: rowIdx * ROW_GAP - colHeight / 2 },
@@ -83,6 +87,7 @@ export function layoutGraph(graphView, highlightSpec, nodeStatus, scenarioEffect
   // target, left to right, so source/target are flipped for display only.
   const edges = graphView.edges.map((e, i) => {
     const isHighlighted = highlight && highlight.edgeKeys.has(pairKey(e.source, e.target))
+    const isRef = e.source === 'REF' || e.target === 'REF'  // the start node's "fixed values" link: dashed and lighter
     return {
       id: `${e.source}-${e.target}-${i}`,
       source: e.target,
@@ -98,10 +103,32 @@ export function layoutGraph(graphView, highlightSpec, nodeStatus, scenarioEffect
         width: isHighlighted ? 24 : 20,
         height: isHighlighted ? 24 : 20,
       },
-      style: { stroke: isHighlighted ? '#b5850f' : '#64748b', strokeWidth: isHighlighted ? 3.5 : 2 },
+      style: isRef ? { stroke: '#1f3a5f', strokeWidth: 1.5, strokeDasharray: '6 5', opacity: 0.5 }
+        : { stroke: isHighlighted ? '#b5850f' : '#64748b', strokeWidth: isHighlighted ? 3.5 : 2 },
       zIndex: isHighlighted ? 10 : 0,
     }
   })
+
+  if (flow) {
+    const COLORS = { stale: '#b3261e', pending: '#d97706', not_in_change: '#8a6d1f', total: '#2a9d8f' }
+    flow.edges.forEach((fe, i) => {
+      const color = COLORS[fe.kind] ?? '#d97706'
+      edges.push({
+        id: `flow-${fe.from}-${fe.to}-${i}`,
+        source: fe.from,
+        target: fe.to,
+        label: fe.label,
+        type: 'default',
+        animated: true,
+        labelStyle: { fontSize: 10, fill: color, fontWeight: 700 },
+        labelBgStyle: { fill: '#ffffff', fillOpacity: 0.95 },
+        labelBgPadding: [4, 2],
+        markerEnd: { type: MarkerType.ArrowClosed, color, width: 20, height: 20 },
+        style: { stroke: color, strokeWidth: 3, strokeDasharray: '7 4' },
+        zIndex: 30,
+      })
+    })
+  }
 
   return { nodes, edges }
 }

@@ -6,6 +6,8 @@
 // mocked. See src/data/mockData.js for the Month 3-5 screens that don't
 // have a backend yet.
 
+import { limitsQuery } from './ledger.js'
+
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 
 class ApiError extends Error {
@@ -74,12 +76,10 @@ export function getCases() {
 }
 
 // GET /api/cases/{case_id}/replay?max_events=&min_events=&max_hops=
-export function runReplay(caseId, { maxEvents = 8, minEvents = 3, maxHops = 3 } = {}, { force = false } = {}) {
-  const params = new URLSearchParams({
-    max_events: maxEvents,
-    min_events: minEvents,
-    max_hops: maxHops,
-  })
+export function runReplay(caseId, { maxEvents = null, minEvents = 3, maxHops = 3 } = {}, { force = false } = {}) {
+  // max_events: null = no limit (the default); the limits apply to every case, benchmark or real SAP
+  const params = new URLSearchParams({ min_events: minEvents, max_hops: maxHops })
+  if (maxEvents !== null && maxEvents !== undefined && maxEvents !== '') params.set('max_events', maxEvents)
   return request(`/api/cases/${encodeURIComponent(caseId)}/replay?${params}`, { cached: true, force })
 }
 
@@ -95,10 +95,44 @@ export function getPolicies() {
 
 // GET /api/cases/{case_id}/scenario?subset=e1,e2[&order=e2,e1] -- "run this change": replay a set of
 // corrections and compare the corrected case with the previous one (benchmark cases only)
-export function getScenario(caseId, subset, order) {
+export function getScenario(caseId, subset, order, limits) {
   const p = new URLSearchParams({ subset: subset.join(',') })
   if (order && order.length) p.set('order', order.join(','))
+  if (limits) for (const [k, v] of limitsQuery(limits)) p.set(k, v)  // same candidate set as the console that opened it
   return request(`/api/cases/${encodeURIComponent(caseId)}/scenario?${p}`, { cached: true })
+}
+
+// GET /api/cases/{id}/analysis -- corrected-ledger view: nodes, loss split, policy summary, swappable pairs, class
+export function getAnalysis(caseId, limits, { force = false } = {}) {
+  return request(`/api/cases/${encodeURIComponent(caseId)}/analysis?${limitsQuery(limits)}`, { cached: true, force })
+}
+
+// GET /api/cases/{id}/pair?a=&b= -- both orders of one swappable pair, step by step
+export function getPairRun(caseId, a, b, limits) {
+  const p = limitsQuery(limits)
+  p.set('a', a)
+  p.set('b', b)
+  return request(`/api/cases/${encodeURIComponent(caseId)}/pair?${p}`, { cached: true })
+}
+
+// GET /api/cases/{id}/hops -- reachable events per hop (public log only)
+export function getHops(caseId) {
+  return request(`/api/cases/${encodeURIComponent(caseId)}/hops`, { cached: true })
+}
+
+// POST /api/cases/{id}/change -- several input edits (one cascade) + a swap order, in a chosen sequence
+export async function postChange(caseId, body, limits) {
+  let res
+  try {
+    res = await fetch(`${API_BASE}/api/cases/${encodeURIComponent(caseId)}/change?${limitsQuery(limits)}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+    })
+  } catch {
+    throw new ApiError(`Could not reach the backend at ${API_BASE}.`, 0)
+  }
+  const data = await res.json().catch(() => ({}))
+  if (!res.ok) throw new ApiError(data.detail || res.statusText, res.status)
+  return data
 }
 
 export { ApiError, API_BASE }

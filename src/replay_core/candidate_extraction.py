@@ -49,7 +49,7 @@ from replay_core.models import OCELEvent
 
 logger = logging.getLogger("replay_core.candidate_extraction")
 
-DEFAULT_MAX_EVENTS = 8
+DEFAULT_MAX_EVENTS = None  # no event limit by default: any limit the caller sets must still work correctly
 DEFAULT_MIN_EVENTS = 3
 DEFAULT_MAX_HOPS = 3
 
@@ -71,6 +71,10 @@ class CandidateExtractionResult:
     # at this max_hops setting". Raising max_events past this has no effect.
     total_discovered: int = 0
     warnings: list[str] = field(default_factory=list)
+    # events the traversal FOUND within max_hops but the max_events cap trimmed away (never silently lost)
+    dropped_events: list = field(default_factory=list)
+    # event_id -> hop for EVERY event found within max_hops (kept or dropped)
+    found_hops: dict[str, int] = field(default_factory=dict)
 
     def event_ids(self) -> list[str]:
         return [e.event_id for e in self.candidate_events]
@@ -115,7 +119,7 @@ def rank_candidates(
 def extract_candidate_events(
     graph: ObjectCentricGraph,
     target_event_id: str,
-    max_events: int = DEFAULT_MAX_EVENTS,
+    max_events: int | None = DEFAULT_MAX_EVENTS,
     min_events: int = DEFAULT_MIN_EVENTS,
     max_hops: int = DEFAULT_MAX_HOPS,
 ) -> CandidateExtractionResult:
@@ -126,8 +130,9 @@ def extract_candidate_events(
     Args:
         graph: an ObjectCentricGraph built from the ingested log.
         target_event_id: the event id representing the realized loss.
-        max_events: upper bound on returned candidate set size (proposal
-            targets 3-8).
+        max_events: upper bound on returned candidate set size; None (the
+            default) means no limit. Events trimmed by the cap are reported in
+            `dropped_events`, never silently lost.
         min_events: if fewer than this many candidates are found, a
             warning is attached to the result (traversal still returns
             what it found rather than failing).
@@ -181,7 +186,9 @@ def extract_candidate_events(
         frontier_objects = next_frontier_objects - visited_objects
         hop += 1
 
-    candidates = rank_candidates(target, list(found.values()), found_at_hop)[:max_events]
+    ranked = rank_candidates(target, list(found.values()), found_at_hop)
+    candidates = ranked if max_events is None else ranked[:max_events]
+    dropped = ranked[len(candidates):]
     candidates.sort(key=lambda e: e.timestamp)  # chronological order for readability
     event_hops = {e.event_id: found_at_hop[e.event_id] for e in candidates}
     kept_ids = {e.event_id for e in candidates} | {target_event_id}
@@ -206,7 +213,7 @@ def extract_candidate_events(
         warnings.append(
             f"{len(disconnected)} candidate(s) {disconnected} lost their connecting path "
             f"to the target because the intermediate event(s) that discovered them fell "
-            f"outside the top-{max_events} recency cutoff. They are still valid candidates "
+            f"outside the top-{max_events} cutoff. They are still valid candidates "
             f"(found via real backward traversal), just not graph-connected to the target "
             f"in this bounded view. Raise max_events to see the full connected path."
         )
@@ -225,6 +232,8 @@ def extract_candidate_events(
         discovered_via=kept_discovery,
         total_discovered=total_discovered,
         warnings=warnings,
+        dropped_events=list(dropped),
+        found_hops=dict(found_at_hop),
     )
 
 
@@ -241,7 +250,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("ocel_path", help="Path to an OCEL 2.0 file")
     parser.add_argument("target_event_id", help="Event id to treat as the realized loss")
-    parser.add_argument("--max-events", type=int, default=DEFAULT_MAX_EVENTS)
+    parser.add_argument("--max-events", type=int, default=DEFAULT_MAX_EVENTS, help="default: no limit")
     parser.add_argument("--min-events", type=int, default=DEFAULT_MIN_EVENTS)
     parser.add_argument("--max-hops", type=int, default=DEFAULT_MAX_HOPS)
     args = parser.parse_args()

@@ -127,6 +127,7 @@ export default function Cases() {
                   <th className="px-5 py-3 font-semibold">Value / Loss</th>
                   <th className="px-5 py-3 font-semibold">Candidate Events</th>
                   <th className="px-5 py-3 font-semibold">Verdict</th>
+                  <th className="px-5 py-3 font-semibold">Hops</th>
                   <th className="px-5 py-3 font-semibold">Policy Version</th>
                   <th className="px-5 py-3 font-semibold">Updated</th>
                   <th className="px-5 py-3 font-semibold">Curation Note</th>
@@ -160,6 +161,14 @@ export default function Cases() {
                           stages 1–2b only
                         </span>
                       )}
+                    </td>
+                    <td className="px-5 py-3 text-[12px]" data-testid="class-chip">
+                      {c.synthetic && c.hops ? (
+                        <span className="whitespace-nowrap">
+                          {c.blocked && <span className="ml-1 rounded bg-status-blockedBg px-1.5 py-0.5 font-semibold text-status-blocked">BLOCKED</span>}
+                          <span className="ml-1 rounded bg-[#eef1f4] px-1.5 py-0.5 font-semibold text-[#5c6b7a]">{c.hops} hop{c.hops === 1 ? '' : 's'}</span>
+                        </span>
+                      ) : '—'}
                     </td>
                     <td className="px-5 py-3 text-[#5c6b7a]">{c.synthetic ? c.policy_version : '—'}</td>
                     <td className="px-5 py-3 text-[#5c6b7a]">{formatDateTime(c.timestamp)}</td>

@@ -171,3 +171,45 @@ select:focus-visible,
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Corrected Scenario: the node being corrected in the current step pulses */
+@keyframes rs-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(26, 127, 76, 0.55); }
+  70% { box-shadow: 0 0 0 14px rgba(26, 127, 76, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(26, 127, 76, 0); }
+}
+.rs-pulse { animation: rs-pulse 1.1s ease-out infinite; }
+@keyframes rs-affected {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.25); }
+  50% { box-shadow: 0 0 0 8px rgba(217, 119, 6, 0.10); }
+}
+.rs-affected { animation: rs-affected 1.4s ease-in-out infinite; }
+
+/* Replay Analysis: each numbered step fades in as the flow reveals it */
+@keyframes rs-fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.rs-fade { animation: rs-fade-in 0.35s ease both; }
+
+/* ---- Replay Console v2: graph creation from the OCEL table -------------------------------------- */
+@keyframes rs-aurora { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(40px,-30px) scale(1.15); } 100% { transform: translate(0,0) scale(1); } }
+.rs-stage { position: relative; overflow: hidden; border-radius: 16px; background:
+  radial-gradient(1200px 500px at 10% -10%, rgba(42,157,143,.14), transparent 60%),
+  radial-gradient(900px 500px at 100% 110%, rgba(31,58,95,.14), transparent 60%), #f8fafb; }
+.rs-stage::before, .rs-stage::after { content: ''; position: absolute; width: 380px; height: 380px; border-radius: 50%; filter: blur(70px); opacity: .35; pointer-events: none; animation: rs-aurora 14s ease-in-out infinite; }
+.rs-stage::before { left: -80px; top: -60px; background: #5eead4; }
+.rs-stage::after { right: -100px; bottom: -80px; background: #93c5fd; animation-delay: -6s; }
+.rs-stage .react-flow { background: transparent; }
+@keyframes rs-node-pop { 0% { opacity: 0; transform: scale(.2); filter: blur(8px); } 60% { opacity: 1; transform: scale(1.12); filter: blur(0); } 100% { opacity: 1; transform: scale(1); } }
+.react-flow__node.rs-node-pop { animation: rs-node-pop .65s cubic-bezier(.2,.9,.3,1.2) both; }
+@keyframes rs-edge-draw { from { stroke-dashoffset: 400; } to { stroke-dashoffset: 0; } }
+.react-flow__edge.rs-edge-draw path.react-flow__edge-path { stroke-dasharray: 400; animation: rs-edge-draw .9s ease-out both; }
+@keyframes rs-row-glow { 0% { box-shadow: inset 0 0 0 0 rgba(42,157,143,0); background: transparent; } 35% { background: rgba(42,157,143,.16); box-shadow: inset 3px 0 0 #2a9d8f; } 100% { background: transparent; } }
+.rs-row { transition: max-height .55s ease, opacity .5s ease, transform .55s cubic-bezier(.5,0,.2,1), filter .5s ease; max-height: 64px; }
+.rs-row-out { max-height: 0; opacity: 0; transform: translateX(-60px) scale(.96); filter: blur(5px); overflow: hidden; }
+.rs-row-glow { animation: rs-row-glow .7s ease both; }
+@keyframes rs-table-in { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+.rs-table { animation: rs-table-in .6s ease both; transition: opacity .6s ease, transform .6s ease; }
+.rs-table-gone { opacity: 0; transform: scale(.94); pointer-events: none; }
+@keyframes rs-step-in { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: none; } }
+.rs-step { animation: rs-step-in .5s ease both; }
+@keyframes rs-pop-card { from { opacity: 0; transform: translateY(6px) scale(.97); } to { opacity: 1; transform: none; } }
+.rs-popover { animation: rs-pop-card .18s ease both; }

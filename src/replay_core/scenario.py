@@ -39,7 +39,8 @@ from policy_engine.loss import loss as loss_of
 from replay_core.benchmark_io import LoadedCase
 from replay_core.confluence import CaseVerdict, transitive_closure
 from replay_core.explain import total_calculation
-from replay_core.replay import ReplayResult, state_differences, state_to_json, subset_key
+from replay_core.influence import build_influence
+from replay_core.replay import ReplayOperator, ReplayResult, state_differences, state_to_json, subset_key
 from replay_core.run_case import provisional_shapley
 
 MAX_SCENARIO_EVENTS = 6  # 6! = 720 orders at most (each replay is milliseconds)
@@ -117,7 +118,10 @@ def run_scenario(
     subset: Iterable[str],
     order: Sequence[str] | None = None,
     shapley_fn: Callable = provisional_shapley,
+    op: ReplayOperator | None = None,
 ) -> dict[str, Any]:
+    """`op` replaces the case's correction operator: a SwapOperator (replay_core/swap.py) replays the same subset as a
+    pure change of order, with its own recorded inputs. A swap has no coalition value to split, so Shapley is withheld."""
     ids = list(subset)
     if len(set(ids)) != len(ids):
         raise ScenarioError("a correction appears twice in the requested change")
@@ -131,7 +135,8 @@ def run_scenario(
     S = tuple(sorted(ids))
     key = subset_key(S)
     sv = cv.subsets[key]
-    op = lc.operator()
+    op = op or lc.operator()
+    is_swap = getattr(op, "is_swap", False)
     locks = transitive_closure(lc.policy.structural_pairs())
     legit = _legit_orders(S, locks)
     if not legit:
@@ -148,7 +153,9 @@ def run_scenario(
 
     results = {o: op.replay(S, o) for o in legit}
     auth_order = tuple(sv.order_used) if sv.order_used is not None else None
-    sel_order = tuple(order) if order is not None else (auth_order or legit[0])
+    posted_order = op.canonical_order(S)  # a swap opens on the order that was posted: nothing has moved yet
+    sel_order = (tuple(order) if order is not None else
+                 posted_order if is_swap and posted_order in legit else (auth_order or legit[0]))
 
     def is_auth(net: Decimal) -> bool:
         return ref_net is not None and net == ref_net
@@ -194,7 +201,11 @@ def run_scenario(
         "scope": "within_change", "source": "provisional (replay_core.run_case.provisional_shapley)",
         "coalition_table": table,
     }
-    if any(t["value"] is None for t in table):
+    if is_swap:
+        table = []
+        shap.update(status="withheld", values=None, coalition_table=table,
+                    reason="A swap only changes the order of the recorded values; there is no corrected value to split.")
+    elif any(t["value"] is None for t in table):
         shap.update(status="withheld", values=None,
                     reason="At least one sub-coalition of this change is BLOCKED (the orders disagree and the "
                            "policy does not fix one), so there is no defensible v(S) to split.")
@@ -206,9 +217,14 @@ def run_scenario(
                     total=_d(total), v_of_subset=_d(vals[key]),
                     efficient=abs(total - vals[key]) <= Decimal("0.0001") * max(1, len(S)))
 
+    # ---- how the change propagates through the dependent nodes (graph overlay + report) -------
+    coalition = {t["key"]: (None if t["value"] is None else Decimal(t["value"])) for t in table}
+    phi_vals = shap["values"] if shap.get("status") == "ok" else None
+    influence = build_influence(lc, op, S, sel_order, coalition, phi_vals)
+
     return {
         "case_id": lc.case_id, "policy_version": lc.entry["policy_version"],
-        "subset": list(S), "key": key, "subset_verdict": sv.verdict,
+        "subset": list(S), "key": key, "subset_verdict": sv.verdict, "influence": influence,
         "exploratory": sv.verdict == "BLOCKED",
         "baseline": {"net": _d(base_net), "loss": _d(base_loss), "compliant_net": _d(compliant)},
         "orders": light, "orders_agree": len(nets) <= 1,
@@ -216,6 +232,7 @@ def run_scenario(
         "order_spread": _d(max(nets) - min(nets)),
         "selected_order": selected, "authoritative_order": authoritative_order,
         "selected": sel, "shapley": shap,
+        "mode": "swap" if is_swap else "correction",
         "note": ("These corrections disagree by order and the policy does not fix one: every order below is "
                  "exploratory, none is an authoritative outcome, and attribution is withheld."
                  if sv.verdict == "BLOCKED" else None),

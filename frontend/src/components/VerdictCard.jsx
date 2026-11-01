@@ -103,7 +103,7 @@ export default function VerdictCard({ result }) {
 
       {rep?.order_is_authoritative === false && (
         <p className="mt-2 text-[11px] leading-snug text-[#8a97a3]">
-          The step-through below uses an illustrative order only. It is not an authoritative outcome.
+          The replay above uses an illustrative order only. It is not an authoritative outcome.
         </p>
       )}
 
