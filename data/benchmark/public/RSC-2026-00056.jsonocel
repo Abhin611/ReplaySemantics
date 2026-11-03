@@ -1,0 +1,320 @@
+{
+ "objectTypes": [
+  {
+   "name": "Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Order",
+   "attributes": []
+  },
+  {
+   "name": "Account",
+   "attributes": []
+  },
+  {
+   "name": "Document",
+   "attributes": []
+  }
+ ],
+ "eventTypes": [
+  {
+   "name": "Approve Order",
+   "attributes": []
+  },
+  {
+   "name": "Insert Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Post Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Post Manual Adjustment",
+   "attributes": [
+    {
+     "name": "amount",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Set Payment Block",
+   "attributes": []
+  }
+ ],
+ "objects": [
+  {
+   "id": "INV-00056",
+   "type": "Invoice",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "PO-00056",
+   "type": "Order",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "ACC-0056",
+   "type": "Account",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00056-e1",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00056-e11",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00056-e2",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  }
+ ],
+ "events": [
+  {
+   "id": "e1",
+   "type": "Insert Invoice",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00056",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00056-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "type": "Set Payment Block",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "DOC-00056-e1",
+     "qualifier": "linked_document"
+    },
+    {
+     "objectId": "DOC-00056-e2",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e3",
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "57112.57"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00056-e2",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e4",
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "-53035.76"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00056-e2",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e5",
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "-52366.33"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00056",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e6",
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "-9651.44"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "INV-00056",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e7",
+   "type": "Post Manual Adjustment",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
+    {
+     "name": "amount",
+     "value": "-5571.19"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00056-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e8",
+   "type": "Insert Invoice",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "DOC-00056-e2",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e9",
+   "type": "Insert Invoice",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "DOC-00056-e2",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e10",
+   "type": "Set Payment Block",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "DOC-00056-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e11",
+   "type": "Approve Order",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00056",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00056-e11",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e12",
+   "type": "Set Payment Block",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "DOC-00056-e11",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e13",
+   "type": "Approve Order",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "DOC-00056-e2",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e14",
+   "type": "Insert Invoice",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00056",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e15",
+   "type": "Set Payment Block",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "DOC-00056-e2",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e16",
+   "type": "Post Invoice",
+   "time": "2026-08-03T16:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00056",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "ACC-0056",
+     "qualifier": "ledger"
+    }
+   ]
+  }
+ ]
+}

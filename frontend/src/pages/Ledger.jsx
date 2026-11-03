@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AlertTriangle, CheckCircle2, Layers, PlayCircle } from 'lucide-react'
 import { useApi } from '../lib/useApi'
-import { clearApiCache, getAnalysis, getCases, getHops, getPairRun } from '../lib/api'
+import { clearApiCache, getAnalysis, getCases, getHops, getPairRun, recordAction } from '../lib/api'
+import { limitsBody } from '../lib/history'
 import ChangePanel from '../components/ChangePanel'
 import { useSelectedCase, usePersistentState } from '../lib/SelectedCaseContext'
 import Card from '../components/Card'
@@ -155,11 +156,14 @@ export default function Ledger() {
   }, [a?.case_id, JSON.stringify(a?.limits?.limits)]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const notice = partialNotice(a?.limits)
-  const run = () => setRan({ caseId: selectedCaseId, limits: { ...limits } })
+  const run = () => {
+    setRan({ caseId: selectedCaseId, limits: { ...limits } })
+    recordAction({ kind: 'run_case', case_id: selectedCaseId, limits: limitsBody(limits) })
+  }
   const refresh = () => { clearApiCache(); setRan(null); setPair(null) }
   if (casesApi.loading) return <LoadingState label="Loading cases…" />
   if (casesApi.error) return <ErrorState error={casesApi.error} onRetry={casesApi.refetch} />
-  if (!cases.length) return <EmptyState label="No benchmark generated. Run: python -m policy_engine.benchmark.generator --out data/benchmark --seed 7" />
+  if (!cases.length) return <EmptyState label="Analysis needs contract terms and financial fields, which this log does not have. Open the benchmark sample log from your profile to use it." />
 
   const hp = hopsApi.data
   const shares = a?.replayable ? lossShares(a.totals) : null
@@ -276,7 +280,7 @@ export default function Ledger() {
                     <div key={p.pair.join()} className={`flex flex-wrap items-center justify-between gap-2 rounded-lg border px-3 py-2 text-[13px] ${pair?.join() === p.pair.join() ? 'border-teal-600 bg-teal-50' : 'border-[#e2e6ea]'}`}>
                       <div><b>{p.pair.join(' / ')}</b> <span className="text-[#5c6b7a]">· {Number(p.difference) === 0 ? 'swapping changes no value' : `orders differ by ${formatPrecise(p.difference)}`}</span></div>
                       <div className={`text-[12px] font-semibold ${b.tone === 'blocked' ? 'text-status-blocked' : 'text-status-ordered'}`}>{b.text}</div>
-                      <button onClick={() => setPair(p.pair)} className="rounded-md bg-navy-900 px-3 py-1 text-[12px] font-semibold text-white hover:bg-navy-800">Run pair</button>
+                      <button onClick={() => { setPair(p.pair); recordAction({ kind: 'pair', case_id: a.case_id, a: p.pair[0], b: p.pair[1], limits: limitsBody(active.limits) }) }} className="rounded-md bg-navy-900 px-3 py-1 text-[12px] font-semibold text-white hover:bg-navy-800">Run pair</button>
                     </div>
                   )
                 })}

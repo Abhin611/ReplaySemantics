@@ -17,6 +17,16 @@ class ApiError extends Error {
   }
 }
 
+// Every call carries the signed-in user's Firebase token; session.jsx says how to get a fresh one.
+let tokenProvider = () => null
+export function setTokenProvider(fn) {
+  tokenProvider = fn
+}
+async function authHeaders(extra = {}) {
+  const token = await tokenProvider()
+  return token ? { ...extra, Authorization: `Bearer ${token}` } : extra
+}
+
 // Every endpoint used here is deterministic for a running backend, so GET results are cached for the
 // life of the page: switching tabs back to a page you already ran is instant, with no second run.
 // A browser refresh clears the cache. Callers must treat cached results as read-only.
@@ -40,7 +50,7 @@ function request(path, { cached = false, force = false } = {}) {
 async function fetchJson(path) {
   let res
   try {
-    res = await fetch(`${API_BASE}${path}`)
+    res = await fetch(`${API_BASE}${path}`, { headers: await authHeaders() })
   } catch (err) {
     throw new ApiError(
       `Could not reach the backend at ${API_BASE}. Is "uvicorn api.app:app --reload" running?`,
@@ -125,7 +135,7 @@ export async function postChange(caseId, body, limits) {
   let res
   try {
     res = await fetch(`${API_BASE}/api/cases/${encodeURIComponent(caseId)}/change?${limitsQuery(limits)}`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+      method: 'POST', headers: await authHeaders({ 'Content-Type': 'application/json' }), body: JSON.stringify(body),
     })
   } catch {
     throw new ApiError(`Could not reach the backend at ${API_BASE}.`, 0)
@@ -133,6 +143,43 @@ export async function postChange(caseId, body, limits) {
   const data = await res.json().catch(() => ({}))
   if (!res.ok) throw new ApiError(data.detail || res.statusText, res.status)
   return data
+}
+
+// A write with a JSON body (or a raw file) and the same error handling as a read.
+async function send(method, path, body, { raw = false } = {}) {
+  let res
+  try {
+    res = await fetch(`${API_BASE}${path}`, {
+      method,
+      headers: await authHeaders(raw ? { 'Content-Type': 'application/octet-stream' } : { 'Content-Type': 'application/json' }),
+      body: raw ? body : JSON.stringify(body),
+    })
+  } catch {
+    throw new ApiError(`Could not reach the backend at ${API_BASE}.`, 0)
+  }
+  const data = await res.json().catch(() => ({}))
+  if (!res.ok) throw new ApiError(data.detail || res.statusText, res.status)
+  return data
+}
+
+// ---- the signed-in user ----
+export const getMe = () => fetchJson('/api/me')
+export const updateName = (name) => send('PATCH', '/api/me', { name })
+
+// ---- event logs ----
+export const getLogs = () => fetchJson('/api/logs')
+export const loadSampleLog = (sample) => send('POST', '/api/logs/sample', { sample })
+export const loadLogFromUrl = (url, platform) => send('POST', '/api/logs/url', { url: url.trim(), platform })
+export const uploadLog = (file, platform) =>
+  send('POST', `/api/logs/upload?${new URLSearchParams({ filename: file.name, platform })}`, file, { raw: true })
+export const openLog = (id) => send('POST', `/api/logs/${id}/open`, {})
+
+// ---- history ----
+export const getHistory = () => fetchJson('/api/history')
+export const compareActions = (ids) => send('POST', '/api/history/compare', { ids })
+// Save what the user just ran as their next action. A failure here must never disturb the page they are on.
+export function recordAction(body) {
+  return send('POST', '/api/history', body).catch((err) => console.warn('Could not save this action to your history:', err.message))
 }
 
 export { ApiError, API_BASE }

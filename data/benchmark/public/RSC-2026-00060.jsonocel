@@ -1,0 +1,396 @@
+{
+ "objectTypes": [
+  {
+   "name": "Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Order",
+   "attributes": []
+  },
+  {
+   "name": "Account",
+   "attributes": []
+  },
+  {
+   "name": "Document",
+   "attributes": []
+  }
+ ],
+ "eventTypes": [
+  {
+   "name": "Adjust Quantity",
+   "attributes": [
+    {
+     "name": "quantity",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Apply Discount",
+   "attributes": [
+    {
+     "name": "rate",
+     "type": "string"
+    },
+    {
+     "name": "slot",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Apply Rounding",
+   "attributes": [
+    {
+     "name": "decimals",
+     "type": "string"
+    },
+    {
+     "name": "mode",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Apply Tax Code",
+   "attributes": [
+    {
+     "name": "rate",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Approve Order",
+   "attributes": []
+  },
+  {
+   "name": "Convert Currency",
+   "attributes": [
+    {
+     "name": "fx_rate",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "name": "Create Purchase Order",
+   "attributes": []
+  },
+  {
+   "name": "Insert Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Post Invoice",
+   "attributes": []
+  },
+  {
+   "name": "Set Payment Block",
+   "attributes": []
+  }
+ ],
+ "objects": [
+  {
+   "id": "INV-00060",
+   "type": "Invoice",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "PO-00060",
+   "type": "Order",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "ACC-0060",
+   "type": "Account",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00060-e1",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00060-e10",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00060-e2",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00060-e3",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  },
+  {
+   "id": "DOC-00060-e9",
+   "type": "Document",
+   "attributes": [],
+   "relationships": []
+  }
+ ],
+ "events": [
+  {
+   "id": "e1",
+   "type": "Set Payment Block",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00060",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00060-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e2",
+   "type": "Insert Invoice",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "DOC-00060-e1",
+     "qualifier": "linked_document"
+    },
+    {
+     "objectId": "DOC-00060-e2",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e3",
+   "type": "Create Purchase Order",
+   "time": "2026-08-03T13:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "DOC-00060-e2",
+     "qualifier": "linked_document"
+    },
+    {
+     "objectId": "DOC-00060-e3",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e4",
+   "type": "Apply Discount",
+   "time": "2026-08-03T12:00:00+00:00",
+   "attributes": [
+    {
+     "name": "rate",
+     "value": "0.16"
+    },
+    {
+     "name": "slot",
+     "value": "1"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00060-e3",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e5",
+   "type": "Apply Tax Code",
+   "time": "2026-08-03T12:00:00+00:00",
+   "attributes": [
+    {
+     "name": "rate",
+     "value": "0.05"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00060-e3",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e6",
+   "type": "Apply Rounding",
+   "time": "2026-08-03T12:00:00+00:00",
+   "attributes": [
+    {
+     "name": "decimals",
+     "value": "1"
+    },
+    {
+     "name": "mode",
+     "value": "ROUND_DOWN"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00060-e3",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e7",
+   "type": "Adjust Quantity",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
+    {
+     "name": "quantity",
+     "value": "40"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00060-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e8",
+   "type": "Convert Currency",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [
+    {
+     "name": "fx_rate",
+     "value": "0.9770"
+    }
+   ],
+   "relationships": [
+    {
+     "objectId": "DOC-00060-e1",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e9",
+   "type": "Create Purchase Order",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00060",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00060-e9",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e10",
+   "type": "Approve Order",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00060",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "DOC-00060-e10",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e11",
+   "type": "Approve Order",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "DOC-00060-e9",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e12",
+   "type": "Insert Invoice",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "DOC-00060-e9",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e13",
+   "type": "Insert Invoice",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "DOC-00060-e10",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e14",
+   "type": "Create Purchase Order",
+   "time": "2026-08-03T15:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00060",
+     "qualifier": "posting"
+    }
+   ]
+  },
+  {
+   "id": "e15",
+   "type": "Approve Order",
+   "time": "2026-08-03T14:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "DOC-00060-e9",
+     "qualifier": "linked_document"
+    }
+   ]
+  },
+  {
+   "id": "e16",
+   "type": "Post Invoice",
+   "time": "2026-08-03T16:00:00+00:00",
+   "attributes": [],
+   "relationships": [
+    {
+     "objectId": "INV-00060",
+     "qualifier": "posting"
+    },
+    {
+     "objectId": "ACC-0060",
+     "qualifier": "ledger"
+    }
+   ]
+  }
+ ]
+}

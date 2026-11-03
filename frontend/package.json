@@ -10,6 +10,7 @@
     "check:lib": "node scripts/check-lib.mjs"
   },
   "dependencies": {
+    "firebase": "^13.1.0",
     "lucide-react": "^0.395.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

@@ -9,7 +9,7 @@ import { formatEur, formatDateTime, formatAmount } from '../lib/format'
 import { badgeStatus } from '../lib/verdict'
 import { useSelectedCase, usePersistentState } from '../lib/SelectedCaseContext'
 
-const TABS = ['All', 'PASS', 'POLICY-ORDERED', 'BLOCKED', 'Real SAP data']
+const TABS = ['All', 'PASS', 'POLICY-ORDERED', 'BLOCKED', 'No verdict']
 const PAGE_SIZE = 10
 const SYNTHETIC = 'benchmark (synthetic)'
 
@@ -53,9 +53,9 @@ export default function Cases() {
   }, [casesApi.data, verdicts])
 
   const counts = useMemo(() => {
-    const c = { All: enriched.length, PASS: 0, 'POLICY-ORDERED': 0, BLOCKED: 0, 'Real SAP data': 0 }
+    const c = { All: enriched.length, PASS: 0, 'POLICY-ORDERED': 0, BLOCKED: 0, 'No verdict': 0 }
     enriched.forEach((r) => {
-      if (!r.synthetic) c['Real SAP data']++
+      if (!r.synthetic) c['No verdict']++
       else if (r.status) c[r.status]++
     })
     return c
@@ -65,7 +65,7 @@ export default function Cases() {
   const filtered =
     tab === 'All'
       ? enriched
-      : tab === 'Real SAP data'
+      : tab === 'No verdict'
       ? enriched.filter((r) => !r.synthetic)
       : enriched.filter((r) => r.status === tab)
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
@@ -107,9 +107,9 @@ export default function Cases() {
           <div className="ml-auto text-[11.5px] text-[#8a97a3]">
             {verdictsApi.loading
               ? 'Checking verdicts…'
-              : verdicts
+              : verdicts && Object.keys(verdicts).length
               ? 'Verdicts are real (confluence checker) · synthetic cases only'
-              : 'No benchmark generated — real SAP cases only'}
+              : 'This log has no financial fields, so its cases stop at the order constraints'}
           </div>
         </div>
 
@@ -142,7 +142,7 @@ export default function Cases() {
                   >
                     <td className="px-5 py-3 font-semibold text-[#101828]">{c.case_id}</td>
                     <td className="px-5 py-3 text-[11.5px] text-[#5c6b7a]">
-                      {c.synthetic ? 'synthetic benchmark' : 'real SAP (VBFA)'}
+                      {c.synthetic ? 'synthetic benchmark' : 'event log'}
                     </td>
                     <td className="px-5 py-3">
                       {c.synthetic ? formatAmount(c.realized_loss) : formatEur(c.value_eur)}
@@ -156,7 +156,7 @@ export default function Cases() {
                       ) : (
                         <span
                           className="rounded-md bg-status-idleBg px-2.5 py-1 text-[11px] font-semibold text-status-idle"
-                          title="Real SAP events carry no pricing fields, so replay and verdicts do not apply"
+                          title="These events carry no pricing fields, so replay and verdicts do not apply"
                         >
                           stages 1–2b only
                         </span>

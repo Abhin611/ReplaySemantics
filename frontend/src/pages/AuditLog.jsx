@@ -7,8 +7,8 @@ export default function AuditLog() {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between rounded-xl border border-amber-300 bg-amber-50 px-4 py-3">
         <span className="text-[13px] text-amber-800">
-          There's no authentication or event-sourcing layer yet, so nothing is really being
-          logged. Sample rows shown to lock in the screen's shape.
+          Sample rows only, showing the shape of an organisation-wide log. Your own actions are
+          saved on the History page.
         </span>
         <PreviewTag label="Full page preview" />
       </div>

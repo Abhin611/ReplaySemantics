@@ -1,11 +1,11 @@
 {
-  "n_cases": 54,
+  "n_cases": 60,
   "metrics": {
     "replaysemantics": {
-      "cases": 54,
+      "cases": 60,
       "classification_accuracy": 1.0,
-      "valid_cases": 45,
-      "invalid_cases": 9,
+      "valid_cases": 49,
+      "invalid_cases": 11,
       "valid_acceptance": 1.0,
       "invalid_rejection": 1.0,
       "false_attribution_rate": 0.0,
@@ -19,6 +19,16 @@
           "classification_correct": 26,
           "false_attribution": 0
         },
+        "both/large_blocked": {
+          "n": 1,
+          "classification_correct": 1,
+          "false_attribution": 0
+        },
+        "both/large_policy_ordered": {
+          "n": 1,
+          "classification_correct": 1,
+          "false_attribution": 0
+        },
         "direct_fix/direct_fix": {
           "n": 4,
           "classification_correct": 4,
@@ -30,13 +40,13 @@
           "false_attribution": 0
         },
         "multi_edit_only/independent": {
-          "n": 2,
-          "classification_correct": 2,
+          "n": 3,
+          "classification_correct": 3,
           "false_attribution": 0
         },
         "multi_edit_only/interaction": {
-          "n": 2,
-          "classification_correct": 2,
+          "n": 3,
+          "classification_correct": 3,
           "false_attribution": 0
         },
         "multi_edit_only/locked": {
@@ -50,6 +60,16 @@
           "false_attribution": 0
         },
         "multi_edit_only/single_event": {
+          "n": 1,
+          "classification_correct": 1,
+          "false_attribution": 0
+        },
+        "swap_only/large_blocked": {
+          "n": 1,
+          "classification_correct": 1,
+          "false_attribution": 0
+        },
+        "swap_only/large_policy_ordered": {
           "n": 1,
           "classification_correct": 1,
           "false_attribution": 0
@@ -62,13 +82,13 @@
       }
     },
     "naive_sequential": {
-      "cases": 54,
-      "classification_accuracy": 0.2593,
-      "valid_cases": 45,
-      "invalid_cases": 9,
-      "valid_acceptance": 0.3111,
+      "cases": 60,
+      "classification_accuracy": 0.2667,
+      "valid_cases": 49,
+      "invalid_cases": 11,
+      "valid_acceptance": 0.3265,
       "invalid_rejection": 0.0,
-      "false_attribution_rate": 0.1667,
+      "false_attribution_rate": 0.1833,
       "false_attribution_on_blocked": 1.0,
       "false_attribution_on_valid": 0.0,
       "max_abs_shapley_error": "0.000000",
@@ -78,6 +98,16 @@
           "n": 26,
           "classification_correct": 0,
           "false_attribution": 6
+        },
+        "both/large_blocked": {
+          "n": 1,
+          "classification_correct": 0,
+          "false_attribution": 1
+        },
+        "both/large_policy_ordered": {
+          "n": 1,
+          "classification_correct": 0,
+          "false_attribution": 0
         },
         "direct_fix/direct_fix": {
           "n": 4,
@@ -90,13 +120,13 @@
           "false_attribution": 0
         },
         "multi_edit_only/independent": {
-          "n": 2,
-          "classification_correct": 2,
+          "n": 3,
+          "classification_correct": 3,
           "false_attribution": 0
         },
         "multi_edit_only/interaction": {
-          "n": 2,
-          "classification_correct": 2,
+          "n": 3,
+          "classification_correct": 3,
           "false_attribution": 0
         },
         "multi_edit_only/locked": {
@@ -114,6 +144,16 @@
           "classification_correct": 1,
           "false_attribution": 0
         },
+        "swap_only/large_blocked": {
+          "n": 1,
+          "classification_correct": 0,
+          "false_attribution": 1
+        },
+        "swap_only/large_policy_ordered": {
+          "n": 1,
+          "classification_correct": 0,
+          "false_attribution": 0
+        },
         "swap_only/swap_only": {
           "n": 10,
           "classification_correct": 0,
@@ -122,15 +162,15 @@
       }
     },
     "naive_split": {
-      "cases": 54,
-      "classification_accuracy": 0.2593,
-      "valid_cases": 45,
-      "invalid_cases": 9,
-      "valid_acceptance": 0.2222,
+      "cases": 60,
+      "classification_accuracy": 0.2667,
+      "valid_cases": 49,
+      "invalid_cases": 11,
+      "valid_acceptance": 0.2245,
       "invalid_rejection": 0.0,
-      "false_attribution_rate": 0.2222,
+      "false_attribution_rate": 0.2333,
       "false_attribution_on_blocked": 1.0,
-      "false_attribution_on_valid": 0.0667,
+      "false_attribution_on_valid": 0.0612,
       "max_abs_shapley_error": "124547.554298",
       "max_abs_coalition_error": "0.000000",
       "by_family": {
@@ -138,6 +178,16 @@
           "n": 26,
           "classification_correct": 0,
           "false_attribution": 7
+        },
+        "both/large_blocked": {
+          "n": 1,
+          "classification_correct": 0,
+          "false_attribution": 1
+        },
+        "both/large_policy_ordered": {
+          "n": 1,
+          "classification_correct": 0,
+          "false_attribution": 0
         },
         "direct_fix/direct_fix": {
           "n": 4,
@@ -150,13 +200,13 @@
           "false_attribution": 2
         },
         "multi_edit_only/independent": {
-          "n": 2,
-          "classification_correct": 2,
+          "n": 3,
+          "classification_correct": 3,
           "false_attribution": 0
         },
         "multi_edit_only/interaction": {
-          "n": 2,
-          "classification_correct": 2,
+          "n": 3,
+          "classification_correct": 3,
           "false_attribution": 0
         },
         "multi_edit_only/locked": {
@@ -172,6 +222,16 @@
         "multi_edit_only/single_event": {
           "n": 1,
           "classification_correct": 1,
+          "false_attribution": 0
+        },
+        "swap_only/large_blocked": {
+          "n": 1,
+          "classification_correct": 0,
+          "false_attribution": 1
+        },
+        "swap_only/large_policy_ordered": {
+          "n": 1,
+          "classification_correct": 0,
           "false_attribution": 0
         },
         "swap_only/swap_only": {
@@ -822,6 +882,76 @@
         "max_abs_coalition_error": "0E-22",
         "system": "replaysemantics",
         "predicted_classification": "BLOCKED"
+      },
+      {
+        "case_id": "RSC-2026-00055",
+        "family": "multi_edit_only/interaction",
+        "truth_classification": "PASS",
+        "classification_correct": true,
+        "attribution_withheld_correctly": true,
+        "max_abs_shapley_error": "0.000000",
+        "false_attribution": false,
+        "max_abs_coalition_error": "0.000000",
+        "system": "replaysemantics",
+        "predicted_classification": "PASS"
+      },
+      {
+        "case_id": "RSC-2026-00056",
+        "family": "multi_edit_only/independent",
+        "truth_classification": "PASS",
+        "classification_correct": true,
+        "attribution_withheld_correctly": true,
+        "max_abs_shapley_error": "0.000000",
+        "false_attribution": false,
+        "max_abs_coalition_error": "0E-22",
+        "system": "replaysemantics",
+        "predicted_classification": "PASS"
+      },
+      {
+        "case_id": "RSC-2026-00057",
+        "family": "swap_only/large_policy_ordered",
+        "truth_classification": "POLICY_ORDERED",
+        "classification_correct": true,
+        "attribution_withheld_correctly": true,
+        "max_abs_shapley_error": "0.000000",
+        "false_attribution": false,
+        "max_abs_coalition_error": "0E-22",
+        "system": "replaysemantics",
+        "predicted_classification": "POLICY_ORDERED"
+      },
+      {
+        "case_id": "RSC-2026-00058",
+        "family": "both/large_policy_ordered",
+        "truth_classification": "POLICY_ORDERED",
+        "classification_correct": true,
+        "attribution_withheld_correctly": true,
+        "max_abs_shapley_error": "0.000000",
+        "false_attribution": false,
+        "max_abs_coalition_error": "2.760000000000000E-7",
+        "system": "replaysemantics",
+        "predicted_classification": "POLICY_ORDERED"
+      },
+      {
+        "case_id": "RSC-2026-00059",
+        "family": "swap_only/large_blocked",
+        "truth_classification": "BLOCKED",
+        "classification_correct": true,
+        "attribution_withheld_correctly": true,
+        "false_attribution": false,
+        "max_abs_coalition_error": "5.000000000000000E-7",
+        "system": "replaysemantics",
+        "predicted_classification": "BLOCKED"
+      },
+      {
+        "case_id": "RSC-2026-00060",
+        "family": "both/large_blocked",
+        "truth_classification": "BLOCKED",
+        "classification_correct": true,
+        "attribution_withheld_correctly": true,
+        "false_attribution": false,
+        "max_abs_coalition_error": "2.00000000000000000E-7",
+        "system": "replaysemantics",
+        "predicted_classification": "BLOCKED"
       }
     ],
     "naive_sequential": [
@@ -1463,6 +1593,76 @@
         "max_abs_coalition_error": "0E-22",
         "system": "naive_sequential",
         "predicted_classification": "PASS"
+      },
+      {
+        "case_id": "RSC-2026-00055",
+        "family": "multi_edit_only/interaction",
+        "truth_classification": "PASS",
+        "classification_correct": true,
+        "attribution_withheld_correctly": true,
+        "max_abs_shapley_error": "0.000000",
+        "false_attribution": false,
+        "max_abs_coalition_error": "0.000000",
+        "system": "naive_sequential",
+        "predicted_classification": "PASS"
+      },
+      {
+        "case_id": "RSC-2026-00056",
+        "family": "multi_edit_only/independent",
+        "truth_classification": "PASS",
+        "classification_correct": true,
+        "attribution_withheld_correctly": true,
+        "max_abs_shapley_error": "0.000000",
+        "false_attribution": false,
+        "max_abs_coalition_error": "0E-22",
+        "system": "naive_sequential",
+        "predicted_classification": "PASS"
+      },
+      {
+        "case_id": "RSC-2026-00057",
+        "family": "swap_only/large_policy_ordered",
+        "truth_classification": "POLICY_ORDERED",
+        "classification_correct": false,
+        "attribution_withheld_correctly": true,
+        "max_abs_shapley_error": "0.000000",
+        "false_attribution": false,
+        "max_abs_coalition_error": "0E-22",
+        "system": "naive_sequential",
+        "predicted_classification": "PASS"
+      },
+      {
+        "case_id": "RSC-2026-00058",
+        "family": "both/large_policy_ordered",
+        "truth_classification": "POLICY_ORDERED",
+        "classification_correct": false,
+        "attribution_withheld_correctly": true,
+        "max_abs_shapley_error": "0.000000",
+        "false_attribution": false,
+        "max_abs_coalition_error": "2.760000000000000E-7",
+        "system": "naive_sequential",
+        "predicted_classification": "PASS"
+      },
+      {
+        "case_id": "RSC-2026-00059",
+        "family": "swap_only/large_blocked",
+        "truth_classification": "BLOCKED",
+        "classification_correct": false,
+        "attribution_withheld_correctly": false,
+        "false_attribution": true,
+        "max_abs_coalition_error": "5.000000000000000E-7",
+        "system": "naive_sequential",
+        "predicted_classification": "PASS"
+      },
+      {
+        "case_id": "RSC-2026-00060",
+        "family": "both/large_blocked",
+        "truth_classification": "BLOCKED",
+        "classification_correct": false,
+        "attribution_withheld_correctly": false,
+        "false_attribution": true,
+        "max_abs_coalition_error": "2.00000000000000000E-7",
+        "system": "naive_sequential",
+        "predicted_classification": "PASS"
       }
     ],
     "naive_split": [
@@ -2097,6 +2297,76 @@
       {
         "case_id": "RSC-2026-00054",
         "family": "both/both",
+        "truth_classification": "BLOCKED",
+        "classification_correct": false,
+        "attribution_withheld_correctly": false,
+        "false_attribution": true,
+        "max_abs_coalition_error": "0.000000",
+        "system": "naive_split",
+        "predicted_classification": "PASS"
+      },
+      {
+        "case_id": "RSC-2026-00055",
+        "family": "multi_edit_only/interaction",
+        "truth_classification": "PASS",
+        "classification_correct": true,
+        "attribution_withheld_correctly": true,
+        "max_abs_shapley_error": "0.000000",
+        "false_attribution": false,
+        "max_abs_coalition_error": "0.000000",
+        "system": "naive_split",
+        "predicted_classification": "PASS"
+      },
+      {
+        "case_id": "RSC-2026-00056",
+        "family": "multi_edit_only/independent",
+        "truth_classification": "PASS",
+        "classification_correct": true,
+        "attribution_withheld_correctly": true,
+        "max_abs_shapley_error": "47382.104000",
+        "false_attribution": false,
+        "max_abs_coalition_error": "0.000000",
+        "system": "naive_split",
+        "predicted_classification": "PASS"
+      },
+      {
+        "case_id": "RSC-2026-00057",
+        "family": "swap_only/large_policy_ordered",
+        "truth_classification": "POLICY_ORDERED",
+        "classification_correct": false,
+        "attribution_withheld_correctly": true,
+        "max_abs_shapley_error": "18528.309809",
+        "false_attribution": false,
+        "max_abs_coalition_error": "0.000000",
+        "system": "naive_split",
+        "predicted_classification": "PASS"
+      },
+      {
+        "case_id": "RSC-2026-00058",
+        "family": "both/large_policy_ordered",
+        "truth_classification": "POLICY_ORDERED",
+        "classification_correct": false,
+        "attribution_withheld_correctly": true,
+        "max_abs_shapley_error": "114734.745938",
+        "false_attribution": false,
+        "max_abs_coalition_error": "0.000000",
+        "system": "naive_split",
+        "predicted_classification": "PASS"
+      },
+      {
+        "case_id": "RSC-2026-00059",
+        "family": "swap_only/large_blocked",
+        "truth_classification": "BLOCKED",
+        "classification_correct": false,
+        "attribution_withheld_correctly": false,
+        "false_attribution": true,
+        "max_abs_coalition_error": "0.000000",
+        "system": "naive_split",
+        "predicted_classification": "PASS"
+      },
+      {
+        "case_id": "RSC-2026-00060",
+        "family": "both/large_blocked",
         "truth_classification": "BLOCKED",
         "classification_correct": false,
         "attribution_withheld_correctly": false,

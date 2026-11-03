@@ -5639,6 +5639,1155 @@
     "e8": "PASS"
    },
    "target_event_id": "e9"
+  },
+  {
+   "active_event_ids": [
+    "e4",
+    "e5",
+    "e6",
+    "e7"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e10",
+    "e11",
+    "e12",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8",
+    "e9"
+   ],
+   "case_id": "RSC-2026-00055",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e4": "0.000000",
+    "e4,e5": "0.000000",
+    "e4,e5,e6": "0.000000",
+    "e4,e5,e6,e7": "98766.760000",
+    "e4,e5,e7": "0.000000",
+    "e4,e6": "0.000000",
+    "e4,e6,e7": "0.000000",
+    "e4,e7": "0.000000",
+    "e5": "0.000000",
+    "e5,e6": "0.000000",
+    "e5,e6,e7": "0.000000",
+    "e5,e7": "0.000000",
+    "e6": "0.000000",
+    "e6,e7": "0.000000",
+    "e7": "0.000000"
+   },
+   "compliant_net": "201102.400000",
+   "design": {
+    "blocked": false,
+    "class": "MULTI_EDIT_ONLY",
+    "hops": 4,
+    "policy": "P-2026-Q3-001"
+   },
+   "family": "multi_edit_only/interaction",
+   "ledger": {
+    "blocked": false,
+    "compliant_net": "201102.400000",
+    "corrected_inputs_net": "201102.400000",
+    "loss_from_inputs": "98766.760000",
+    "loss_from_stale_amounts": "0.000000",
+    "loss_observed": "98766.760000",
+    "observed_net": "102335.640000",
+    "policy_summary": {
+     "BLOCKED": 0,
+     "PASS": 1,
+     "POLICY_ORDERED": 0
+    },
+    "posted_nodes": [],
+    "resolution_class": "MULTI_EDIT_ONLY",
+    "swappable_pairs": []
+   },
+   "realized_loss": "98766.760000",
+   "required_hops": 4,
+   "shapley": {
+    "e4": "24691.690000",
+    "e5": "24691.690000",
+    "e6": "24691.690000",
+    "e7": "24691.690000"
+   },
+   "structural_pairs": [
+    [
+     "e10",
+     "e1"
+    ],
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e5",
+     "e1"
+    ],
+    [
+     "e6",
+     "e1"
+    ],
+    [
+     "e11",
+     "e3"
+    ],
+    [
+     "e12",
+     "e9"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e8",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e7",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e4": "PASS",
+    "e4,e5": "PASS",
+    "e4,e5,e6": "PASS",
+    "e4,e5,e6,e7": "PASS",
+    "e4,e5,e7": "PASS",
+    "e4,e6": "PASS",
+    "e4,e6,e7": "PASS",
+    "e4,e7": "PASS",
+    "e5": "PASS",
+    "e5,e6": "PASS",
+    "e5,e6,e7": "PASS",
+    "e5,e7": "PASS",
+    "e6": "PASS",
+    "e6,e7": "PASS",
+    "e7": "PASS"
+   },
+   "target_event_id": "e13"
+  },
+  {
+   "active_event_ids": [
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e10",
+    "e11",
+    "e12",
+    "e13",
+    "e14",
+    "e15",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8",
+    "e9"
+   ],
+   "case_id": "RSC-2026-00056",
+   "classification": "PASS",
+   "coalition_values": {
+    "": "0.000000",
+    "e3": "9476.710000",
+    "e3,e4": "80910.290000",
+    "e3,e4,e5": "142457.320000",
+    "e3,e4,e5,e6": "197288.270000",
+    "e3,e4,e5,e6,e7": "284294.070000",
+    "e3,e4,e5,e7": "229463.120000",
+    "e3,e4,e6": "135741.240000",
+    "e3,e4,e6,e7": "222747.040000",
+    "e3,e4,e7": "167916.090000",
+    "e3,e5": "71023.740000",
+    "e3,e5,e6": "125854.690000",
+    "e3,e5,e6,e7": "212860.490000",
+    "e3,e5,e7": "158029.540000",
+    "e3,e6": "64307.660000",
+    "e3,e6,e7": "151313.460000",
+    "e3,e7": "96482.510000",
+    "e4": "71433.580000",
+    "e4,e5": "132980.610000",
+    "e4,e5,e6": "187811.560000",
+    "e4,e5,e6,e7": "274817.360000",
+    "e4,e5,e7": "219986.410000",
+    "e4,e6": "126264.530000",
+    "e4,e6,e7": "213270.330000",
+    "e4,e7": "158439.380000",
+    "e5": "61547.030000",
+    "e5,e6": "116377.980000",
+    "e5,e6,e7": "203383.780000",
+    "e5,e7": "148552.830000",
+    "e6": "54830.950000",
+    "e6,e7": "141836.750000",
+    "e7": "87005.800000"
+   },
+   "compliant_net": "227866.990000",
+   "design": {
+    "blocked": false,
+    "class": "MULTI_EDIT_ONLY",
+    "hops": 3,
+    "policy": "P-2026-Q3-001"
+   },
+   "family": "multi_edit_only/independent",
+   "ledger": {
+    "blocked": false,
+    "compliant_net": "227866.990000",
+    "corrected_inputs_net": "227866.990000",
+    "loss_from_inputs": "284294.070000",
+    "loss_from_stale_amounts": "0.000000",
+    "loss_observed": "284294.070000",
+    "observed_net": "-56427.080000",
+    "policy_summary": {
+     "BLOCKED": 0,
+     "PASS": 1,
+     "POLICY_ORDERED": 0
+    },
+    "posted_nodes": [],
+    "resolution_class": "MULTI_EDIT_ONLY",
+    "swappable_pairs": []
+   },
+   "realized_loss": "284294.070000",
+   "required_hops": 3,
+   "shapley": {
+    "e3": "9476.710000",
+    "e4": "71433.580000",
+    "e5": "61547.030000",
+    "e6": "54830.950000",
+    "e7": "87005.800000"
+   },
+   "structural_pairs": [
+    [
+     "e10",
+     "e1"
+    ],
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e7",
+     "e1"
+    ],
+    [
+     "e12",
+     "e11"
+    ],
+    [
+     "e13",
+     "e2"
+    ],
+    [
+     "e15",
+     "e2"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e8",
+     "e2"
+    ],
+    [
+     "e9",
+     "e2"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e3": "PASS",
+    "e3,e4": "PASS",
+    "e3,e4,e5": "PASS",
+    "e3,e4,e5,e6": "PASS",
+    "e3,e4,e5,e6,e7": "PASS",
+    "e3,e4,e5,e7": "PASS",
+    "e3,e4,e6": "PASS",
+    "e3,e4,e6,e7": "PASS",
+    "e3,e4,e7": "PASS",
+    "e3,e5": "PASS",
+    "e3,e5,e6": "PASS",
+    "e3,e5,e6,e7": "PASS",
+    "e3,e5,e7": "PASS",
+    "e3,e6": "PASS",
+    "e3,e6,e7": "PASS",
+    "e3,e7": "PASS",
+    "e4": "PASS",
+    "e4,e5": "PASS",
+    "e4,e5,e6": "PASS",
+    "e4,e5,e6,e7": "PASS",
+    "e4,e5,e7": "PASS",
+    "e4,e6": "PASS",
+    "e4,e6,e7": "PASS",
+    "e4,e7": "PASS",
+    "e5": "PASS",
+    "e5,e6": "PASS",
+    "e5,e6,e7": "PASS",
+    "e5,e7": "PASS",
+    "e6": "PASS",
+    "e6,e7": "PASS",
+    "e7": "PASS"
+   },
+   "target_event_id": "e16"
+  },
+  {
+   "active_event_ids": [
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e10",
+    "e11",
+    "e12",
+    "e13",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8",
+    "e9"
+   ],
+   "case_id": "RSC-2026-00057",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e3": "27449.357000",
+    "e3,e4": "28821.824850",
+    "e3,e4,e5": "28821.850000",
+    "e3,e5": "27449.380000",
+    "e4": "0.000000",
+    "e4,e5": "0.020000",
+    "e5": "0.020000"
+   },
+   "compliant_net": "221706.350000",
+   "design": {
+    "blocked": false,
+    "class": "SWAP_ONLY",
+    "hops": 3,
+    "policy": "P-2026-Q3-001"
+   },
+   "family": "swap_only/large_policy_ordered",
+   "ledger": {
+    "blocked": false,
+    "compliant_net": "221706.350000",
+    "corrected_inputs_net": "192884.500000",
+    "loss_from_inputs": "0.000000",
+    "loss_from_stale_amounts": "28821.850000",
+    "loss_observed": "28821.850000",
+    "observed_net": "192884.500000",
+    "policy_summary": {
+     "BLOCKED": 0,
+     "PASS": 5,
+     "POLICY_ORDERED": 3
+    },
+    "posted_nodes": [
+     "e3",
+     "e4",
+     "e5"
+    ],
+    "resolution_class": "SWAP_ONLY",
+    "swappable_pairs": [
+     {
+      "authoritative_order": [
+       "e3",
+       "e4"
+      ],
+      "blocked": false,
+      "net_ab": "221706.324850",
+      "net_ba": "220333.857000",
+      "pair": [
+       "e3",
+       "e4"
+      ]
+     },
+     {
+      "authoritative_order": [
+       "e3",
+       "e5"
+      ],
+      "blocked": false,
+      "net_ab": "220333.880000",
+      "net_ba": "220333.877000",
+      "pair": [
+       "e3",
+       "e5"
+      ]
+     }
+    ]
+   },
+   "realized_loss": "28821.850000",
+   "required_hops": 3,
+   "shapley": {
+    "e3": "28135.593142",
+    "e4": "686.234642",
+    "e5": "0.022217"
+   },
+   "structural_pairs": [
+    [
+     "e11",
+     "e1"
+    ],
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e6",
+     "e1"
+    ],
+    [
+     "e8",
+     "e1"
+    ],
+    [
+     "e9",
+     "e1"
+    ],
+    [
+     "e10",
+     "e8"
+    ],
+    [
+     "e12",
+     "e11"
+    ],
+    [
+     "e13",
+     "e11"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e7",
+     "e2"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e3": "PASS",
+    "e3,e4": "POLICY_ORDERED",
+    "e3,e4,e5": "POLICY_ORDERED",
+    "e3,e5": "POLICY_ORDERED",
+    "e4": "PASS",
+    "e4,e5": "PASS",
+    "e5": "PASS"
+   },
+   "target_event_id": "e14"
+  },
+  {
+   "active_event_ids": [
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8",
+    "e9"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e10",
+    "e11",
+    "e12",
+    "e13",
+    "e14",
+    "e15",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8",
+    "e9"
+   ],
+   "case_id": "RSC-2026-00058",
+   "classification": "POLICY_ORDERED",
+   "coalition_values": {
+    "": "0.000000",
+    "e4": "55675.975968",
+    "e4,e5": "67507.120861",
+    "e4,e5,e6": "79658.402616",
+    "e4,e5,e6,e7": "79659.020000",
+    "e4,e5,e6,e7,e8": "247348.820000",
+    "e4,e5,e6,e7,e8,e9": "271941.910000",
+    "e4,e5,e6,e7,e9": "98350.090000",
+    "e4,e5,e6,e8": "247348.209439",
+    "e4,e5,e6,e8,e9": "271941.297362",
+    "e4,e5,e6,e9": "98349.472925",
+    "e4,e5,e7": "67507.740000",
+    "e4,e5,e7,e8": "209617.740000",
+    "e4,e5,e7,e8,e9": "232882.840000",
+    "e4,e5,e7,e9": "85771.130000",
+    "e4,e5,e8": "209617.126643",
+    "e4,e5,e8,e9": "232882.229762",
+    "e4,e5,e9": "85770.514137",
+    "e4,e6": "65697.651642",
+    "e4,e6,e7": "65698.270000",
+    "e4,e6,e7,e8": "233388.070000",
+    "e4,e6,e7,e8,e9": "257489.800000",
+    "e4,e6,e7,e9": "83897.970000",
+    "e4,e6,e8": "233387.458465",
+    "e4,e6,e8,e9": "257489.183200",
+    "e4,e6,e9": "83897.358762",
+    "e4,e7": "55676.590000",
+    "e4,e7,e8": "197786.600000",
+    "e4,e7,e8,e9": "220635.290000",
+    "e4,e7,e9": "73523.570000",
+    "e4,e8": "197785.981750",
+    "e4,e8,e9": "220634.675387",
+    "e4,e9": "73522.959762",
+    "e5": "11831.144893",
+    "e5,e6": "13960.750974",
+    "e5,e6,e7": "13961.370000",
+    "e5,e6,e7,e8": "186837.460000",
+    "e5,e6,e7,e8,e9": "209300.780000",
+    "e5,e6,e7,e9": "30340.140000",
+    "e5,e6,e8": "186836.840482",
+    "e5,e6,e8,e9": "209300.167675",
+    "e5,e6,e9": "30339.523925",
+    "e5,e7": "11831.760000",
+    "e5,e7,e8": "158336.920000",
+    "e5,e7,e8,e9": "179797.140000",
+    "e5,e7,e9": "28135.580000",
+    "e5,e8": "158336.305493",
+    "e5,e8,e9": "179796.526637",
+    "e5,e9": "28134.964137",
+    "e6": "0.000000",
+    "e6,e7": "0.610000",
+    "e6,e7,e8": "172876.700000",
+    "e6,e7,e8,e9": "194848.670000",
+    "e6,e7,e9": "15888.020000",
+    "e6,e8": "172876.089508",
+    "e6,e8,e9": "194848.053512",
+    "e6,e9": "15887.409762",
+    "e7": "0.610000",
+    "e7,e8": "146505.780000",
+    "e7,e8,e9": "167549.590000",
+    "e7,e9": "15888.020000",
+    "e8": "146505.160600",
+    "e8,e9": "167548.972262",
+    "e9": "15887.409762"
+   },
+   "compliant_net": "723338.910000",
+   "design": {
+    "blocked": false,
+    "class": "BOTH",
+    "hops": 4,
+    "policy": "P-2026-Q3-001"
+   },
+   "family": "both/large_policy_ordered",
+   "ledger": {
+    "blocked": false,
+    "compliant_net": "723338.910000",
+    "corrected_inputs_net": "618945.972262",
+    "loss_from_inputs": "167548.972262",
+    "loss_from_stale_amounts": "104392.937738",
+    "loss_observed": "271941.910000",
+    "observed_net": "451397.000000",
+    "policy_summary": {
+     "BLOCKED": 0,
+     "PASS": 6,
+     "POLICY_ORDERED": 10
+    },
+    "posted_nodes": [
+     "e4",
+     "e5",
+     "e6",
+     "e7"
+    ],
+    "resolution_class": "BOTH",
+    "swappable_pairs": [
+     {
+      "authoritative_order": [
+       "e4",
+       "e6"
+      ],
+      "blocked": false,
+      "net_ab": "708886.183200",
+      "net_ba": "699330.756637",
+      "pair": [
+       "e4",
+       "e6"
+      ]
+     },
+     {
+      "authoritative_order": [
+       "e4",
+       "e7"
+      ],
+      "blocked": false,
+      "net_ab": "672032.290000",
+      "net_ba": "672032.293125",
+      "pair": [
+       "e4",
+       "e7"
+      ]
+     },
+     {
+      "authoritative_order": [
+       "e5",
+       "e6"
+      ],
+      "blocked": false,
+      "net_ab": "660697.167675",
+      "net_ba": "658492.607887",
+      "pair": [
+       "e5",
+       "e6"
+      ]
+     },
+     {
+      "authoritative_order": [
+       "e5",
+       "e7"
+      ],
+      "blocked": false,
+      "net_ab": "631194.140000",
+      "net_ba": "631194.144375",
+      "pair": [
+       "e5",
+       "e7"
+      ]
+     },
+     {
+      "authoritative_order": [
+       "e6",
+       "e7"
+      ],
+      "blocked": false,
+      "net_ab": "646245.670000",
+      "net_ba": "646245.671250",
+      "pair": [
+       "e6",
+       "e7"
+      ]
+     }
+    ]
+   },
+   "realized_loss": "271941.910000",
+   "required_hops": 4,
+   "shapley": {
+    "e4": "59264.363354",
+    "e5": "13129.137016",
+    "e6": "19442.378341",
+    "e7": "0.613353",
+    "e8": "160058.397605",
+    "e9": "20047.020331"
+   },
+   "structural_pairs": [
+    [
+     "e13",
+     "e1"
+    ],
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e8",
+     "e1"
+    ],
+    [
+     "e11",
+     "e10"
+    ],
+    [
+     "e10",
+     "e2"
+    ],
+    [
+     "e15",
+     "e13"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e6",
+     "e3"
+    ],
+    [
+     "e7",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e4": "PASS",
+    "e4,e5": "PASS",
+    "e4,e5,e6": "POLICY_ORDERED",
+    "e4,e5,e6,e7": "POLICY_ORDERED",
+    "e4,e5,e6,e7,e8": "POLICY_ORDERED",
+    "e4,e5,e6,e7,e8,e9": "POLICY_ORDERED",
+    "e4,e5,e6,e7,e9": "POLICY_ORDERED",
+    "e4,e5,e6,e8": "POLICY_ORDERED",
+    "e4,e5,e6,e8,e9": "POLICY_ORDERED",
+    "e4,e5,e6,e9": "POLICY_ORDERED",
+    "e4,e5,e7": "POLICY_ORDERED",
+    "e4,e5,e7,e8": "POLICY_ORDERED",
+    "e4,e5,e7,e8,e9": "POLICY_ORDERED",
+    "e4,e5,e7,e9": "POLICY_ORDERED",
+    "e4,e5,e8": "POLICY_ORDERED",
+    "e4,e5,e8,e9": "POLICY_ORDERED",
+    "e4,e5,e9": "PASS",
+    "e4,e6": "POLICY_ORDERED",
+    "e4,e6,e7": "POLICY_ORDERED",
+    "e4,e6,e7,e8": "POLICY_ORDERED",
+    "e4,e6,e7,e8,e9": "POLICY_ORDERED",
+    "e4,e6,e7,e9": "POLICY_ORDERED",
+    "e4,e6,e8": "POLICY_ORDERED",
+    "e4,e6,e8,e9": "POLICY_ORDERED",
+    "e4,e6,e9": "POLICY_ORDERED",
+    "e4,e7": "POLICY_ORDERED",
+    "e4,e7,e8": "POLICY_ORDERED",
+    "e4,e7,e8,e9": "POLICY_ORDERED",
+    "e4,e7,e9": "POLICY_ORDERED",
+    "e4,e8": "POLICY_ORDERED",
+    "e4,e8,e9": "POLICY_ORDERED",
+    "e4,e9": "PASS",
+    "e5": "PASS",
+    "e5,e6": "POLICY_ORDERED",
+    "e5,e6,e7": "POLICY_ORDERED",
+    "e5,e6,e7,e8": "POLICY_ORDERED",
+    "e5,e6,e7,e8,e9": "POLICY_ORDERED",
+    "e5,e6,e7,e9": "POLICY_ORDERED",
+    "e5,e6,e8": "POLICY_ORDERED",
+    "e5,e6,e8,e9": "POLICY_ORDERED",
+    "e5,e6,e9": "POLICY_ORDERED",
+    "e5,e7": "POLICY_ORDERED",
+    "e5,e7,e8": "POLICY_ORDERED",
+    "e5,e7,e8,e9": "POLICY_ORDERED",
+    "e5,e7,e9": "POLICY_ORDERED",
+    "e5,e8": "PASS",
+    "e5,e8,e9": "PASS",
+    "e5,e9": "PASS",
+    "e6": "PASS",
+    "e6,e7": "PASS",
+    "e6,e7,e8": "POLICY_ORDERED",
+    "e6,e7,e8,e9": "POLICY_ORDERED",
+    "e6,e7,e9": "POLICY_ORDERED",
+    "e6,e8": "POLICY_ORDERED",
+    "e6,e8,e9": "POLICY_ORDERED",
+    "e6,e9": "PASS",
+    "e7": "PASS",
+    "e7,e8": "POLICY_ORDERED",
+    "e7,e8,e9": "POLICY_ORDERED",
+    "e7,e9": "POLICY_ORDERED",
+    "e8": "PASS",
+    "e8,e9": "PASS",
+    "e9": "PASS"
+   },
+   "target_event_id": "e16"
+  },
+  {
+   "active_event_ids": [
+    "e3",
+    "e4",
+    "e5"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e10",
+    "e11",
+    "e12",
+    "e13",
+    "e14",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8",
+    "e9"
+   ],
+   "case_id": "RSC-2026-00059",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e3": "22887.637500",
+    "e3,e4": null,
+    "e3,e4,e5": null,
+    "e3,e5": null,
+    "e4": "9956.122312",
+    "e4,e5": null,
+    "e5": "0.090000"
+   },
+   "compliant_net": "320713.020000",
+   "design": {
+    "blocked": true,
+    "class": "SWAP_ONLY",
+    "hops": 3,
+    "policy": "P-2026-Q3-003"
+   },
+   "family": "swap_only/large_blocked",
+   "ledger": {
+    "blocked": true,
+    "compliant_net": "320713.020000",
+    "corrected_inputs_net": "283749.400000",
+    "loss_from_inputs": "0.000000",
+    "loss_from_stale_amounts": "36963.620000",
+    "loss_observed": "36963.620000",
+    "observed_net": "283749.400000",
+    "policy_summary": {
+     "BLOCKED": 4,
+     "PASS": 4,
+     "POLICY_ORDERED": 0
+    },
+    "posted_nodes": [
+     "e3",
+     "e4",
+     "e5"
+    ],
+    "resolution_class": "SWAP_ONLY",
+    "swappable_pairs": [
+     {
+      "authoritative_order": null,
+      "blocked": true,
+      "net_ab": "320712.934562",
+      "net_ba": "316593.159812",
+      "pair": [
+       "e3",
+       "e4"
+      ]
+     },
+     {
+      "authoritative_order": null,
+      "blocked": true,
+      "net_ab": "306637.120000",
+      "net_ba": "306637.127500",
+      "pair": [
+       "e3",
+       "e5"
+      ]
+     },
+     {
+      "authoritative_order": null,
+      "blocked": true,
+      "net_ab": "293705.610000",
+      "net_ba": "293705.612312",
+      "pair": [
+       "e4",
+       "e5"
+      ]
+     }
+    ]
+   },
+   "realized_loss": "36963.620000",
+   "required_hops": 3,
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e11",
+     "e1"
+    ],
+    [
+     "e14",
+     "e1"
+    ],
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e6",
+     "e1"
+    ],
+    [
+     "e10",
+     "e6"
+    ],
+    [
+     "e12",
+     "e7"
+    ],
+    [
+     "e13",
+     "e6"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e2"
+    ],
+    [
+     "e5",
+     "e2"
+    ],
+    [
+     "e8",
+     "e6"
+    ],
+    [
+     "e9",
+     "e6"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e3": "PASS",
+    "e3,e4": "BLOCKED",
+    "e3,e4,e5": "BLOCKED",
+    "e3,e5": "BLOCKED",
+    "e4": "PASS",
+    "e4,e5": "BLOCKED",
+    "e5": "PASS"
+   },
+   "target_event_id": "e15"
+  },
+  {
+   "active_event_ids": [
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8"
+   ],
+   "candidate_event_ids": [
+    "e1",
+    "e10",
+    "e11",
+    "e12",
+    "e13",
+    "e14",
+    "e15",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8",
+    "e9"
+   ],
+   "case_id": "RSC-2026-00060",
+   "classification": "BLOCKED",
+   "coalition_values": {
+    "": "0.000000",
+    "e4": "574.835536",
+    "e4,e5": "603.577313",
+    "e4,e5,e6": null,
+    "e4,e5,e6,e7": null,
+    "e4,e5,e6,e7,e8": null,
+    "e4,e5,e6,e8": null,
+    "e4,e5,e7": "1385.484286",
+    "e4,e5,e7,e8": "1526.606357",
+    "e4,e5,e8": "726.292157",
+    "e4,e6": null,
+    "e4,e6,e7": null,
+    "e4,e6,e7,e8": null,
+    "e4,e6,e8": null,
+    "e4,e7": "1319.508844",
+    "e4,e7,e8": "1459.077757",
+    "e4,e8": "696.873757",
+    "e5": "0.000000",
+    "e5,e6": "0.040000",
+    "e5,e6,e7": null,
+    "e5,e6,e7,e8": null,
+    "e5,e6,e8": null,
+    "e5,e7": "823.059972",
+    "e5,e7,e8": "950.941757",
+    "e5,e8": "108.505757",
+    "e6": "0.040000",
+    "e6,e7": null,
+    "e6,e7,e8": null,
+    "e6,e8": null,
+    "e7": "783.866640",
+    "e7,e8": "910.825757",
+    "e8": "108.505757"
+   },
+   "compliant_net": "6135.740000",
+   "design": {
+    "blocked": true,
+    "class": "BOTH",
+    "hops": 4,
+    "policy": "P-2026-Q3-002"
+   },
+   "family": "both/large_blocked",
+   "ledger": {
+    "blocked": true,
+    "compliant_net": "6135.740000",
+    "corrected_inputs_net": "5519.925757",
+    "loss_from_inputs": "910.825757",
+    "loss_from_stale_amounts": "615.814243",
+    "loss_observed": "1526.640000",
+    "observed_net": "4609.100000",
+    "policy_summary": {
+     "BLOCKED": 3,
+     "PASS": 4,
+     "POLICY_ORDERED": 1
+    },
+    "posted_nodes": [
+     "e4",
+     "e5",
+     "e6"
+    ],
+    "resolution_class": "BOTH",
+    "swappable_pairs": [
+     {
+      "authoritative_order": [
+       "e4",
+       "e5"
+      ],
+      "blocked": false,
+      "net_ab": "6135.706357",
+      "net_ba": "6108.293757",
+      "pair": [
+       "e4",
+       "e5"
+      ]
+     },
+     {
+      "authoritative_order": null,
+      "blocked": true,
+      "net_ab": "6068.210000",
+      "net_ba": "6068.212000",
+      "pair": [
+       "e4",
+       "e6"
+      ]
+     },
+     {
+      "authoritative_order": null,
+      "blocked": true,
+      "net_ab": "5560.080000",
+      "net_ba": "5560.076000",
+      "pair": [
+       "e5",
+       "e6"
+      ]
+     }
+    ]
+   },
+   "realized_loss": "1526.640000",
+   "required_hops": 4,
+   "shapley": null,
+   "structural_pairs": [
+    [
+     "e2",
+     "e1"
+    ],
+    [
+     "e7",
+     "e1"
+    ],
+    [
+     "e8",
+     "e1"
+    ],
+    [
+     "e13",
+     "e10"
+    ],
+    [
+     "e11",
+     "e9"
+    ],
+    [
+     "e12",
+     "e9"
+    ],
+    [
+     "e15",
+     "e9"
+    ],
+    [
+     "e3",
+     "e2"
+    ],
+    [
+     "e4",
+     "e3"
+    ],
+    [
+     "e5",
+     "e3"
+    ],
+    [
+     "e6",
+     "e3"
+    ]
+   ],
+   "subset_verdicts": {
+    "": "PASS",
+    "e4": "PASS",
+    "e4,e5": "POLICY_ORDERED",
+    "e4,e5,e6": "BLOCKED",
+    "e4,e5,e6,e7": "BLOCKED",
+    "e4,e5,e6,e7,e8": "BLOCKED",
+    "e4,e5,e6,e8": "BLOCKED",
+    "e4,e5,e7": "POLICY_ORDERED",
+    "e4,e5,e7,e8": "POLICY_ORDERED",
+    "e4,e5,e8": "POLICY_ORDERED",
+    "e4,e6": "BLOCKED",
+    "e4,e6,e7": "BLOCKED",
+    "e4,e6,e7,e8": "BLOCKED",
+    "e4,e6,e8": "BLOCKED",
+    "e4,e7": "POLICY_ORDERED",
+    "e4,e7,e8": "POLICY_ORDERED",
+    "e4,e8": "PASS",
+    "e5": "PASS",
+    "e5,e6": "PASS",
+    "e5,e6,e7": "BLOCKED",
+    "e5,e6,e7,e8": "BLOCKED",
+    "e5,e6,e8": "BLOCKED",
+    "e5,e7": "POLICY_ORDERED",
+    "e5,e7,e8": "POLICY_ORDERED",
+    "e5,e8": "PASS",
+    "e6": "PASS",
+    "e6,e7": "BLOCKED",
+    "e6,e7,e8": "BLOCKED",
+    "e6,e8": "BLOCKED",
+    "e7": "PASS",
+    "e7,e8": "PASS",
+    "e8": "PASS"
+   },
+   "target_event_id": "e16"
   }
  ]
 }

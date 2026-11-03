@@ -4,7 +4,8 @@ import ReactFlow, { Background, Controls } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { AlertTriangle, ArrowRight, FlaskConical, TrendingDown, TrendingUp } from 'lucide-react'
 import { useApi } from '../lib/useApi'
-import { clearApiCache, getAnalysis, getHops, getScenario, runReplay } from '../lib/api'
+import { clearApiCache, getAnalysis, getHops, getScenario, recordAction, runReplay } from '../lib/api'
+import { limitsBody } from '../lib/history'
 import ReplayFlow from '../components/ReplayFlow'
 import ChangePanel from '../components/ChangePanel'
 import { fullGraphLimits } from '../lib/flow'
@@ -91,6 +92,10 @@ export default function Scenario() {
   )
 
   const s = scenarioApi.data
+  // each order the user opens is an action in their history (the server ignores an exact repeat)
+  useEffect(() => {
+    if (s && limits) recordAction({ kind: 'swap', case_id: caseId, subset, order: s.selected_order, limits: limitsBody(limits) })
+  }, [s]) // eslint-disable-line react-hooks/exhaustive-deps
   const replay = replayApi.data
   const effects = nodeEffects(s)
   const nodeStatus = useMemo(() => buildNodeStatus(replay), [replay])

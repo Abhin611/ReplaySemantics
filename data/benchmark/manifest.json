@@ -2,7 +2,7 @@
   "generator_version": "2.0.0",
   "design": "matrix",
   "seed": 7,
-  "num_cases": 54,
+  "num_cases": 60,
   "policies": [
     "P-2026-Q3-001",
     "P-2026-Q3-002",
@@ -11,23 +11,23 @@
   "quotas": {
     "by_class": {
       "DIRECT_FIX": 4,
-      "SWAP_ONLY": 10,
-      "MULTI_EDIT_ONLY": 14,
-      "BOTH": 26
+      "SWAP_ONLY": 12,
+      "MULTI_EDIT_ONLY": 16,
+      "BOTH": 28
     },
     "by_hops": {
       "1": 4,
       "2": 20,
-      "3": 21,
-      "4": 6,
+      "3": 24,
+      "4": 9,
       "5": 3
     },
     "by_policy": {
-      "P-2026-Q3-001": 45,
-      "P-2026-Q3-002": 5,
-      "P-2026-Q3-003": 4
+      "P-2026-Q3-001": 49,
+      "P-2026-Q3-002": 6,
+      "P-2026-Q3-003": 5
     },
-    "blocked": 9
+    "blocked": 11
   },
-  "hidden_truth_sha256": "8756f195667044035d4713924bceb2ea780067450c7f66ce4956f6622d3520e7"
+  "hidden_truth_sha256": "2b3b5c49c683063bd7669e8b1926c62a7cc680c784d77eaa030632b0de90c071"
 }

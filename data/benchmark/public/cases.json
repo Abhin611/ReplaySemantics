@@ -1349,6 +1349,164 @@
     }
    },
    "suggested_max_hops": 5
+  },
+  {
+   "case_id": "RSC-2026-00055",
+   "ocel_file": "RSC-2026-00055.jsonocel",
+   "target_event_id": "e13",
+   "invoice_object": "INV-00055",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "98766.760000",
+   "reference": {
+    "contract_price": "250.980000",
+    "ordered_quantity": "26.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e4": "88214.710000",
+     "e5": "13623.380000",
+     "e6": "20480.560000",
+     "e7": "71932.000000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "threshold",
+     "tolerance": "2584.080000",
+     "amount": "98766.760000"
+    }
+   },
+   "suggested_max_hops": 4
+  },
+  {
+   "case_id": "RSC-2026-00056",
+   "ocel_file": "RSC-2026-00056.jsonocel",
+   "target_event_id": "e16",
+   "invoice_object": "INV-00056",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "284294.070000",
+   "reference": {
+    "contract_price": "182.370000",
+    "ordered_quantity": "37.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {},
+    "authorized_adjustments": {
+     "e3": "66589.280000",
+     "e4": "18397.820000",
+     "e5": "9180.700000",
+     "e6": "45179.510000",
+     "e7": "81434.610000"
+    },
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   },
+   "suggested_max_hops": 3
+  },
+  {
+   "case_id": "RSC-2026-00057",
+   "ocel_file": "RSC-2026-00057.jsonocel",
+   "target_event_id": "e14",
+   "invoice_object": "INV-00057",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "28821.850000",
+   "reference": {
+    "contract_price": "116.980000",
+    "ordered_quantity": "20.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "90.250000",
+    "authorized_discount_rates": {
+     "1": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   },
+   "suggested_max_hops": 3
+  },
+  {
+   "case_id": "RSC-2026-00058",
+   "ocel_file": "RSC-2026-00058.jsonocel",
+   "target_event_id": "e16",
+   "invoice_object": "INV-00058",
+   "policy_version": "P-2026-Q3-001",
+   "realized_loss": "271941.910000",
+   "reference": {
+    "contract_price": "152.050000",
+    "ordered_quantity": "50.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.030000",
+     "2": "0.000000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   },
+   "suggested_max_hops": 4
+  },
+  {
+   "case_id": "RSC-2026-00059",
+   "ocel_file": "RSC-2026-00059.jsonocel",
+   "target_event_id": "e15",
+   "invoice_object": "INV-00059",
+   "policy_version": "P-2026-Q3-003",
+   "realized_loss": "36963.620000",
+   "reference": {
+    "contract_price": "137.670000",
+    "ordered_quantity": "25.000000",
+    "tax_rate": "0.180000",
+    "fx_rate": "83.125000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   },
+   "suggested_max_hops": 3
+  },
+  {
+   "case_id": "RSC-2026-00060",
+   "ocel_file": "RSC-2026-00060.jsonocel",
+   "target_event_id": "e16",
+   "invoice_object": "INV-00060",
+   "policy_version": "P-2026-Q3-002",
+   "realized_loss": "1526.640000",
+   "reference": {
+    "contract_price": "133.720000",
+    "ordered_quantity": "46.000000",
+    "tax_rate": "0.050000",
+    "fx_rate": "1.000000",
+    "authorized_discount_rates": {
+     "1": "0.050000"
+    },
+    "authorized_adjustments": {},
+    "exceptions": {},
+    "loss": {
+     "kind": "shortfall",
+     "tolerance": "0.000000",
+     "amount": null
+    }
+   },
+   "suggested_max_hops": 4
   }
  ]
 }

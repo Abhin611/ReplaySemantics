@@ -11,3 +11,6 @@ frontend/node_modules/
 frontend/dist/
 frontend/.env
 frontend/.env.local
+
+# Account database and the event logs users load
+var/

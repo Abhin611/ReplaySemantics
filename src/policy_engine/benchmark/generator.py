@@ -34,7 +34,7 @@ Outputs (never mixes the two directories):
     <out>/hidden/truth.json           SEALED ground truth
     <out>/manifest.json               seed, counts, sha256 of truth.json
 
-Reproduce (benchmark v2, the default: 54 cases laid out by resolution class x hops, see MATRIX_SPECS):
+Reproduce (benchmark v2, the default: 54 cases laid out by resolution class x hops, see MATRIX_SPECS, then 6 larger ones, see LARGE_SPECS):
     PYTHONPATH=src python -m policy_engine.benchmark.generator --out data/benchmark --seed 7
 Legacy v1 design (7 families x N cases, optional 5 multi-hop cases):
     PYTHONPATH=src python -m policy_engine.benchmark.generator --legacy --out data/benchmark_v1 --seed 7 --per-family 20 --multihop
@@ -615,6 +615,9 @@ class MatrixSpec:
     policy: str
     blocked: bool = False
     variant: str = ""  # template selector (see _matrix_tree)
+    candidates: int = 0  # large cases: the exact number of candidate events, reached with context events
+    adjustments: int = 0  # large cases: how many manual adjustments an adjustment variant posts
+    verdict: str = ""  # large cases: the case-level verdict the oracle must confirm
 
 
 def _swap_specs() -> list:
@@ -660,8 +663,19 @@ def matrix_specs() -> list:
 
 
 MATRIX_SPECS = tuple(matrix_specs())
+# Six larger cases, up to 15 candidate events, two for each case-level verdict. They come AFTER the matrix, so its 54 cases
+# are unchanged. The money model allows one tax, rounding, price, quantity and currency event, and the oracle's soft cap is 7
+# correctable events, so the rest of each case is context events: the traversal still has to find and order them.
+LARGE_SPECS = (
+    MatrixSpec("MULTI_EDIT_ONLY", "large_pass", 4, P1, False, "interaction", candidates=12, adjustments=4, verdict="PASS"),
+    MatrixSpec("MULTI_EDIT_ONLY", "large_pass", 3, P1, False, "independent", candidates=15, adjustments=5, verdict="PASS"),
+    MatrixSpec("SWAP_ONLY", "large_policy_ordered", 3, P1, False, "DTR", candidates=13, verdict="POLICY_ORDERED"),
+    MatrixSpec("BOTH", "large_policy_ordered", 4, P1, False, "DD2TR+price,currency", candidates=15, verdict="POLICY_ORDERED"),
+    MatrixSpec("SWAP_ONLY", "large_blocked", 3, P3, True, "DTR", candidates=14, verdict="BLOCKED"),
+    MatrixSpec("BOTH", "large_blocked", 4, P2, True, "DTR+qty,currency", candidates=15, verdict="BLOCKED"),
+)
 MATRIX_QUOTAS = {  # the minimums the user asked for; generation FAILS if any is missed
-    "cases": 54, "swap_only_min": 7, "multi_edit_only_min": 10, "both_min": 15,
+    "cases": 60, "swap_only_min": 7, "multi_edit_only_min": 10, "both_min": 15,
     "direct_fix": 4, "blocked": 9, "hops": {1: 4, 2: 20, 3: 21, 4: 6, 5: 3},
 }
 _KIND_OF = {"D": "discount", "D2": "discount2", "T": "tax", "R": "rounding"}
@@ -669,7 +683,7 @@ _KIND_OF = {"D": "discount", "D2": "discount2", "T": "tax", "R": "rounding"}
 
 def _posted_kinds(code: str) -> list:
     return {"DT": ["discount", "tax"], "DTR": ["discount", "tax", "rounding"], "TR": ["tax", "rounding"],
-            "DD2T": ["discount", "discount2", "tax"]}[code]
+            "DD2T": ["discount", "discount2", "tax"], "DD2TR": ["discount", "discount2", "tax", "rounding"]}[code]
 
 
 def _matrix_tree(spec: MatrixSpec, rng: random.Random) -> tuple:
@@ -698,8 +712,9 @@ def _matrix_tree(spec: MatrixSpec, rng: random.Random) -> tuple:
         for j, kind in enumerate(_posted_kinds(code)):
             tree.append((f"P{j}", kind, at_depth(h)))
         if cls == "BOTH":
-            d_in = rng.randint(1, h)
-            tree.append(("IN", inp, at_depth(d_in)))
+            for j, one in enumerate(inp.split(",")):
+                d_in = rng.randint(1, h)
+                tree.append((f"IN{j}" if j else "IN", one, at_depth(d_in)))
     else:  # MULTI_EDIT_ONLY
         v = spec.variant
         if v == "locked":
@@ -716,6 +731,7 @@ def _matrix_tree(spec: MatrixSpec, rng: random.Random) -> tuple:
             chain(h - 1) if h > 1 else tree.extend([("K1", "context", None), ("K2", "context", None)])
             n_adj = {"single": 1, "independent": rng.randint(2, 3), "interaction": rng.randint(2, 3),
                      "redundancy": rng.randint(2, 3), "exception": rng.randint(1, 2)}[v]
+            n_adj = spec.adjustments or n_adj
             if v in ("interaction", "redundancy"):
                 adj_mode = v
             if v == "single":
@@ -729,8 +745,24 @@ def _matrix_tree(spec: MatrixSpec, rng: random.Random) -> tuple:
     return tuple(tree), adj_mode
 
 
+def _pad_with_context(tree: tuple, spec: MatrixSpec, rng: random.Random) -> tuple:
+    """Grow a large case to its candidate count with context events, on new branches no deeper than the case's own depth,
+    so the suggested max_hops reaches every one of them."""
+    out, depth = list(tree), {}
+    for key, _, parent in out:
+        depth[key] = 1 if parent is None else depth[parent] + 1
+    while len(out) < spec.candidates:
+        parent = rng.choice([None] + [k for k, kind, _ in out if kind == "context" and depth[k] < spec.hops])
+        key = f"X{len(out)}"
+        out.append((key, "context", parent))
+        depth[key] = 1 if parent is None else depth[parent] + 1
+    return tuple(out)
+
+
 def build_matrix_draft(spec: MatrixSpec, rng: random.Random) -> Draft:
     tree, adj_mode = _matrix_tree(spec, rng)
+    if spec.candidates:
+        tree = _pad_with_context(tree, spec, rng)
     base = _base(rng)
     ids, events, auth_disc, auth_adj, exceptions = _Ids(), {}, {}, {}, {}
     adj_keys = [k for k, kind, _ in tree if kind == "adjustment"]
@@ -773,6 +805,8 @@ _DEMO_FAMILIES = ("single_event", "independent", "interaction", "redundancy", "e
 
 def _verify_matrix(spec: MatrixSpec, draft: Draft, truth: dict, lt: dict) -> bool:
     if truth["realized_loss"] <= 0 or lt["resolution_class"] != spec.cls or lt["blocked"] != spec.blocked:
+        return False
+    if spec.candidates and (len(draft.events) != spec.candidates or truth["classification"] != spec.verdict):
         return False
     deepest = max(e["hop"] for e in draft.events.values() if e["kind"] in ref.ACTIVE_KINDS)
     if deepest != spec.hops:
@@ -838,7 +872,7 @@ def generate_matrix_benchmark(out_dir, seed: int = 7) -> dict:
         for f in d.glob("*"):  # never leave files of an older generation behind
             f.unlink()
     cases, truths = [], []
-    for i, spec in enumerate(MATRIX_SPECS):
+    for i, spec in enumerate(MATRIX_SPECS + LARGE_SPECS):
         c, t = generate_matrix_case(spec, seed, i, i + 1, pub)
         cases.append(c)
         truths.append(t)

@@ -5,6 +5,7 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { fullGraphLimits, ocelRows } from '../src/lib/flow.js'
+import { compareReportText, limitsBody, toggleId } from '../src/lib/history.js'
 import {
   badgeStatus, buildNodeStatus, isApplicable, pairDetails, pairSentence, subsetRows, traceSteps, correctionLabel, observedExplanation,
 } from '../src/lib/verdict.js'
@@ -97,6 +98,22 @@ eq(scenarioPath('RSC-1', ['e1', 'e2'], ['e2', 'e1']), '/scenario?case=RSC-1&subs
   eq(rt, { caseId: 'RSC-9', subset: ['e1', 'e3'], order: [], limits: null })
 }
 eq(orderLabel(['e1', 'e2']), 'e1 → e2')
+// ---- history helpers ----
+eq(limitsBody({ maxEvents: 7, minEvents: 7, maxHops: 3 }), { max_events: 7, min_events: 7, max_hops: 3 })
+eq(limitsBody({ maxEvents: '', minEvents: 3, maxHops: 2 }), { max_events: null, min_events: 3, max_hops: 2 })
+eq(limitsBody(null), undefined)
+eq(toggleId([1, 3], 2), [1, 3, 2])
+eq(toggleId([1, 3], 1), [3])
+{
+  const text = compareReportText({
+    columns: [
+      { seq: 1, title: 'Swapped e3 → e4', log_label: 'L', case_id: 'C', created_at: 't', verdict: 'POLICY_ORDERED', order: ['e3', 'e4'], total: '906570', loss: '1', total_vs_first: '0', outcomes: [] },
+      { seq: 3, title: 'Ran case', log_label: 'L', case_id: 'D', created_at: 't', verdict: null, order: [], total: null, loss: null, total_vs_first: null, outcomes: [{ label: 'o', total: '2', loss: '3' }] },
+    ],
+    findings: ['A finding.'],
+  })
+  assert.ok(text.includes('Actions: 1, 3') && text.includes('906,570.00') && text.includes('Order: n/a') && text.includes('- A finding.') && text.includes('o: total 2.00, loss 3.00'))
+}
 // ---- flow helpers (full graph on first run, OCEL table rows) ----
 eq(fullGraphLimits({ full_graph: { max_hops: 4, max_events: 7, min_events: 7 } }), { maxHops: 4, maxEvents: 7, minEvents: 7 })
 eq(fullGraphLimits(null).maxEvents, null)

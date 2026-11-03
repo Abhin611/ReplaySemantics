@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "replaysemantics-frontend": "file:.."
+  }
+}

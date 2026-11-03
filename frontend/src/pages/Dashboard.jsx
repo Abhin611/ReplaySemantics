@@ -7,9 +7,17 @@ import StatCard from '../components/StatCard'
 import Card from '../components/Card'
 import PreviewTag from '../components/PreviewTag'
 import { LoadingState, ErrorState } from '../components/StatusStates'
-import { formatEur, formatInrCr, formatDateTime } from '../lib/format'
+import LoadLog from '../components/LoadLog'
+import { useSession } from '../lib/session'
+import { formatAmount, formatEur, formatInrCr, formatDateTime } from '../lib/format'
 
+// No log yet: this is where the user chooses one. After that: the dashboard of that log.
 export default function Dashboard() {
+  const { activeLog } = useSession()
+  return activeLog ? <LogDashboard log={activeLog} /> : <LoadLog />
+}
+
+function LogDashboard({ log }) {
   const navigate = useNavigate()
   const dashboardApi = useApi(useCallback(() => getDashboard(), []))
   const casesApi = useApi(useCallback(() => getCases(), []))
@@ -24,11 +32,15 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col gap-6">
+      <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#e2e6ea] bg-white px-4 py-2.5 shadow-card" data-testid="active-log">
+        <span className="min-w-0 truncate text-[13px] text-[#5c6b7a]">Event log: <b className="text-[#101828]">{log.label}</b></span>
+        <Link to="/profile" className="text-[12.5px] font-semibold text-teal-600 hover:underline">Change log</Link>
+      </div>
       <div className="flex flex-wrap gap-4">
         <StatCard
           label="Total Cases"
           value={formatNum(dash.available_cases)}
-          sublabel="From ingested VBFA log"
+          sublabel={`From ${log.label}`}
         />
         <StatCard
           label={
@@ -103,14 +115,14 @@ export default function Dashboard() {
                   onClick={() => navigate('/replay-console', { state: { caseId: c.case_id } })}
                 >
                   <td className="px-5 py-3 font-semibold text-[#101828]">{c.case_id}</td>
-                  <td className="px-5 py-3">{formatEur(c.value_eur)}</td>
-                  <td className="px-5 py-3">{c.max_candidates_at_default_hops}</td>
+                  <td className="px-5 py-3">{c.realized_loss != null ? formatAmount(c.realized_loss) : formatEur(c.value_eur)}</td>
+                  <td className="px-5 py-3">{c.max_candidates_at_default_hops ?? '—'}</td>
                   <td className="px-5 py-3">
                     <span
                       className="rounded-md bg-status-idleBg px-2.5 py-1 text-[11px] font-semibold text-status-idle"
-                      title="Real SAP events carry no pricing fields, so replay and verdicts do not apply"
+                      title={c.realized_loss != null ? 'Every stage runs on this case' : 'These events carry no pricing fields, so replay and verdicts do not apply'}
                     >
-                      stages 1–2b (real data)
+                      {c.realized_loss != null ? 'all stages (synthetic)' : 'stages 1–2b'}
                     </span>
                   </td>
                   <td className="px-5 py-3 text-[#5c6b7a]">{formatDateTime(c.timestamp)}</td>

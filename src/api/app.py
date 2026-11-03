@@ -33,12 +33,15 @@ from __future__ import annotations
 import json
 import os
 import threading
+from contextvars import ContextVar
+from dataclasses import dataclass
 from itertools import combinations
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -61,17 +64,68 @@ from replay_core.replay import ReplayOperator, state_to_json
 from replay_core.scenario import ScenarioError, run_scenario
 from replay_core.swap import SwapOperator
 
+from api import account, auth, store
+
 REPO_ROOT = Path(__file__).parent.parent.parent
 OCEL_PATH = REPO_ROOT / "data" / "raw" / "vbfa_o2c_2019_2021_eur.jsonocel"
 WEBAPP_DIR = REPO_ROOT / "webapp"
 # Synthetic benchmark (generate with policy_engine.benchmark.generator). Override with REPLAY_BENCHMARK_DIR.
 BENCHMARK_DIR = Path(os.environ.get("REPLAY_BENCHMARK_DIR", REPO_ROOT / "data" / "benchmark"))
 
-app = FastAPI(title="ReplaySemantics API", version="0.1.0 (Month 1-2)")
+
+
+@dataclass(frozen=True)
+class ActiveLog:
+    """The event log this request works on: the signed-in user's own choice."""
+
+    id: int
+    kind: str  # "benchmark" (the synthetic cases) or "file" (an OCEL 2.0 file)
+    path: str | None
+    label: str
+
+
+# None = no signed-in request (tests and the warm-up thread): the original behaviour, VBFA plus the benchmark
+_active: ContextVar[ActiveLog | None] = ContextVar("active_log", default=None)
+_PUBLIC = {"/api/health"}
+_NO_LOG_NEEDED = ("/api/me", "/api/logs", "/api/policies", "/api/history")
+
+
+def _needs_log(request: Request) -> bool:
+    path = request.url.path
+    if path == "/api/history" and request.method == "POST":
+        return True  # recording an action re-runs it on the active log
+    return not any(path == p or path.startswith(p + "/") for p in _NO_LOG_NEEDED)
+
+
+async def scope_request(request: Request) -> None:
+    """Runs before every endpoint: check the Firebase sign-in, and point this request at the user's own event log.
+    It is async so that what it sets on _active reaches the (threaded) endpoint."""
+    path = request.url.path
+    if not path.startswith("/api/") or path in _PUBLIC:
+        return
+    scheme, _, token = request.headers.get("authorization", "").partition(" ")
+    if scheme.lower() != "bearer" or not token:
+        raise HTTPException(status_code=401, detail="Please sign in.")
+    try:
+        claims = await run_in_threadpool(auth.verify_token, token)
+    except auth.AuthError as exc:
+        raise HTTPException(status_code=exc.status, detail=str(exc)) from exc
+    email = claims.get("email")
+    request.state.user = store.upsert_user(
+        claims["uid"], email, claims.get("name") or (email.split("@")[0] if email else None), claims.get("picture"),
+        (claims.get("firebase") or {}).get("sign_in_provider"))
+    if _needs_log(request):
+        log = store.active_log(claims["uid"])
+        if log is None:
+            raise HTTPException(status_code=409, detail="Load an event log first.")
+        _active.set(ActiveLog(log["id"], log["kind"], log["path"], log["label"]))
+
+
+app = FastAPI(title="ReplaySemantics API", version="0.1.0 (Month 1-2)", dependencies=[Depends(scope_request)])
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Vite dev server
+    allow_origins=os.environ.get("REPLAY_CORS_ORIGINS", "http://localhost:5173").split(","),  # Vite dev server
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -127,15 +181,40 @@ def build_case_graph(graph: ObjectCentricGraph, target, result: CandidateExtract
     return {"nodes": nodes, "edges": edges}
 
 
-@lru_cache(maxsize=1)
-def get_graph() -> ObjectCentricGraph:
-    """Load + build the graph once per process, reused across requests."""
-    log = load_ocel(OCEL_PATH, strict=True, log_validation_report=False)
+@lru_cache(maxsize=8)
+def _graph_cached(path: str) -> ObjectCentricGraph:
+    log = load_ocel(Path(path), strict=True, log_validation_report=False)
     return ObjectCentricGraph(log)
 
 
-@lru_cache(maxsize=1)
+def graph_for(path) -> ObjectCentricGraph:
+    """Load + build the graph of one log file once per process, reused across requests and users."""
+    return _graph_cached(str(path))
+
+
+def get_graph() -> ObjectCentricGraph:
+    """The graph of the event log this request works on."""
+    act = _active.get()
+    return graph_for(act.path if act and act.path else OCEL_PATH)
+
+
 def get_case_list() -> list[dict]:
+    act = _active.get()
+    return _case_list_cached(str(act.path if act and act.path else OCEL_PATH))
+
+
+def _value(e) -> float:
+    """An event's numeric `value` attribute, or 0: other logs may not have one, or may hold text in it."""
+    v = e.attributes.get("value")
+    return v if isinstance(v, (int, float)) and not isinstance(v, bool) else 0
+
+
+# how many of the latest events are considered as cases in a log with no valued invoices
+_MAX_FALLBACK_TARGETS = 300
+
+
+@lru_cache(maxsize=8)
+def _case_list_cached(path: str) -> list[dict]:
     """
     Curated 'cases' for the demo, from the actual ingested log. In the
     finished system, 'case' will mean something Member 2/3-defined (a
@@ -148,20 +227,19 @@ def get_case_list() -> list[dict]:
     traversal examples (like e977) are comparatively low-value. Showing
     only top-by-value would hide every interesting graph.
     """
-    graph = get_graph()
+    graph = graph_for(path)
     log = graph.log
-    invoices = [
-        e for e in log.events
-        if e.activity.startswith("Create Invoice") and (e.attributes.get("value") or 0) > 0
-    ]
+    invoices = [e for e in log.events if e.activity.startswith("Create Invoice") and _value(e) > 0]
+    # another company's log may have no such events: then the latest events are the cases
+    targets = invoices or sorted(log.events, key=lambda e: e.timestamp)[-_MAX_FALLBACK_TARGETS:]
 
     def to_case(e, note, max_candidates):
         return {
             "case_id": e.event_id,
             "activity": e.activity,
             "timestamp": e.timestamp.isoformat(),
-            "value_eur": e.attributes.get("value"),
-            "value_inr_cr": round((e.attributes.get("value") or 0) * 92 / 1e7, 3),
+            "value_eur": _value(e) if invoices else None,
+            "value_inr_cr": round(_value(e) * 92 / 1e7, 3) if invoices else None,
             "objects": sorted(e.object_ids()),
             "note": note,
             "max_candidates_at_default_hops": max_candidates,
@@ -171,16 +249,16 @@ def get_case_list() -> list[dict]:
     # ceiling: how many candidates exist for this case at max_hops=3,
     # before any max_events cap trims them.
     discovered_counts: dict[str, int] = {}
-    for e in invoices:
+    for e in targets:
         r = extract_candidate_events(graph, e.event_id, max_events=1, min_events=3, max_hops=3)
         discovered_counts[e.event_id] = r.total_discovered
 
-    by_value = sorted(invoices, key=lambda e: e.attributes.get("value", 0), reverse=True)
+    by_value = sorted(invoices, key=_value, reverse=True)
     top_value_cases = [
         to_case(e, "top value", discovered_counts[e.event_id]) for e in by_value[:15]
     ]
 
-    richness = [(e, discovered_counts[e.event_id]) for e in invoices]
+    richness = [(e, discovered_counts[e.event_id]) for e in targets]
     richness.sort(key=lambda pair: pair[1], reverse=True)
 
     seen_ids = {c["case_id"] for c in top_value_cases}
@@ -190,7 +268,7 @@ def get_case_list() -> list[dict]:
             continue
         rich_cases.append(to_case(e, f"rich traversal ({n} candidates)", n))
         seen_ids.add(e.event_id)
-        if len(rich_cases) >= 10:
+        if len(rich_cases) >= (10 if invoices else 25):
             break
 
     return top_value_cases + rich_cases
@@ -207,16 +285,22 @@ def dashboard():
     """Real aggregate stats for the Dashboard screen, computed from the
     actual ingested dataset (replaces the mock '1,284 / 47 / 12 / $6.4M'
     numbers in the Figma design)."""
-    graph = get_graph()
-    log = graph.log
-    cases = get_case_list()
-    total_value_eur = sum(c["value_eur"] for c in cases)
+    act = _active.get()
+    if act and act.kind == "benchmark":
+        events, objects, cases, total_value_eur = None, None, _benchmark_case_rows(), 0
+    else:
+        graph = get_graph()
+        cases = get_case_list()
+        events, objects = len(graph.log.events), len(graph.log.objects)
+        total_value_eur = sum(c["value_eur"] or 0 for c in cases)
+    has_value = any(c["value_eur"] for c in cases)
     return {
-        "total_events_in_log": len(log.events),
-        "total_objects_in_log": len(log.objects),
+        "log_label": act.label if act else None,
+        "total_events_in_log": events,
+        "total_objects_in_log": objects,
         "available_cases": len(cases),
-        "total_case_value_eur": round(total_value_eur, 2),
-        "total_case_value_inr_cr": round(total_value_eur * 92 / 1e7, 2),
+        "total_case_value_eur": round(total_value_eur, 2) if has_value else None,
+        "total_case_value_inr_cr": round(total_value_eur * 92 / 1e7, 2) if has_value else None,
         "pipeline_stages_implemented": [
             "Extraction", "Candidate Identification", "Order Constraints",
             "Confluence Checks (benchmark cases)", "Policy Resolution (benchmark cases)", "Verdict (benchmark cases)",
@@ -227,6 +311,9 @@ def dashboard():
 
 @app.get("/api/cases")
 def list_cases():
+    act = _active.get()
+    if act:  # a signed-in user sees the cases of their own log only
+        return {"cases": _benchmark_case_rows() if act.kind == "benchmark" else get_case_list()}
     cases = get_case_list()
     try:  # synthetic benchmark cases (stages 1-5 run on these); absent benchmark => VBFA only
         cases = cases + _benchmark_case_rows()
@@ -335,11 +422,13 @@ def run_replay(case_id: str, max_events: int | None = None, min_events: int = 3,
         graph, case_id, max_events=max_events, min_events=min_events, max_hops=max_hops
     )
     constraint_result = extract_constraints(result)
-    na = ("Not applicable to real VBFA events: they carry no unit price / discount / tax / FX "
-          "fields, so there is nothing to replay. Stages 3-5 run on the synthetic benchmark cases (RSC-...).")
+    act = _active.get()
+    name = act.label if act else "real VBFA events"
+    na = (f"Not applicable to {name}: its events have no contract terms, unit price / discount / tax / FX "
+          "fields to compare against, so there is nothing to replay. Stages 3-5 run on the synthetic benchmark cases (RSC-...).")
     return {
         "case_id": case_id,
-        "source": "real VBFA (SAP document flow)",
+        "source": act.label if act else "real VBFA (SAP document flow)",
         "limits": limit_report(graph, result, max_events=max_events, min_events=min_events, max_hops=max_hops),
         **_stages_1_to_2b(graph, target, result, constraint_result),
         "stage_3_confluence_checks": {"status": "not_applicable", "message": na},
@@ -370,13 +459,17 @@ DEFAULT_LIMITS = (None, 3, 3)  # (max_events, min_events, max_hops): no event ca
 
 def _benchmark_case(case_id: str, limits: tuple = DEFAULT_LIMITS) -> LoadedCase:
     """Load a benchmark case, or raise the right HTTP error."""
+    act = _active.get()
+    if act and act.kind != "benchmark":
+        raise HTTPException(status_code=422, detail=f"Replay and editing need contract terms and financial fields, which "
+                            f"{act.label} does not have. They are available on the benchmark sample log.")
     try:
         index = load_benchmark_index(BENCHMARK_DIR)
     except BenchmarkNotFound as exc:
         raise HTTPException(status_code=404, detail=str(exc))
     if case_id not in index:
         try:
-            is_vbfa = get_graph().get_event(case_id) is not None
+            is_vbfa = act is None and get_graph().get_event(case_id) is not None
         except KeyError:
             is_vbfa = False
         if is_vbfa:
@@ -434,6 +527,9 @@ def _class_chip(case_id: str) -> dict:
 @app.get("/api/benchmark/verdicts")
 def benchmark_verdicts():
     """Real verdict per benchmark case (runs + caches the confluence checker). Used by the Cases page."""
+    act = _active.get()
+    if act and act.kind != "benchmark":
+        return {"source": act.label, "verdicts": {}}
     try:
         index = load_benchmark_index(BENCHMARK_DIR)
     except BenchmarkNotFound as exc:
@@ -566,12 +662,15 @@ def _full_graph(prof: dict) -> dict:
 def get_hop_profile(case_id: str):
     """How many events (and how many correctable ones) are reachable at 1..6 hops, from the public log. Works for the
     real SAP events and the benchmark cases alike, and is what the limit controls are built on."""
-    graph = get_graph()
     if _is_benchmark_id(case_id):
         lc = _benchmark_case(case_id)
         prof = hop_profile(lc.graph, lc.entry["target_event_id"], upto=10)
         return {"case_id": case_id, **prof, "suggested_max_hops": suggested_max_hops(lc.entry),
                 "full_graph": _full_graph(prof)}
+    act = _active.get()
+    if act and act.kind == "benchmark":
+        raise HTTPException(status_code=404, detail=f"Unknown case/event id: {case_id}")
+    graph = get_graph()
     try:
         graph.get_event(case_id)
     except KeyError:
@@ -581,6 +680,9 @@ def get_hop_profile(case_id: str):
 
 
 def _is_benchmark_id(case_id: str) -> bool:
+    act = _active.get()
+    if act and act.kind != "benchmark":
+        return False
     try:
         return case_id in load_benchmark_index(BENCHMARK_DIR)
     except BenchmarkNotFound:
@@ -842,6 +944,8 @@ def _warm_benchmark_cache() -> None:
 def _start_benchmark_warmup() -> None:
     threading.Thread(target=_warm_benchmark_cache, daemon=True).start()
 
+
+app.include_router(account.router)
 
 # Serve the coded demo frontend at "/"
 if WEBAPP_DIR.exists():

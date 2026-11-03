@@ -124,7 +124,7 @@ def test_api_limits_apply_to_benchmark_cases_and_are_part_of_the_cache_key(clien
 
 def test_api_class_chips_and_new_endpoints(client, truth):
     rows = client.get("/api/benchmark/cases").json()["cases"]
-    assert len(rows) == 54 and all(r["resolution_class"] and r["hops"] for r in rows)
+    assert len(rows) == 60 and all(r["resolution_class"] and r["hops"] for r in rows)
     cid = _case(truth, "SWAP_ONLY", 2)
     a = client.get(f"/api/cases/{cid}/analysis").json()
     a_, b_ = a["pairs"][0]["pair"]

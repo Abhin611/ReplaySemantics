@@ -160,7 +160,7 @@ export default function ReplayGraph() {
                   className="rounded-md bg-status-idleBg px-2.5 py-1 text-xs font-semibold text-status-idle"
                   title={result.stage_5_verdict?.message}
                 >
-                  stages 1–2b only (real data)
+                  stages 1–2b only
                 </span>
               )}
             </div>
@@ -242,7 +242,7 @@ export default function ReplayGraph() {
                       </div>
                     ) : (
                       <p className="mt-2 border-t border-[#eef1f4] pt-2 text-[11.5px] text-[#8a97a3]">
-                        No verdict for this event: real SAP data stops at stage 2b (no pricing fields to replay).
+                        No verdict for this event: this log stops at stage 2b (no pricing fields to replay).
                       </p>
                     )}
                   </div>

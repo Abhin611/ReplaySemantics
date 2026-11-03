@@ -39,7 +39,7 @@ export default function PipelineTimeline({ items, shown, animating }) {
                 {done && it.badge && <StatusBadge status={it.badge} className="rs-pop !px-2 !py-0.5 !text-[10.5px]" />}
               </div>
               <div className={`text-[12px] leading-relaxed ${done && !na ? 'text-[#5c6b7a]' : 'text-[#8a97a3]'}`}>
-                {active ? 'Working…' : na ? 'Not applicable to real SAP data (no pricing fields to replay).' : it.body}
+                {active ? 'Working…' : na ? 'Not applicable to this log (no pricing fields to replay).' : it.body}
               </div>
               {done && it.warning && (
                 <div className="mt-1 rounded-md bg-status-orderedBg px-2 py-1 text-[11.5px] text-status-ordered">{it.warning}</div>

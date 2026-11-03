@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowRight, Loader2, Pencil, RotateCcw, Shuffle } from 'lucide-react'
 import Card from './Card'
-import { postChange } from '../lib/api'
+import { postChange, recordAction } from '../lib/api'
+import { limitsBody } from '../lib/history'
 import { formatPrecise } from '../lib/scenario'
 import { SEQUENCE_LABEL, cleanEdits, toggleSwap } from '../lib/ledger'
 
@@ -35,7 +36,11 @@ export default function ChangePanel({ caseId, limits, analysis, defaultSwap = []
 
   const run = async () => {
     setBusy(true); setErr(null)
-    try { setRes(await postChange(caseId, { edits: cleanEdits(staged), swap, sequence }, limits)) } catch (e) { setErr(e.message); setRes(null) } finally { setBusy(false) }
+    try {
+      const body = { edits: cleanEdits(staged), swap, sequence }
+      setRes(await postChange(caseId, body, limits))
+      recordAction({ kind: 'change', case_id: caseId, ...body, limits: limitsBody(limits) })
+    } catch (e) { setErr(e.message); setRes(null) } finally { setBusy(false) }
   }
   const reset = () => { setVals({}); setSwap([]); setRes(null); setErr(null) }
 

@@ -2,7 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AlertTriangle, CheckCircle2, FastForward, Loader2, Minus, PlayCircle, RotateCcw } from 'lucide-react'
 import { useApi } from '../lib/useApi'
-import { clearApiCache, getCases, getHops, runReplay } from '../lib/api'
+import { clearApiCache, getCases, getHops, recordAction, runReplay } from '../lib/api'
+import { limitsBody } from '../lib/history'
 import { useSelectedCase, usePersistentState } from '../lib/SelectedCaseContext'
 import { useReplaySpeed } from '../lib/useReplaySpeed'
 import { STAGES, fullGraphLimits, pipelineItems, stageHighlight } from '../lib/flow'
@@ -91,6 +92,7 @@ export default function ReplayFlow({ fixed = null, highlightIds = null, onEdit, 
     try {
       const data = await runReplay(caseId, { maxEvents: limits.maxEvents, minEvents: limits.minEvents, maxHops: limits.maxHops }, { force })
       setRuns((m) => ({ ...m, [`${caseId}|${limitsKey(limits)}`]: data }))
+      if (force && !fixed) recordAction({ kind: 'run_case', case_id: caseId, limits: limitsBody(limits) })
       if (delay === 0) { setPhase('done'); setStageShown(STAGES.length); setTab(isApplicable(data) ? 'verdict' : 'rules') } else {
         setStageShown(0); setPhase('build'); scrollTo(stageRef, 50)
       }

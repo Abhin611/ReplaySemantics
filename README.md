@@ -60,7 +60,7 @@ endpoints (`/api/dashboard`, `/api/cases`, `/api/cases/{id}/replay`).
 
 ## Status: Benchmark v2 + Replay Analysis (latest)
 
-**The benchmark is now 54 cases, laid out by resolution class x hops x policy** (`docs/benchmark_v2.md`):
+**The benchmark is now 60 cases: 54 laid out by resolution class x hops x policy, plus 6 larger cases of up to 15 candidate events** (`docs/benchmark_v2.md`):
 
 | class | what the loss is | cases |
 |---|---|---|
@@ -90,7 +90,7 @@ New endpoints: `GET /api/cases/{id}/analysis`, `GET /api/cases/{id}/pair?a=&b=`,
 Also fixed: the benchmark seal now verifies on Windows (CRLF) and Linux alike.
 
 Tests: 248 Python tests + 81 frontend assertions (`node frontend/scripts/check-lib.mjs`).
-Score on the 54 cases: ReplaySemantics 1.00 accuracy / 0.00 false attribution; naive sequential 0.26 / 0.17; naive split 0.26 / 0.22
+Score on the 60 cases: ReplaySemantics 1.00 accuracy / 0.00 false attribution; naive sequential 0.27 / 0.18; naive split 0.27 / 0.23
 (graded by the team's own oracle, see the limitations in `docs/benchmark_v2.md`).
 
 ## Status: Month 4 — Confluence checker (in progress) · Month 3 replay core ✅
@@ -98,7 +98,7 @@ Score on the 54 cases: ReplaySemantics 1.00 accuracy / 0.00 false attribution; n
 - `replay_core/confluence.py` — **the research core.** For every subset of the candidate events it decides
   whether all legitimate application orders give one net (exact search over order ideals, only unlocked =
   permutable pairs are swapped), then classifies PASS / POLICY_ORDERED / BLOCKED via Member 2's
-  `resolve_order`. Reproduces the sealed benchmark truth on every subset of all 54 cases (v2; 140 in v1) and equals her
+  `resolve_order`. Reproduces the sealed benchmark truth on every subset of all 60 cases (v2; 140 in v1) and equals her
   brute-force probe. Practical limit: ~2 s for 8 freely permutable events, ~22 s for 10 (the proposal bounds E at 3-8).
 - API: `GET /api/cases/{id}/replay` runs real stages 1-5 on benchmark cases; VBFA cases report stages 3-5 as
   `not_applicable`. Benchmark cases are listed in `/api/cases` (labelled synthetic).
@@ -249,3 +249,18 @@ ReplaySemantics/
   `S ⊆ E` of applied corrections.
 - Idempotence checks: applying the same correction twice should not change
   the result further.
+
+## Sign-in setup (Firebase)
+
+The app needs a Firebase project for login. Passwords, verification emails and Google sign-in are handled by Firebase; the server only checks its tokens.
+
+1. Create a project at https://console.firebase.google.com and add a **Web app**.
+2. Under **Authentication > Sign-in method**, enable **Email/Password** and **Google**.
+3. Copy `frontend/.env.example` to `frontend/.env.local` and fill in the values from the web app's config.
+4. Start the backend with your project id:
+
+   ```powershell
+   $env:FIREBASE_PROJECT_ID="your-project-id"; $env:PYTHONPATH="src"; .venv\Scripts\python -m uvicorn api.app:app --reload --port 8000
+   ```
+
+Accounts, saved logs and history are stored in `var/` (a local SQLite database and the log files), which is not committed. `REPLAY_DATA_DIR` moves it, and `REPLAY_MAX_LOG_MB` changes the 200 MB log limit.

@@ -22,7 +22,7 @@ different totals. It is **authoritative** when the policy orders it (rule ids re
 `blocked` is a flag on a case: some swappable pair (or subset) the policy cannot order. Loss split: `loss_from_stale_amounts`
 = Loss(C) (what only re-deriving posted amounts removes); `loss_from_inputs` = Loss(observed) - Loss(C).
 
-## 3. The 54-case matrix
+## 3. The 54-case matrix, and the 6 larger cases
 | | 1 hop | 2 | 3 | 4 | 5 | total |
 |---|---|---|---|---|---|---|
 | Direct fix | 4 | | | | | 4 |
@@ -34,6 +34,21 @@ different totals. It is **authoritative** when the policy orders it (rule ids re
 BLOCKED: 3 swap-only + 6 both = 9 (policy -002: 5 cases, partly resolved; policy -003: 4 cases, nothing resolves).
 Policies: -001 45 cases, -002 5, -003 4. Multi-edit cases keep the attribution demos (single, independent, interaction,
 redundancy, exception) and add locked posted-node chains with a deep price.
+
+Six larger cases follow the matrix (`LARGE_SPECS`), two per case-level verdict. Their ids come last, so cases 1-54 are unchanged.
+
+| case | verdict | candidate events | correctable | deepest correctable hop | policy |
+|---|---|---|---|---|---|
+| RSC-2026-00055 | PASS | 12 | 4 adjustments (interaction) | 4 | -001 |
+| RSC-2026-00056 | PASS | 15 | 5 adjustments (independent) | 3 | -001 |
+| RSC-2026-00057 | POLICY-ORDERED | 13 | discount, tax, rounding | 3 | -001 |
+| RSC-2026-00058 | POLICY-ORDERED | 15 | 2 discounts, tax, rounding, price, currency | 4 | -001 |
+| RSC-2026-00059 | BLOCKED | 14 | discount, tax, rounding | 3 | -003 |
+| RSC-2026-00060 | BLOCKED | 15 | discount, tax, rounding, quantity, currency | 4 | -002 |
+
+The rest of each case is context events. The money model allows one tax, rounding, price, quantity and currency event, and
+the oracle's soft cap is 7 correctable events (the checker's limit is 10), so 15 events cannot all move money. Context events
+still make the traversal, the graph and the order constraints larger.
 Depth comes from chains of context events (they move no money), so the graph grows deep, not wide. A "hop" is one step through a
 linked document; the deepest *correctable* event defines a case's depth. `generate_matrix_benchmark` fails loudly if any quota is missed.
 

@@ -2,9 +2,12 @@ import { useState } from 'react'
 import { Check, X } from 'lucide-react'
 import Card from '../components/Card'
 import PreviewTag from '../components/PreviewTag'
-import { mockPermissions, mockUser } from '../data/mockData'
+import { mockPermissions } from '../data/mockData'
+import { useSession } from '../lib/session'
+import { formatDateTime } from '../lib/format'
 
 export default function Settings() {
+  const { profile } = useSession()
   const [notifyOnBlocked, setNotifyOnBlocked] = useState(true)
 
   return (
@@ -19,13 +22,13 @@ export default function Settings() {
       <Card>
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-teal-500 text-[14px] font-bold text-white">
-            {mockUser.initials}
+            {(profile.name || profile.email || '?').slice(0, 2).toUpperCase()}
           </div>
           <div>
-            <div className="text-[15px] font-bold text-[#101828]">{mockUser.name}</div>
-            <div className="text-[13px] text-[#5c6b7a]">{mockUser.email}</div>
+            <div className="text-[15px] font-bold text-[#101828]">{profile.name}</div>
+            <div className="text-[13px] text-[#5c6b7a]">{profile.email}</div>
             <div className="text-[12px] text-[#8a97a3]">
-              Role: {mockUser.role} · Last login: {mockUser.lastLogin}
+              Last login: {formatDateTime(profile.last_login_at)}
             </div>
           </div>
         </div>

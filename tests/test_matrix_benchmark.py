@@ -1,12 +1,14 @@
-"""Benchmark v2: the 54-case matrix (resolution class x hops x policy)."""
+"""Benchmark v2: the 54-case matrix (resolution class x hops x policy) and the 6 larger cases."""
 import json
 from collections import Counter
+from decimal import Decimal
 
 import pytest
 
 from policy_engine.benchmark import generator as gen
 from policy_engine.benchmark.evaluate import SealError, load_truth, score_case
-from replay_core.benchmark_io import load_benchmark_index
+from replay_core.benchmark_io import load_benchmark_case, load_benchmark_index
+from replay_core.confluence import ConfluenceChecker
 from replay_core.run_case import run_case
 
 
@@ -22,18 +24,18 @@ def truth(root):
     return load_truth(root)
 
 
-def test_54_cases_and_quotas(root, truth):
+def test_60_cases_and_quotas(root, truth):
     m = json.loads((root / "manifest.json").read_text())
     q = m["quotas"]
-    assert m["num_cases"] == len(truth) == 54 and m["design"] == "matrix"
-    assert q["by_class"] == {"DIRECT_FIX": 4, "SWAP_ONLY": 10, "MULTI_EDIT_ONLY": 14, "BOTH": 26}
-    assert q["by_hops"] == {"1": 4, "2": 20, "3": 21, "4": 6, "5": 3}
-    assert q["blocked"] == 9 and q["by_policy"]["P-2026-Q3-002"] == 5 and q["by_policy"]["P-2026-Q3-003"] == 4
+    assert m["num_cases"] == len(truth) == 60 and m["design"] == "matrix"
+    assert q["by_class"] == {"DIRECT_FIX": 4, "SWAP_ONLY": 12, "MULTI_EDIT_ONLY": 16, "BOTH": 28}
+    assert q["by_hops"] == {"1": 4, "2": 20, "3": 24, "4": 9, "5": 3}
+    assert q["blocked"] == 11 and q["by_policy"]["P-2026-Q3-002"] == 6 and q["by_policy"]["P-2026-Q3-003"] == 5
     assert q["by_class"]["SWAP_ONLY"] >= 7 and q["by_class"]["MULTI_EDIT_ONLY"] >= 10 and q["by_class"]["BOTH"] >= 15
 
 
 def test_class_hops_matrix_matches_the_design(truth):
-    cell = Counter((t["design"]["class"], t["design"]["hops"]) for t in truth.values())
+    cell = Counter((t["design"]["class"], t["design"]["hops"]) for t in truth.values() if int(t["case_id"][-5:]) <= 54)
     assert cell == Counter({("SWAP_ONLY", 2): 4, ("SWAP_ONLY", 3): 3, ("SWAP_ONLY", 4): 2, ("SWAP_ONLY", 5): 1,
                             ("MULTI_EDIT_ONLY", 2): 5, ("MULTI_EDIT_ONLY", 3): 6, ("MULTI_EDIT_ONLY", 4): 2,
                             ("MULTI_EDIT_ONLY", 5): 1, ("BOTH", 2): 11, ("BOTH", 3): 12, ("BOTH", 4): 2,
@@ -41,7 +43,7 @@ def test_class_hops_matrix_matches_the_design(truth):
 
 
 def test_blocked_split_by_class_and_policy(truth):
-    blocked = [t for t in truth.values() if t["design"]["blocked"]]
+    blocked = [t for t in truth.values() if t["design"]["blocked"] and int(t["case_id"][-5:]) <= 54]
     assert Counter(t["design"]["class"] for t in blocked) == {"SWAP_ONLY": 3, "BOTH": 6}
     assert all(t["classification"] == "BLOCKED" for t in blocked)
     assert not any(t["classification"] == "BLOCKED" for t in truth.values() if not t["design"]["blocked"])
@@ -79,7 +81,24 @@ def test_public_files_hold_no_truth(root):
         assert forbidden not in blob
 
 
-def test_system_matches_sealed_truth_on_all_54(root, truth):
+def test_six_larger_cases_up_to_15_events_with_every_verdict(root, truth):
+    from policy_engine.benchmark.generator import LARGE_SPECS
+    from replay_core.swap import SwapOperator
+    assert len(LARGE_SPECS) == 6 and sorted(s.verdict for s in LARGE_SPECS) == ["BLOCKED", "BLOCKED", "PASS", "PASS", "POLICY_ORDERED", "POLICY_ORDERED"]
+    for i, spec in enumerate(LARGE_SPECS):
+        cid = f"RSC-2026-{55 + i:05d}"
+        t = truth[cid]
+        lc = load_benchmark_case(root, cid, max_events=None, min_events=1, max_hops=spec.hops)
+        assert len(lc.extraction.candidate_events) == spec.candidates <= 15, cid  # the suggested depth reaches them all
+        assert t["classification"] == spec.verdict == ConfluenceChecker.from_loaded(lc).check_case().classification, cid
+        assert 1 < len(t["active_event_ids"]) <= 7 and Decimal(t["realized_loss"]) > 0, cid
+        assert lc.limits["complete"], cid
+        op = SwapOperator(lc.model)  # the order that was posted changes nothing here either
+        assert op.replay(op.active_ids, op.canonical_order(op.active_ids)).net == op.observed_net, cid
+    assert max(s.candidates for s in LARGE_SPECS) == 15
+
+
+def test_system_matches_sealed_truth_on_all_60(root, truth):
     for cid, t in truth.items():
         run = run_case(root, cid)  # explicit: the depth the public log suggests, so the set is complete
         assert run.loaded.limits["complete"], cid
