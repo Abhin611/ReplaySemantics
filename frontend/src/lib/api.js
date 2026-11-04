@@ -1,10 +1,9 @@
 // src/lib/api.js
 //
-// Thin client for the REAL backend (src/api/app.py). Every function here
-// maps 1:1 to an endpoint that actually runs your Month 1-2 pipeline
-// against the live VBFA-derived OCEL 2.0 log and the synthetic benchmark -- nothing in this file is
-// mocked. See src/data/mockData.js for the Month 3-5 screens that don't
-// have a backend yet.
+// Thin client for the REAL backend (src/api/). Every function here maps 1:1
+// to an endpoint, working on the event log the user has open -- nothing in
+// this file is mocked. See src/data/mockData.js for the preview screens that
+// don't have a backend yet.
 
 import { limitsQuery } from './ledger.js'
 

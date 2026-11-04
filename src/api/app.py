@@ -1,31 +1,24 @@
 """
 api/app.py
 ----------
-The bridge between your Figma design and the actual Month 1-2 Python
-pipeline.
+The backend behind the React app in frontend/: it runs the replay pipeline on the event log the signed-in user has open.
+Accounts, saved logs and history are in account.py.
 
-Why this exists: a Figma Sites link (fresco-finite-...figma.site) is a
-static, click-through prototype -- it cannot import replay_core or run
-Python. To make "Run Replay" do something real, you need a backend that
-runs the pipeline and a frontend that calls it. This file is that backend.
-webapp/index.html (served at "/") is a minimal coded frontend, styled
-after your Figma screens, that calls it.
-
-What's real vs. stubbed:
-    Stage 1 (Extraction) and Stage 2 (Candidate Identification) run your
-    actual Month 1 ingestion + Month 2 graph/candidate-extraction code
-    against the real VBFA-derived OCEL 2.0 log.
-    Stage 3 (Confluence Checks), Stage 4 (Policy Resolution), Stage 5
-    (Verdict) are NOT built yet (Month 4 for you, Month 2-4 for Member 2 /
-    Member 3) -- the API returns an honest "not_implemented" status for
-    them rather than faking output.
+What runs:
+    Benchmark cases run every stage: extraction, candidates, order constraints, confluence checks, policy resolution and verdict.
+    Other OCEL 2.0 logs have no pricing fields, so they stop at the order constraints (stage 2b) and report
+    stages 3-5 as "not_applicable".
+    Shapley attribution and the evidence artifact (Member 3) are not wired in yet.
 
 Run it:
-    pip install fastapi uvicorn
-    cd ReplaySemantics
-    PYTHONPATH=src uvicorn api.app:app --reload --port 8000
+    pip install -r requirements.txt
+    FIREBASE_PROJECT_ID=your-project-id PYTHONPATH=src uvicorn api.app:app --reload --port 8000
 
-Then open http://localhost:8000 in a browser.
+This serves the API only. For the site, run the frontend too:
+    cd frontend
+    npm run dev
+
+Then open http://localhost:5173 in a browser.
 """
 
 from __future__ import annotations
@@ -44,7 +37,6 @@ from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from replay_core.candidate_extraction import CandidateExtractionResult, extract_candidate_events
@@ -68,7 +60,6 @@ from api import account, auth, store
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 OCEL_PATH = REPO_ROOT / "data" / "raw" / "vbfa_o2c_2019_2021_eur.jsonocel"
-WEBAPP_DIR = REPO_ROOT / "webapp"
 # Synthetic benchmark (generate with policy_engine.benchmark.generator). Override with REPLAY_BENCHMARK_DIR.
 BENCHMARK_DIR = Path(os.environ.get("REPLAY_BENCHMARK_DIR", REPO_ROOT / "data" / "benchmark"))
 
@@ -121,7 +112,7 @@ async def scope_request(request: Request) -> None:
         _active.set(ActiveLog(log["id"], log["kind"], log["path"], log["label"]))
 
 
-app = FastAPI(title="ReplaySemantics API", version="0.1.0 (Month 1-2)", dependencies=[Depends(scope_request)])
+app = FastAPI(title="ReplaySemantics API", version="0.1.0", dependencies=[Depends(scope_request)])
 
 app.add_middleware(
     CORSMiddleware,
@@ -142,9 +133,8 @@ def build_case_graph(graph: ObjectCentricGraph, target, result: CandidateExtract
     "these two happen to share an object" pairing.
 
     Verdict coloring (PASS/POLICY-ORDERED/BLOCKED) is intentionally absent
-    here -- that's Month 4 (confluence checker) output, which doesn't
-    exist yet. Every node ships as "idle" so the frontend renders it
-    exactly like the ungraded state in your Figma design.
+    here: every node ships as "idle", and on benchmark cases the replay
+    response's node_status carries the confluence checker's result.
 
     Note: because the candidate set is bounded to max_events by recency,
     a kept event's discovering (parent) event can itself have been pruned.
@@ -168,7 +158,7 @@ def build_case_graph(graph: ObjectCentricGraph, target, result: CandidateExtract
                 "hop": result.event_hops.get(e.event_id),  # None for the target
                 "is_target": e.event_id == target.event_id,
                 "connected_to_target": connected,
-                "status": "idle",  # verdict coloring arrives with the Month 4 confluence checker
+                "status": "idle",  # verdict coloring comes from node_status, on benchmark cases
             }
         )
 
@@ -216,10 +206,9 @@ _MAX_FALLBACK_TARGETS = 300
 @lru_cache(maxsize=8)
 def _case_list_cached(path: str) -> list[dict]:
     """
-    Curated 'cases' for the demo, from the actual ingested log. In the
-    finished system, 'case' will mean something Member 2/3-defined (a
-    validated, attributed realized loss) -- for now it's simply "an event
-    you can run the Month 1-2 pipeline against."
+    Curated 'cases' from an ingested log with no benchmark truth: here a
+    case is simply an event you can run stages 1-2b against. Benchmark
+    cases are listed separately.
 
     Mixed by two criteria, since they pull in opposite directions in this
     dataset: the highest-value invoice lines turn out to be structurally
@@ -283,8 +272,7 @@ def health():
 @app.get("/api/dashboard")
 def dashboard():
     """Real aggregate stats for the Dashboard screen, computed from the
-    actual ingested dataset (replaces the mock '1,284 / 47 / 12 / $6.4M'
-    numbers in the Figma design)."""
+    event log the user has open."""
     act = _active.get()
     if act and act.kind == "benchmark":
         events, objects, cases, total_value_eur = None, None, _benchmark_case_rows(), 0
@@ -946,7 +934,3 @@ def _start_benchmark_warmup() -> None:
 
 
 app.include_router(account.router)
-
-# Serve the coded demo frontend at "/"
-if WEBAPP_DIR.exists():
-    app.mount("/", StaticFiles(directory=str(WEBAPP_DIR), html=True), name="webapp")

@@ -1,4 +1,7 @@
 # Replay flow redesign - changed / new files only
+
+> Historical note for this one update. Its counts are from that time; see README.md for the current state.
+
 Copy this zip's contents over the project (same paths), then `cd frontend && npm run build` (or `npm run dev`).
 
 1-4, 9  Every node lists the values it holds (recorded OCEL facts: time, objects, attributes). A new start node REF shows the

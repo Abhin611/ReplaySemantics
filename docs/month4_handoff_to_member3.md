@@ -2,6 +2,12 @@
 
 Everything below is live for the synthetic benchmark cases (`RSC-...`). Real VBFA cases have no stages 3-5.
 
+## What has changed since this was written
+* **The API needs sign-in.** Send `Authorization: Bearer <Firebase token>` and open an event log first. The Python calls below need neither.
+* **The benchmark is 60 cases** (see `docs/benchmark_v2.md`).
+* **Corrections and swaps are separate.** `coalition_values` and the verdict still come from corrections, so your `v(S)` is unaffected. The
+  swaps on the pages (`replay_core/swap.py`) are for display, and `/api/cases/{id}/scenario` withholds Shapley when it runs swaps.
+
 ## The one rule
 **Shapley is computed only when `attribution_allowed` is true** (no subset is BLOCKED). For a BLOCKED case
 return `shapley = None` and show the reason codes. `CaseVerdict.prediction(shapley)` already forces this.
