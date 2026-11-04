@@ -2,16 +2,13 @@
 //
 // PREVIEW DATA ONLY.
 //
-// Everything in this file is illustrative filler for screens whose real
-// pipeline stage doesn't exist yet:
-//   - Confluence Checks / verdicts        -> Month 4 (Member 1)
-//   - Policy Resolution / correction fns  -> Member 2, in progress
-//   - Shapley attribution                 -> Month 5 (Member 3)
-//   - Audit log, auth/roles               -> not started
+// Everything in this file is illustrative filler for screens with no real
+// backend yet:
+//   - Attribution (Shapley)      -> Member 3
+//   - Audit Log, Settings        -> not started
 //
-// None of it is read from the real OCEL log. It exists so the frontend
-// can be built end-to-end now, ahead of the backend, per the Figma
-// prototype -- swap each piece out for a real endpoint as it lands.
+// None of it is read from an event log. Swap each piece out for a real
+// endpoint as it lands.
 // Every place this data is used is tagged with a <PreviewTag /> in the UI.
 
 export const STATUS_OPTIONS = ['PASS', 'POLICY-ORDERED', 'BLOCKED']

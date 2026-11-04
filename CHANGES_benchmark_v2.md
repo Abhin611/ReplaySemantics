@@ -1,5 +1,7 @@
 # Changes in this drop (benchmark v2 + Replay Analysis)
 
+> Historical note for this one update. Its counts are from that time; see README.md for the current state.
+
 See docs/benchmark_v2.md for the design.
 
 ## New files

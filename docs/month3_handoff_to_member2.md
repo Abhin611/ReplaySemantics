@@ -5,6 +5,13 @@ things: two are ready now (no action needed from you until you touch
 policy.json anyway), one is the actual blocker on the replay operator
 and needs your input before I can build against it.
 
+> **Update for Member 2 (later changes to your code):**
+> * `policy_engine/domain.py` gained `discount_after_tax`, used only when a swap runs tax before a discount. The pipeline, the
+>   compliant net and every correction are unchanged.
+> * `policy_engine/benchmark/generator.py` gained 6 larger cases (`LARGE_SPECS`), so the benchmark is 60 cases. Cases 1-54 are
+>   identical, but the sealed truth hash is now `2b3b5c49c683...`.
+> * The rest of this document is the original Month 3 handoff.
+
 ---
 
 ## 1. `given_constraints` -- ready now, just merge it in

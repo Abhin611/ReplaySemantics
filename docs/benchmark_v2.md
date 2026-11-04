@@ -52,15 +52,33 @@ still make the traversal, the graph and the order constraints larger.
 Depth comes from chains of context events (they move no money), so the graph grows deep, not wide. A "hop" is one step through a
 linked document; the deepest *correctable* event defines a case's depth. `generate_matrix_benchmark` fails loudly if any quota is missed.
 
+All 60 cases together:
+
+| | |
+|---|---|
+| Verdict | PASS 16, POLICY-ORDERED 33, BLOCKED 11 |
+| Class | Direct fix 4, swap only 12, multi-edit only 16, both 28 |
+| Depth | 1 hop 4, 2 hops 20, 3 hops 24, 4 hops 9, 5 hops 3 |
+| Policy | -001 49 cases, -002 6, -003 5 |
+| Score | ReplaySemantics 1.00 accuracy / 0.00 false attribution; naive sequential 0.27 / 0.18; naive split 0.27 / 0.23 |
+
 ## 4. Limits (all cases)
 `min_events` (warn only), `max_events` (none by default), `max_hops` (3 by default). The default therefore does not see 4- and
 5-hop events: the result is marked **partial** and says what to raise. A case's public `suggested_max_hops` (read off the public
 log) is a hint; only the scoring harness applies it, explicitly. Completeness uses only public data: no correctable event may be
 dropped or lie beyond `max_hops`, and the kept events must explain the case's stated realised loss.
 
-## 5. Limitations
+## 5. Swaps on the pages
+This benchmark's verdicts and truth come from **corrections** (restore the input, re-derive the amount). The Replay Console, Replay
+Analysis and Swap Scenario pages *display* **swaps** (`replay_core/swap.py`): chosen posted documents run in another order with their
+recorded inputs, so the posted order reproduces the original graph and a value moves only when the order requires it. Swappable pairs
+are still detected by corrections. A swap that runs tax before a discount uses `domain.discount_after_tax`, the one extension to the
+frozen domain; the pipeline, the compliant net and every correction are unchanged.
+
+## 6. Limitations
 * The oracle (`reference_sim.py`) is written by the same team, so 100% means agreement with that model, not real-world truth.
 * The domain is small (7 correction types) and the arithmetic basic by design; a tiered discount / cap would be the next rule.
+* Discounts are rate-based. A fixed-amount discount is not modelled, and is recorded as future scope.
 * The exact checker is exponential in correctable events (10 is the refusal limit); real SAP events (20 candidates) have no
   pricing fields and stop at stages 1-2b.
 * "Swappable" is defined on the pair alone, starting from C; a pair that only disagrees in the presence of a third node is

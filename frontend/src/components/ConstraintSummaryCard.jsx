@@ -4,7 +4,7 @@ import Card from './Card'
 
 // Displays the REAL output of constraint_extraction.py
 // (stage_2b_constraint_extraction in the /replay response) -- not mock
-// data, so no <PreviewTag /> here, unlike the Month 4+ screens.
+// data, so no <PreviewTag /> here, unlike the preview screens.
 //
 // Two lists, side by side:
 //   - given_constraints: pairs the log itself already orders (shared
