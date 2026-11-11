@@ -82,7 +82,8 @@ export default function Cases() {
   return (
     <div className="flex flex-col gap-4">
       <Card className="!p-0 overflow-hidden">
-        <div className="flex items-center gap-1 border-b border-[#e2e6ea] px-4 py-3">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-[#e2e6ea] px-4 py-3">
+          <div className="-mx-1 flex max-w-full items-center gap-1 overflow-x-auto px-1 py-1">
           {TABS.map((t) => (
             <button
               key={t}
@@ -90,8 +91,8 @@ export default function Cases() {
                 setTab(t)
                 setPage(1)
               }}
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-semibold transition-colors ${
-                tab === t ? 'bg-navy-900 text-white' : 'text-[#5c6b7a] hover:bg-[#f2f4f6]'
+              className={`flex items-center gap-1.5 whitespace-nowrap rounded-xl px-3 py-1.5 text-[13px] font-semibold ${
+                tab === t ? 'bg-navy-900 text-white shadow-[0_6px_14px_-6px_rgba(13,27,41,0.6)]' : 'text-[#5c6b7a] hover:bg-[#e6ebf0] hover:text-[#101828]'
               }`}
             >
               {t}
@@ -104,7 +105,8 @@ export default function Cases() {
               </span>
             </button>
           ))}
-          <div className="ml-auto text-[11.5px] text-[#8a97a3]">
+          </div>
+          <div className="text-[11.5px] leading-snug text-[#667585]">
             {verdictsApi.loading
               ? 'Checking verdicts…'
               : verdicts && Object.keys(verdicts).length
@@ -121,7 +123,7 @@ export default function Cases() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-[13px]">
               <thead>
-                <tr className="border-b border-[#e2e6ea] text-[11px] uppercase tracking-wide text-[#8a97a3]">
+                <tr className="border-b border-[#e2e6ea] text-[11px] uppercase tracking-wide text-[#667585]">
                   <th className="px-5 py-3 font-semibold">Case ID</th>
                   <th className="px-5 py-3 font-semibold">Source</th>
                   <th className="px-5 py-3 font-semibold">Value / Loss</th>
@@ -133,14 +135,16 @@ export default function Cases() {
                   <th className="px-5 py-3 font-semibold">Curation Note</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="rs-rows" key={`${tab}-${page}`}>
                 {pageRows.map((c) => (
                   <tr
                     key={c.case_id}
-                    className="cursor-pointer border-b border-[#eef1f4] last:border-0 hover:bg-[#f7f9fa]"
+                    className="cursor-pointer border-b border-[#eef1f4] last:border-0 hover:bg-[#edf1f5]"
                     onClick={() => openInConsole(c.case_id)}
+                    tabIndex={0}
+                    onKeyDown={(e) => { if (e.key === 'Enter') openInConsole(c.case_id) }}
                   >
-                    <td className="px-5 py-3 font-semibold text-[#101828]">{c.case_id}</td>
+                    <td className="whitespace-nowrap px-5 py-3 font-semibold text-[#101828]">{c.case_id}</td>
                     <td className="px-5 py-3 text-[11.5px] text-[#5c6b7a]">
                       {c.synthetic ? 'synthetic benchmark' : 'event log'}
                     </td>
@@ -152,7 +156,7 @@ export default function Cases() {
                       {c.status ? (
                         <StatusBadge status={c.status} />
                       ) : c.synthetic ? (
-                        <span className="text-[11.5px] text-[#8a97a3]">{verdictsApi.loading ? '…' : '—'}</span>
+                        <span className="text-[11.5px] text-[#667585]">{verdictsApi.loading ? '…' : '—'}</span>
                       ) : (
                         <span
                           className="rounded-md bg-status-idleBg px-2.5 py-1 text-[11px] font-semibold text-status-idle"
@@ -170,9 +174,9 @@ export default function Cases() {
                         </span>
                       ) : '—'}
                     </td>
-                    <td className="px-5 py-3 text-[#5c6b7a]">{c.synthetic ? c.policy_version : '—'}</td>
+                    <td className="whitespace-nowrap px-5 py-3 text-[#5c6b7a]">{c.synthetic ? c.policy_version : '—'}</td>
                     <td className="px-5 py-3 text-[#5c6b7a]">{formatDateTime(c.timestamp)}</td>
-                    <td className="px-5 py-3 text-[#8a97a3]">{c.note}</td>
+                    <td className="px-5 py-3 text-[#667585]">{c.note}</td>
                   </tr>
                 ))}
               </tbody>
@@ -190,13 +194,13 @@ export default function Cases() {
             <button
               disabled={page <= 1}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
-              className="rounded-md px-2 py-1 hover:bg-[#f2f4f6] disabled:opacity-30"
+              className="rounded-md px-2 py-1 hover:bg-[#e6ebf0] disabled:opacity-30"
             >
               ‹
             </button>
             {pageWindow(page, totalPages).map((n, i) =>
               n === '…' ? (
-                <span key={`gap-${i}`} className="px-1 text-[#8a97a3]">
+                <span key={`gap-${i}`} className="px-1 text-[#667585]">
                   …
                 </span>
               ) : (
@@ -204,7 +208,7 @@ export default function Cases() {
                   key={n}
                   onClick={() => setPage(n)}
                   className={`h-7 min-w-[28px] rounded-md px-1 text-[12px] font-semibold ${
-                    n === page ? 'bg-navy-900 text-white' : 'hover:bg-[#f2f4f6]'
+                    n === page ? 'bg-navy-900 text-white' : 'hover:bg-[#e6ebf0]'
                   }`}
                 >
                   {n}
@@ -214,7 +218,7 @@ export default function Cases() {
             <button
               disabled={page >= totalPages}
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              className="rounded-md px-2 py-1 hover:bg-[#f2f4f6] disabled:opacity-30"
+              className="rounded-md px-2 py-1 hover:bg-[#e6ebf0] disabled:opacity-30"
             >
               ›
             </button>

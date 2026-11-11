@@ -38,7 +38,7 @@ export default function PipelineTimeline({ items, shown, animating }) {
                 <span className={`text-[13px] font-semibold ${done ? 'text-[#101828]' : 'text-[#5c6b7a]'}`}>{it.label}</span>
                 {done && it.badge && <StatusBadge status={it.badge} className="rs-pop !px-2 !py-0.5 !text-[10.5px]" />}
               </div>
-              <div className={`text-[12px] leading-relaxed ${done && !na ? 'text-[#5c6b7a]' : 'text-[#8a97a3]'}`}>
+              <div className={`text-[12px] leading-relaxed ${done && !na ? 'text-[#5c6b7a]' : 'text-[#667585]'}`}>
                 {active ? 'Working…' : na ? 'Not applicable to this log (no pricing fields to replay).' : it.body}
               </div>
               {done && it.warning && (

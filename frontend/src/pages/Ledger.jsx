@@ -20,9 +20,9 @@ function Section({ n, title, children, shown = true }) {
   if (!shown) return null
   return (
     <Card className="rs-fade">
-      <div className="mb-3 flex items-center gap-2">
-        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy-900 text-[12px] font-bold text-white">{n}</span>
-        <h3 className="text-[15px] font-semibold text-[#101828]">{title}</h3>
+      <div className="mb-4 flex items-start gap-3">
+        <span className="rs-pop flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-navy-900 text-[12px] font-bold text-white shadow-[0_6px_12px_-6px_rgba(13,27,41,0.7)]">{n}</span>
+        <h3 className="pt-[3px] text-[15px] font-bold leading-snug text-[#101828]">{title}</h3>
       </div>
       {children}
     </Card>
@@ -31,23 +31,39 @@ function Section({ n, title, children, shown = true }) {
 
 function Kv({ label, value, tone }) {
   return (
-    <div className="rounded-lg border border-[#e2e6ea] px-3 py-2">
-      <div className="text-[11px] uppercase tracking-wide text-[#8a97a3]">{label}</div>
-      <div className={`text-[15px] font-semibold ${tone || 'text-[#101828]'}`}>{value}</div>
+    <div className="rs-tile">
+      <div className="text-[10.5px] font-semibold uppercase tracking-wide text-[#667585]">{label}</div>
+      <div className={`mt-1 text-[17px] font-extrabold tracking-[-0.02em] ${tone || 'text-[#101828]'}`}>{value}</div>
+    </div>
+  )
+}
+
+// The loss, split by where it comes from. The two parts grow in from the left when the step appears.
+function LossSplit({ shares }) {
+  return (
+    <div className="mt-4">
+      <div className="flex h-3 gap-0.5 overflow-hidden rounded-full bg-[#eef1f4]" role="img" aria-label={`loss split: ${shares.stale}% stale posted amounts, ${shares.inputs}% inputs`}>
+        <div className="rs-grow-x rounded-l-full bg-amber-500" style={{ width: `${shares.stale}%` }} />
+        <div className="rs-grow-x rounded-r-full bg-teal-500" style={{ width: `${shares.inputs}%`, animationDelay: '0.15s' }} />
+      </div>
+      <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-[11.5px] text-[#5c6b7a]">
+        <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-500" /> stale posted amounts · {shares.stale}%</span>
+        <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-teal-500" /> price / quantity / FX / adjustment inputs · {shares.inputs}%</span>
+      </div>
     </div>
   )
 }
 
 function NodeCard({ node, facts }) {
   const isPosted = node.role === 'posted'
-  const border = node.role === 'context' ? 'border-[#e2e6ea] bg-[#f7f9fa]' : node.deviates || node.posted?.stale ? 'border-amber-300 bg-amber-50/40' : 'border-[#e2e6ea] bg-white'
+  const border = node.role === 'context' ? 'border-[#e2e6ea] bg-[#edf1f5]' : node.deviates || node.posted?.stale ? 'border-amber-300 bg-amber-50/40' : 'border-[#e2e6ea] bg-white'
   return (
-    <div className={`rounded-lg border p-3 text-[12.5px] ${border}`} data-node={node.node_id}>
+    <div className={`rounded-2xl border p-3.5 text-[12.5px] ${border}`} data-node={node.node_id}>
       <div className="flex items-center justify-between gap-2">
-        <div className="font-semibold text-[#101828]">{node.node_id} · {node.activity}</div>
-        <span className="rounded bg-[#eef1f4] px-1.5 py-0.5 text-[10.5px] font-semibold text-[#5c6b7a]">hop {node.hop ?? '?'}</span>
+        <div className="font-bold text-[#101828]">{node.node_id} · {node.activity}</div>
+        <span className="rounded-full bg-[#eef1f4] px-2 py-0.5 text-[10.5px] font-semibold text-[#5c6b7a]">hop {node.hop ?? '?'}</span>
       </div>
-      <div className="mt-0.5 text-[11px] uppercase tracking-wide text-[#8a97a3]">
+      <div className="mt-0.5 text-[11px] uppercase tracking-wide text-[#667585]">
         {node.role === 'exempt' ? 'approved exception' : node.role === 'context' ? 'context (no financial effect)' : node.role === 'posted' ? 'posted amount' : 'input'}
       </div>
       {Object.entries(node.inputs || {}).map(([k, v]) => (
@@ -55,12 +71,12 @@ function NodeCard({ node, facts }) {
           <span className="text-[#5c6b7a]">{k} (recorded)</span>
           <span className="font-semibold text-[#101828]">
             {formatPrecise(node.was?.[k])}
-            {String(node.was?.[k]) !== String(v) && <span className="ml-1.5 font-normal text-[#8a97a3]">authorised {formatPrecise(v)}</span>}
+            {String(node.was?.[k]) !== String(v) && <span className="ml-1.5 font-normal text-[#667585]">authorised {formatPrecise(v)}</span>}
           </span>
         </div>
       ))}
       {isPosted && node.posted && (
-        <div className="mt-2 rounded-md bg-white/70 px-2 py-1.5 ring-1 ring-[#e2e6ea]">
+        <div className="mt-2.5 flex flex-col gap-0.5 rounded-xl bg-white/80 px-2.5 py-2 ring-1 ring-[#e2e6ea]">
           <div className="flex justify-between"><span className="text-[#5c6b7a]">posted {node.posted.field}</span><span className="font-semibold">{formatPrecise(node.posted.value)}</span></div>
           <div className="flex justify-between"><span className="text-[#5c6b7a]">compliant value</span><span className="font-semibold">{formatPrecise(node.posted.should_be)}</span></div>
           <div className={`flex justify-between ${node.posted.stale ? 'text-amber-700' : 'text-status-pass'}`}>
@@ -69,8 +85,8 @@ function NodeCard({ node, facts }) {
         </div>
       )}
       {facts && (
-        <div className="mt-2 rounded-md bg-[#f7f9fa] px-2 py-1.5 text-[11.5px] text-[#5c6b7a] ring-1 ring-[#eef1f4]">
-          <div className="text-[10px] font-semibold uppercase tracking-wide text-[#8a97a3]">recorded in the log</div>
+        <div className="mt-2.5 rounded-xl bg-[#edf1f5] px-2.5 py-2 text-[11.5px] text-[#5c6b7a] ring-1 ring-[#eef1f4]">
+          <div className="text-[10px] font-semibold uppercase tracking-wide text-[#667585]">recorded in the log</div>
           <div>{facts.timestamp}</div>
           {facts.objects?.length > 0 && <div className="truncate" title={facts.objects.map((o) => `${o.type} ${o.id}`).join(', ')}>{facts.objects.map((o) => `${o.type} ${o.id}`).join(', ')}</div>}
           {Object.entries(facts.attributes || {}).map(([k, v]) => <div key={k}>{k}: <b>{String(v)}</b></div>)}
@@ -82,17 +98,17 @@ function NodeCard({ node, facts }) {
 
 function PairRun({ run }) {
   return (
-    <div className="grid gap-3 md:grid-cols-2" data-testid="pair-run">
+    <div className="rs-cascade grid gap-3 md:grid-cols-2" data-testid="pair-run">
       {run.orders.map((o) => (
-        <div key={o.order.join('>')} className={`rounded-lg border p-3 ${o.authoritative ? 'border-status-pass bg-status-passBg/30' : 'border-[#e2e6ea]'}`}>
-          <div className="mb-2 flex items-center justify-between">
-            <div className="text-[13px] font-semibold">{o.order.join(' then ')}</div>
-            <span className={`rounded px-2 py-0.5 text-[11px] font-semibold ${o.authoritative ? 'bg-status-passBg text-status-pass' : 'bg-[#eef1f4] text-[#5c6b7a]'}`}>
+        <div key={o.order.join('>')} className={`rounded-2xl border p-3.5 ${o.authoritative ? 'border-status-pass/60 bg-status-passBg/30' : 'border-[#e2e6ea]'}`}>
+          <div className="mb-2.5 flex items-center justify-between gap-2">
+            <div className="text-[13.5px] font-bold">{o.order.join(' then ')}</div>
+            <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${o.authoritative ? 'bg-status-passBg text-status-pass' : 'bg-[#eef1f4] text-[#5c6b7a]'}`}>
               {o.authoritative ? 'authoritative' : o.exploratory ? 'exploratory' : 'not authoritative'}
             </span>
           </div>
           {o.steps.map((s) => (
-            <div key={s.index} className="mb-2 rounded-md bg-white/70 p-2 text-[12px] ring-1 ring-[#eef1f4]">
+            <div key={s.index} className="mb-2 rounded-xl bg-white/80 p-2.5 text-[12px] ring-1 ring-[#eef1f4]">
               <div className="font-semibold">{s.index + 1}. {s.node_id} · {s.activity}: {s.field} {formatPrecise(s.posted_before)} → {formatPrecise(s.new_value)}</div>
               <div className="text-[#5c6b7a]">total {formatPrecise(s.net_after)} ({formatSignedFine(s.delta_net)}) · loss {formatPrecise(s.loss_after)}</div>
               {s.dependents.map((d) => (
@@ -167,7 +183,7 @@ export default function Ledger() {
 
   const hp = hopsApi.data
   const shares = a?.replayable ? lossShares(a.totals) : null
-  const input = 'w-20 rounded-lg border border-[#e2e6ea] px-3 py-2 text-[13px]'
+  const input = 'rs-input w-20'
 
   return (
     <div className="space-y-4">
@@ -175,7 +191,7 @@ export default function Ledger() {
         <div className="flex flex-wrap items-end gap-3">
           <label className="text-[12px] font-semibold text-[#5c6b7a]">Case
             <select value={selectedCaseId || ''} onChange={(e) => { setSelectedCaseId(e.target.value); setRan(null) }}
-              className="mt-1 block rounded-lg border border-[#e2e6ea] px-3 py-2 text-[13px] font-normal text-[#101828]">
+              className="rs-input mt-1 block max-w-full font-normal">
               {cases.map((c) => (
                 <option key={c.case_id} value={c.case_id}>
                   {c.case_id}{c.blocked ? ' · BLOCKED' : ''} · {c.hops ?? '?'} hop(s)
@@ -193,11 +209,10 @@ export default function Ledger() {
           <label className="text-[12px] font-semibold text-[#5c6b7a]">max_hops
             <input className={`${input} mt-1 block`} type="number" min={1} max={8} value={maxHops} onChange={(e) => setMaxHops(Number(e.target.value))} />
           </label>
-          <button onClick={run} disabled={!selectedCaseId}
-            className="flex items-center gap-2 rounded-lg bg-navy-900 px-4 py-2.5 text-[13px] font-semibold text-white hover:bg-navy-800 disabled:opacity-50">
+          <button onClick={run} disabled={!selectedCaseId} className="rs-btn rs-btn-primary">
             <PlayCircle size={16} /> Run replay
           </button>
-          <RefreshButton onClick={refresh} className="!py-2.5" />
+          <RefreshButton onClick={refresh} className="!py-[9px]" />
         </div>
         {hp && (
           <div className="mt-3 text-[12px] text-[#5c6b7a]" data-testid="hop-profile">
@@ -214,10 +229,10 @@ export default function Ledger() {
       {active && analysisApi.error && <ErrorState error={analysisApi.error} onRetry={analysisApi.refetch} />}
 
       {notice && (
-        <div className="flex flex-wrap items-center gap-2 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-[12.5px] text-amber-900" data-testid="partial-banner">
-          <AlertTriangle size={14} /> <b>Partial result.</b> {notice.reasons.join('; ')}.
+        <div className="rs-fade rs-notice !justify-start !text-[12.5px]" data-testid="partial-banner">
+          <AlertTriangle size={15} className="shrink-0" /> <span><b>Partial result.</b> {notice.reasons.join('; ')}.</span>
           {notice.suggestedHops > active.limits.maxHops && (
-            <button className="rounded border border-amber-400 bg-white px-2 py-0.5 font-semibold hover:bg-amber-100"
+            <button className="rounded-lg border border-amber-400 bg-white px-2.5 py-1 font-bold hover:bg-amber-100"
               onClick={() => { setMaxHops(notice.suggestedHops); setRan({ caseId: selectedCaseId, limits: { ...limits, maxHops: notice.suggestedHops } }) }}>
               Re-run with max_hops = {notice.suggestedHops}
             </button>
@@ -230,11 +245,11 @@ export default function Ledger() {
       {a?.replayable && (
         <>
           <Section n={1} title="Nodes — recorded inputs and the amounts that were posted" shown={step >= 1}>
-            <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="rs-cascade grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {a.reference_node && (
-                <div className="rounded-lg border border-dashed border-[#1f3a5f] bg-[#eaf0f8]/60 p-3 text-[12.5px]" data-node="REF">
-                  <div className="font-semibold text-[#1f3a5f]">REF · {a.reference_node.title}</div>
-                  <div className="mt-0.5 text-[11px] uppercase tracking-wide text-[#8a97a3]">start node · fixed values</div>
+                <div className="rounded-2xl border border-dashed border-[#1f3a5f]/70 bg-[#eaf0f8]/60 p-3.5 text-[12.5px]" data-node="REF">
+                  <div className="font-bold text-[#1f3a5f]">REF · {a.reference_node.title}</div>
+                  <div className="mt-0.5 text-[11px] uppercase tracking-wide text-[#667585]">start node · fixed values</div>
                   {a.reference_node.lines.map((l) => (
                     <div key={l.label} className="mt-1 flex justify-between gap-2"><span className="text-[#5c6b7a]">{l.label}</span><span className="font-semibold text-[#101828]">{l.text}</span></div>
                   ))}
@@ -246,41 +261,43 @@ export default function Ledger() {
           </Section>
 
           <Section n={2} title="Final node — posted total, compliant total and the loss split" shown={step >= 2}>
-            <div className="grid gap-2 sm:grid-cols-4">
+            <div className="rs-cascade grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
               <Kv label="posted total" value={formatPrecise(a.totals.posted_total)} />
               <Kv label="compliant total" value={formatPrecise(a.totals.compliant_total)} />
               <Kv label="realised loss" value={formatPrecise(a.totals.realised_loss)} tone="text-status-blocked" />
               <Kv label="total with inputs fixed only" value={formatPrecise(a.totals.corrected_inputs_total)} />
             </div>
-            <div className="mt-3 text-[12.5px] text-[#5c6b7a]">Explained by stale posted amounts: <b>{formatPrecise(a.totals.loss_from_stale_amounts)}</b> ({shares.stale}%) ·
-              remainder from price / quantity / FX / adjustment inputs: <b>{formatPrecise(a.totals.loss_from_inputs)}</b> ({shares.inputs}%)</div>
-            <div className="mt-2 flex h-2.5 overflow-hidden rounded-full bg-[#eef1f4]" aria-label="loss split">
-              <div className="bg-amber-500" style={{ width: `${shares.stale}%` }} title="stale amounts" />
-              <div className="bg-teal-600" style={{ width: `${shares.inputs}%` }} title="inputs" />
-            </div>
+            <div className="mt-4 text-[12.5px] leading-relaxed text-[#5c6b7a]">Explained by stale posted amounts: <b className="text-[#101828]">{formatPrecise(a.totals.loss_from_stale_amounts)}</b> ({shares.stale}%) ·
+              remainder from price / quantity / FX / adjustment inputs: <b className="text-[#101828]">{formatPrecise(a.totals.loss_from_inputs)}</b> ({shares.inputs}%)</div>
+            <LossSplit shares={shares} />
           </Section>
 
           <Section n={3} title="Policy summary — every subset of the posted amounts, replayed" shown={step >= 3}>
-            <div className="flex flex-wrap items-center gap-2" data-testid="policy-summary">
+            <div className="flex flex-wrap items-center gap-2.5" data-testid="policy-summary">
               {Object.entries(a.policy_summary.counts).map(([k, v]) => (
-                <span key={k} className="flex items-center gap-1.5 text-[13px]"><StatusBadge status={k.replace('_', '-')} /> × {v}</span>
+                <span key={k} className={`flex items-center gap-2 rounded-full border border-[#e3e7ec] bg-[#eef2f5] py-1 pl-1 pr-3 text-[13px] ${v ? '' : 'opacity-55'}`}>
+                  <StatusBadge status={k.replace('_', '-')} /> <b className="text-[14px] text-[#101828]">{v}</b>
+                </span>
               ))}
-              <span className="text-[12.5px] text-[#5c6b7a]">{a.policy_summary.text} · policy {a.policy_version}</span>
             </div>
+            <p className="mt-3 text-[12.5px] text-[#5c6b7a]">{a.policy_summary.text} · policy <span className="font-mono font-semibold text-[#101828]">{a.policy_version}</span></p>
           </Section>
 
           <Section n={4} title="Swappable pairs — order-sensitive, posted amounts, not locked by the log (swapped with their recorded values)" shown={step >= 4}>
             {a.pairs.length === 0 ? (
               <div className="text-[13px] text-[#5c6b7a]">No pair can be swapped{a.locked_pairs.length ? ` (${a.locked_pairs.map((p) => p.join('/')).join(', ')} are fixed by the log)` : ''}.</div>
             ) : (
-              <div className="space-y-2">
+              <div className="rs-cascade flex flex-col gap-2">
                 {a.pairs.map((p) => {
                   const b = pairBadge(p)
+                  const on = pair?.join() === p.pair.join()
+                  const differs = Number(p.difference) !== 0
                   return (
-                    <div key={p.pair.join()} className={`flex flex-wrap items-center justify-between gap-2 rounded-lg border px-3 py-2 text-[13px] ${pair?.join() === p.pair.join() ? 'border-teal-600 bg-teal-50' : 'border-[#e2e6ea]'}`}>
-                      <div><b>{p.pair.join(' / ')}</b> <span className="text-[#5c6b7a]">· {Number(p.difference) === 0 ? 'swapping changes no value' : `orders differ by ${formatPrecise(p.difference)}`}</span></div>
+                    <div key={p.pair.join()} className={`flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-2xl border px-4 py-2.5 text-[13px] transition-[border-color,background-color,box-shadow] duration-300 ${
+                      on ? 'border-teal-500/70 bg-teal-50/60 shadow-[0_0_0_3px_rgba(42,157,143,0.10)]' : 'border-[#e2e6ea] hover:border-[#cbd3da] hover:bg-[#eef2f5]'}`}>
+                      <div className="min-w-[220px] flex-1"><b>{p.pair.join(' / ')}</b> <span className={differs ? 'font-semibold text-status-ordered' : 'text-[#5c6b7a]'}>· {differs ? `orders differ by ${formatPrecise(p.difference)}` : 'swapping changes no value'}</span></div>
                       <div className={`text-[12px] font-semibold ${b.tone === 'blocked' ? 'text-status-blocked' : 'text-status-ordered'}`}>{b.text}</div>
-                      <button onClick={() => { setPair(p.pair); recordAction({ kind: 'pair', case_id: a.case_id, a: p.pair[0], b: p.pair[1], limits: limitsBody(active.limits) }) }} className="rounded-md bg-navy-900 px-3 py-1 text-[12px] font-semibold text-white hover:bg-navy-800">Run pair</button>
+                      <button onClick={() => { setPair(p.pair); recordAction({ kind: 'pair', case_id: a.case_id, a: p.pair[0], b: p.pair[1], limits: limitsBody(active.limits) }) }} className={`rs-btn rs-btn-sm ${on ? 'rs-btn-quiet' : 'rs-btn-primary'}`}>{on ? 'Shown below' : 'Run pair'}</button>
                     </div>
                   )
                 })}
@@ -289,7 +306,7 @@ export default function Ledger() {
           </Section>
 
           <Section n={5} title={`Description — ${a.description.headline}`} shown={step >= 5}>
-            <div className="space-y-1.5 text-[13px] text-[#101828]" data-testid="description">
+            <div className="max-w-[110ch] space-y-2 text-[13px] leading-relaxed text-[#101828]" data-testid="description">
               {a.description.text.map((t, i) => <p key={i}>{t}</p>)}
             </div>
           </Section>

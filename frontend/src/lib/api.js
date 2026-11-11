@@ -176,6 +176,8 @@ export const openLog = (id) => send('POST', `/api/logs/${id}/open`, {})
 // ---- history ----
 export const getHistory = () => fetchJson('/api/history')
 export const compareActions = (ids) => send('POST', '/api/history/compare', { ids })
+export const deleteActions = (ids) => send('POST', '/api/history/delete', { ids })
+export const deleteAllActions = () => send('DELETE', '/api/history')
 // Save what the user just ran as their next action. A failure here must never disturb the page they are on.
 export function recordAction(body) {
   return send('POST', '/api/history', body).catch((err) => console.warn('Could not save this action to your history:', err.message))

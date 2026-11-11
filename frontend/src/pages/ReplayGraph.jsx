@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ChevronDown, ChevronRight } from 'lucide-react'
+import { ChevronRight, MousePointerClick } from 'lucide-react'
 import ReactFlow, { Background, Controls } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { useApi } from '../lib/useApi'
@@ -19,6 +19,7 @@ import RefreshButton from '../components/RefreshButton'
 import { formatDateTime } from '../lib/format'
 import { computePaymentRoutes } from '../lib/paymentRoutes'
 import { layoutGraph } from '../lib/graphLayout'
+import { useGraphBuild } from '../lib/useGraphBuild'
 import { scenarioPath, togglePair, unionEvents } from '../lib/scenario'
 import { badgeStatus, buildNodeStatus, isApplicable, NODE_KIND_STYLE } from '../lib/verdict'
 
@@ -107,10 +108,13 @@ export default function ReplayGraph() {
   // Verdict colouring comes from the real stage 3-4 output; null for real VBFA results.
   const nodeStatus = useMemo(() => buildNodeStatus(result), [result])
 
-  const { nodes, edges } = useMemo(
+  const laid = useMemo(
     () => layoutGraph(result?.replay_graph, highlightSpec, nodeStatus),
     [result, nodeStatus, selectedConstraint, selectedRoute, selectedPairs]
   )
+  // the graph builds itself node by node each time a case is loaded
+  const graph = useGraphBuild({ nodes: laid.nodes, edges: laid.edges, runKey: result ? `|${laid.nodes.length}` : null })
+  const { nodes, edges } = graph
 
   // Exactly one highlight at a time: choosing anything clears the others.
   const clearSelections = () => {
@@ -144,7 +148,8 @@ export default function ReplayGraph() {
               <select
                 value={selectedCaseId || ''}
                 onChange={(e) => setSelectedCaseId(e.target.value)}
-                className="rounded-lg border border-[#e2e6ea] bg-white px-3 py-1.5 text-[13px] font-semibold"
+                aria-label="Case"
+                className="rs-input font-semibold"
               >
                 {cases.map((c) => (
                   <option key={c.case_id} value={c.case_id}>
@@ -157,7 +162,7 @@ export default function ReplayGraph() {
               )}
               {result && !isApplicable(result) && (
                 <span
-                  className="rounded-md bg-status-idleBg px-2.5 py-1 text-xs font-semibold text-status-idle"
+                  className="rounded-full bg-status-idleBg px-2.5 py-1 text-[11px] font-bold text-status-idle"
                   title={result.stage_5_verdict?.message}
                 >
                   stages 1–2b only
@@ -165,7 +170,7 @@ export default function ReplayGraph() {
               )}
             </div>
             <div className="flex items-center gap-3">
-              <div className="text-[12.5px] text-[#8a97a3]">
+              <div className="text-[12.5px] text-[#667585]">
                 {result?.policy_version}
                 {activeCase?.timestamp && `${result?.policy_version ? ' · ' : ''}${formatDateTime(activeCase.timestamp)}`}
               </div>
@@ -173,7 +178,7 @@ export default function ReplayGraph() {
             </div>
           </div>
 
-          <div style={{ height: 'clamp(380px, calc(100vh - 290px), 720px)' }}>
+          <div ref={graph.wrapRef} className={`rs-stage relative !rounded-none ${graph.building ? 'is-building' : ''}`} style={{ height: 'clamp(380px, calc(100vh - 290px), 720px)' }}>
             {loading ? (
               <LoadingState label="Running replay…" />
             ) : error ? (
@@ -185,16 +190,18 @@ export default function ReplayGraph() {
                 edges={edges}
                 nodeTypes={NODE_TYPES}
                 onNodeClick={(_e, n) => setSelectedNode(n.data.node)}
+                onInit={graph.onInit}
                 fitView
-                fitViewOptions={{ padding: 0.25 }}
+                fitViewOptions={graph.fitViewOptions}
                 minZoom={0.05}
                 maxZoom={1.5}
                 proOptions={{ hideAttribution: true }}
               >
-                <Background color="#eef1f4" gap={20} />
+                <Background color="#cfd8e0" gap={22} />
                 <Controls showInteractive={false} />
               </ReactFlow>
             ) : null}
+            {result && graph.building && <div aria-hidden="true" className="rs-scan pointer-events-none absolute inset-0 z-[5]" />}
           </div>
 
           <div className="flex flex-wrap items-center gap-4 border-t border-[#e2e6ea] px-5 py-3">
@@ -208,7 +215,7 @@ export default function ReplayGraph() {
         </Card>
 
         {/* Right panel: tabs instead of a long stack of cards, so nothing needs scrolling to find */}
-        <div className="lg:sticky lg:top-0 lg:self-start">
+        <div className="lg:sticky lg:top-[calc(var(--nav-h)+4px)] lg:self-start">
           <TabBar
             tabs={[
               { key: 'inspector', label: 'Inspector' },
@@ -219,16 +226,17 @@ export default function ReplayGraph() {
             active={panel}
             onChange={setPanel}
           />
-          <div className="mt-3 flex flex-col gap-4 lg:max-h-[calc(100vh-10rem)] lg:overflow-y-auto lg:pr-1">
+          <div className="mt-3 flex flex-col gap-4 lg:max-h-[calc(100vh-var(--nav-h)-9rem)] lg:overflow-y-auto lg:pr-1">
             {panel === 'inspector' && (
               <Card>
                 <div className="mb-2 text-[13px] font-bold text-[#101828]">Node Inspector</div>
                 {!selectedNode ? (
-                  <p className="text-[12.5px] text-[#8a97a3]">
+                  <p className="flex items-center gap-2.5 rounded-xl border border-dashed border-[#d5dbe1] px-3 py-3 text-[12.5px] leading-snug text-[#5c6b7a]">
+                    <MousePointerClick size={16} className="shrink-0 text-teal-500" />
                     Click any node to inspect its role and diagnostics.
                   </p>
                 ) : (
-                  <div className="flex flex-col gap-1.5 text-[12.5px]">
+                  <div key={selectedNode.id} className="rs-fade flex flex-col gap-1.5 text-[12.5px]">
                     <Row label="Event ID" value={selectedNode.id} />
                     <Row label="Activity" value={selectedNode.activity} />
                     <Row label="Hop" value={selectedNode.is_target ? 'target' : selectedNode.hop} />
@@ -241,7 +249,7 @@ export default function ReplayGraph() {
                         )}
                       </div>
                     ) : (
-                      <p className="mt-2 border-t border-[#eef1f4] pt-2 text-[11.5px] text-[#8a97a3]">
+                      <p className="mt-2 border-t border-[#eef1f4] pt-2 text-[11.5px] text-[#667585]">
                         No verdict for this event: this log stops at stage 2b (no pricing fields to replay).
                       </p>
                     )}
@@ -310,20 +318,23 @@ export default function ReplayGraph() {
           <button
             type="button"
             onClick={() => setShowConstraints((x) => !x)}
-            className="flex w-full items-center gap-2 rounded-xl border border-[#e2e6ea] bg-white px-4 py-2.5 text-left shadow-card hover:bg-[#fafbfc]"
+            aria-expanded={showConstraints}
+            className="flex w-full items-center gap-2.5 rounded-2xl border border-[#e3e7ec] bg-white px-4 py-3 text-left shadow-card hover:border-[#cbd3da] hover:bg-[#eef2f5] active:!scale-[0.995]"
           >
-            {showConstraints ? <ChevronDown size={15} /> : <ChevronRight size={15} />}
+            <ChevronRight size={15} className={`text-[#5c6b7a] transition-transform duration-300 ease-out ${showConstraints ? 'rotate-90' : ''}`} />
             <span className="text-[13px] font-bold text-[#101828]">Order constraints and permutable pairs</span>
-            <span className="ml-auto text-[11.5px] text-[#8a97a3]">
-              {result.stage_2b_constraint_extraction?.num_constraints ?? 0} locked ·{' '}
-              {result.stage_2b_constraint_extraction?.num_permutable_pairs ?? 0} permutable
+            <span className="ml-auto flex flex-wrap justify-end gap-1.5 text-[11.5px] font-semibold">
+              <span className="rounded-full bg-[#eef1f4] px-2 py-0.5 text-[#5c6b7a]">{result.stage_2b_constraint_extraction?.num_constraints ?? 0} locked</span>
+              <span className="rounded-full bg-teal-500/10 px-2 py-0.5 text-teal-700">{result.stage_2b_constraint_extraction?.num_permutable_pairs ?? 0} permutable</span>
             </span>
           </button>
-          {showConstraints && (
-            <div className="mt-3">
-              <ConstraintSummaryCard constraintData={result.stage_2b_constraint_extraction} eventLookup={eventLookup} />
+          <div className={`rs-collapse ${showConstraints ? 'is-open' : ''}`}>
+            <div inert={showConstraints ? undefined : ''}>
+              <div className="pt-3">
+                <ConstraintSummaryCard constraintData={result.stage_2b_constraint_extraction} eventLookup={eventLookup} />
+              </div>
             </div>
-          )}
+          </div>
         </div>
       )}
     </div>
@@ -333,7 +344,7 @@ export default function ReplayGraph() {
 function Row({ label, value }) {
   return (
     <div className="flex items-center justify-between border-b border-[#eef1f4] py-1 last:border-0">
-      <span className="text-[#8a97a3]">{label}</span>
+      <span className="text-[#667585]">{label}</span>
       <span className="font-semibold text-[#101828]">{value}</span>
     </div>
   )

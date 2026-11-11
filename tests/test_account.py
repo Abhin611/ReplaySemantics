@@ -305,6 +305,28 @@ def test_reopening_the_same_swap_is_not_a_new_action_but_running_a_case_again_is
     assert seqs == [2, 3]
 
 
+def test_deleting_chosen_actions_and_all_of_them(client):
+    _benchmark(client)
+    body = {"kind": "run_case", "case_id": CASE_40, "limits": LIMITS}
+    ids = [client.post("/api/history", headers=h(), json=body).json()["action"]["id"] for _ in range(3)]
+    # delete the middle one: the others keep their numbers
+    r = client.post("/api/history/delete", headers=h(), json={"ids": [ids[1]]})
+    assert r.status_code == 200 and r.json() == {"deleted": 1}
+    assert [a["seq"] for a in client.get("/api/history", headers=h()).json()["actions"]] == [3, 1]
+    # nothing to delete, and an empty list, are told apart
+    assert client.post("/api/history/delete", headers=h(), json={"ids": [ids[1]]}).json() == {"deleted": 0}
+    assert client.post("/api/history/delete", headers=h(), json={"ids": []}).status_code == 422
+    # another user cannot delete someone else's action
+    _benchmark(client, "rohit")
+    assert client.post("/api/history/delete", headers=h("rohit"), json={"ids": [ids[0]]}).json() == {"deleted": 0}
+    assert client.delete("/api/history", headers=h("rohit")).json() == {"deleted": 0}
+    assert len(client.get("/api/history", headers=h()).json()["actions"]) == 2
+    # delete all: the history is empty, and numbering starts again at 1
+    assert client.delete("/api/history", headers=h()).json() == {"deleted": 2}
+    assert client.get("/api/history", headers=h()).json()["actions"] == []
+    assert client.post("/api/history", headers=h(), json=body).json()["action"]["seq"] == 1
+
+
 def test_pair_and_change_actions(client):
     _benchmark(client)
     p = client.post("/api/history", headers=h(), json={"kind": "pair", "case_id": CASE_40, "a": "e3", "b": "e4", "limits": LIMITS}).json()["action"]

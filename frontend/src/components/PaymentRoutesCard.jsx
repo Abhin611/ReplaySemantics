@@ -24,7 +24,7 @@ export default function PaymentRoutesCard({ routes, eventLookup = {}, selectedRo
   return (
     <Card>
       <div className="mb-1 text-[13px] font-bold text-[#101828]">Payment Routes</div>
-      <p className="mb-3 text-[11.5px] leading-relaxed text-[#8a97a3]">
+      <p className="mb-3 text-[11.5px] leading-relaxed text-[#667585]">
         Every root-to-target chain in this candidate graph, ranked by summed value_eur across
         its events ({routes.routeCount} route{routes.routeCount === 1 ? '' : 's'} in this set).
         Click a route to highlight it on the graph.

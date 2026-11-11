@@ -48,7 +48,7 @@ export default function ChangePanel({ caseId, limits, analysis, defaultSwap = []
     <Card id={panelId}>
       <div className="mb-2 flex flex-wrap items-center gap-2">
         <Pencil size={16} /> <h3 className="text-[15px] font-semibold text-[#101828]">Edit values and run a change</h3>
-        <button onClick={() => setOpen((o) => !o)} className="ml-auto rounded-lg border border-[#e2e6ea] bg-white px-3 py-1.5 text-[12.5px] font-semibold hover:bg-[#f2f4f6]" data-testid="edit-toggle">
+        <button onClick={() => setOpen((o) => !o)} className="ml-auto rounded-lg border border-[#e2e6ea] bg-white px-3 py-1.5 text-[12.5px] font-semibold hover:bg-[#e6ebf0]" data-testid="edit-toggle">
           {open ? 'Close editing' : 'Edit values'}
         </button>
       </div>
@@ -75,13 +75,13 @@ export default function ChangePanel({ caseId, limits, analysis, defaultSwap = []
         </div>
       )}
       <div className="mt-3 flex flex-wrap items-center gap-2 text-[12.5px]">
-        <Shuffle size={14} className="text-[#8a97a3]" /> <span className="text-[#5c6b7a]">Swap order (click in the order you want):</span>
-        {posted.length === 0 && <span className="text-[#8a97a3]">no posted amounts in this case</span>}
+        <Shuffle size={14} className="text-[#667585]" /> <span className="text-[#5c6b7a]">Swap order (click in the order you want):</span>
+        {posted.length === 0 && <span className="text-[#667585]">no posted amounts in this case</span>}
         {posted.map((p) => {
           const i = swap.indexOf(p)
           return (
             <button key={p} onClick={() => setSwap((s) => toggleSwap(s, p))}
-              className={`rounded-full border px-2.5 py-1 font-semibold ${i >= 0 ? 'border-teal-600 bg-teal-50 text-teal-800' : 'border-[#e2e6ea] hover:bg-[#f2f4f6]'}`}>
+              className={`rounded-full border px-2.5 py-1 font-semibold ${i >= 0 ? 'border-teal-600 bg-teal-50 text-teal-800' : 'border-[#e2e6ea] hover:bg-[#e6ebf0]'}`}>
               {i >= 0 ? `${i + 1}. ` : ''}{p}
             </button>
           )
@@ -100,7 +100,7 @@ export default function ChangePanel({ caseId, limits, analysis, defaultSwap = []
           className="ml-auto flex items-center gap-2 rounded-lg bg-navy-900 px-4 py-2 text-[13px] font-semibold text-white hover:bg-navy-800 disabled:opacity-50">
           {busy ? <Loader2 size={14} className="animate-spin" /> : <ArrowRight size={14} />} Run change
         </button>
-        <button onClick={reset} className="flex items-center gap-1.5 rounded-lg border border-[#e2e6ea] px-3 py-2 text-[12.5px] font-semibold hover:bg-[#f2f4f6]"><RotateCcw size={13} /> Reset</button>
+        <button onClick={reset} className="flex items-center gap-1.5 rounded-lg border border-[#e2e6ea] px-3 py-2 text-[12.5px] font-semibold hover:bg-[#e6ebf0]"><RotateCcw size={13} /> Reset</button>
       </div>
       {err && <div className="mt-2 text-[12.5px] text-status-blocked">{err}</div>}
       {res && (

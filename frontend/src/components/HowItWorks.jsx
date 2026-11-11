@@ -43,7 +43,7 @@ export default function HowItWorks() {
                 <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-500/10 text-teal-500">
                   <Icon size={15} />
                 </span>
-                <span className="text-[10.5px] font-bold uppercase tracking-wide text-[#8a97a3]">Step {i + 1}</span>
+                <span className="text-[10.5px] font-bold uppercase tracking-wide text-[#667585]">Step {i + 1}</span>
               </div>
               <div className="text-[13px] font-bold text-[#101828]">{s.title}</div>
               <p className="mt-1 text-[11.5px] leading-relaxed text-[#5c6b7a]">{s.text}</p>
@@ -67,7 +67,7 @@ export function HowItWorksStrip() {
               <Icon size={17} />
             </span>
             <div className="min-w-0">
-              <div className="text-[10.5px] font-bold uppercase tracking-wide text-[#8a97a3]">Step {i + 1}</div>
+              <div className="text-[10.5px] font-bold uppercase tracking-wide text-[#667585]">Step {i + 1}</div>
               <div className="text-[13px] font-bold text-[#101828]">{s.title}</div>
               <p className="mt-0.5 text-[11.5px] leading-snug text-[#5c6b7a]">{s.text}</p>
             </div>

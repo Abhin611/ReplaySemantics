@@ -119,14 +119,14 @@ export default function ReplayTraceCard({
           </span>
         )}
       </div>
-      <p className="mb-2 text-[11.5px] leading-relaxed text-[#8a97a3]">
+      <p className="mb-2 text-[11.5px] leading-relaxed text-[#667585]">
         {replay.order_is_authoritative
           ? authoritativeNote
           : nonAuthoritativeNote || 'Illustrative canonical order only — the case is BLOCKED, so this is not an authoritative outcome.'}
       </p>
 
       {/* Controls and stage chips stay pinned while the flowchart below grows */}
-      <div className="sticky top-0 z-10 -mx-5 mb-3 border-b border-[#eef1f4] bg-white px-5 pb-2.5 pt-1">
+      <div className="sticky top-[var(--sticky-top,var(--nav-h))] z-10 -mx-5 mb-3 border-b border-[#eef1f4] bg-white/85 px-5 pb-2.5 pt-2 backdrop-blur-md">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-1">
             <IconBtn onClick={manual(() => setI(0))} label="Reset" disabled={i === 0}><RotateCcw size={14} /></IconBtn>
@@ -158,7 +158,7 @@ export default function ReplayTraceCard({
                     ? 'scale-110 border-amber-400 bg-amber-50 font-bold text-amber-900 shadow-sm'
                     : s.index < i
                     ? 'border-teal-300 bg-teal-50 text-teal-800'
-                    : 'border-[#e2e6ea] text-[#8a97a3]'
+                    : 'border-[#e2e6ea] text-[#667585]'
                 }`}
                 title={s.index === 0 ? 'observed (as posted)' : `apply ${s.nodeId}`}
               >
@@ -166,7 +166,7 @@ export default function ReplayTraceCard({
               </button>
             ))}
           </div>
-          <div className="text-right text-[11px] text-[#8a97a3]">
+          <div className="text-right text-[11px] text-[#667585]">
             compliant total {formatAmount(replay.compliant_net)}
             {i === last && (
               <div className={`rs-pop ${replay.reaches_compliant_net ? 'font-semibold text-status-pass' : 'font-semibold text-status-ordered'}`}>
@@ -248,7 +248,7 @@ function IconBtn({ children, onClick, label, disabled }) {
       title={label}
       aria-label={label}
       disabled={disabled}
-      className="rounded-md border border-[#e2e6ea] p-1.5 text-[#5c6b7a] hover:bg-[#f2f4f6] disabled:opacity-30"
+      className="rounded-md border border-[#e2e6ea] p-1.5 text-[#5c6b7a] hover:bg-[#e6ebf0] disabled:opacity-30"
     >
       {children}
     </button>
@@ -267,7 +267,7 @@ function StageBox({ step, before, isCur, animate, correction, breakdown, prevCal
         isCur ? 'border-amber-400 bg-amber-50 shadow-[0_0_0_3px_rgba(251,191,36,0.18)]' : 'border-teal-300 bg-teal-50/60 hover:bg-teal-50'
       }`}
     >
-      <div className="flex items-center justify-between text-[10.5px] font-semibold uppercase tracking-wide text-[#8a97a3]">
+      <div className="flex items-center justify-between text-[10.5px] font-semibold uppercase tracking-wide text-[#667585]">
         <span>{step.index === 0 ? 'Stage 0 · Observed (as posted)' : `Stage ${step.index} · ${step.nodeId}`}</span>
         {isCur && animate && step.index > 0 && <span className="rs-live-dot h-1.5 w-1.5 rounded-full bg-amber-500" />}
       </div>
@@ -302,7 +302,7 @@ function StageBox({ step, before, isCur, animate, correction, breakdown, prevCal
         </div>
       )}
       {step.applied === false && (
-        <div className="text-[11px] text-[#8a97a3]">
+        <div className="text-[11px] text-[#667585]">
           {step.reason === 'exempt' ? 'approved exception — correction skipped' : 'context event — nothing to correct'}
         </div>
       )}
@@ -336,7 +336,7 @@ function StageRow({ step, before, onClick }) {
       className="flex w-full items-center gap-2 rounded-lg border border-teal-200 bg-teal-50/50 px-3 py-1.5 text-left text-[12px] transition-colors hover:bg-teal-50"
     >
       <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-teal-500" />
-      <span className="text-[10.5px] font-semibold uppercase tracking-wide text-[#8a97a3]">
+      <span className="text-[10.5px] font-semibold uppercase tracking-wide text-[#667585]">
         {step.index === 0 ? 'Stage 0 · Observed' : `Stage ${step.index} · ${step.nodeId}`}
       </span>
       <span className="ml-auto font-mono text-[12px] font-bold text-[#101828]">{formatAmount(step.net)}</span>
@@ -357,7 +357,7 @@ function StageArrow({ label, animate }) {
         <line x1="7" y1="0" x2="7" y2="13" stroke="currentColor" strokeWidth="1.8" pathLength="1" className={animate ? 'rs-line-draw' : ''} />
         <path d="M2 10 L7 19 L12 10 Z" fill="currentColor" className={animate ? 'rs-head-pop' : ''} />
       </svg>
-      <span className={`font-mono text-[10.5px] text-[#8a97a3] ${animate ? 'rs-label-in' : ''}`}>{label}</span>
+      <span className={`font-mono text-[10.5px] text-[#667585] ${animate ? 'rs-label-in' : ''}`}>{label}</span>
     </div>
   )
 }

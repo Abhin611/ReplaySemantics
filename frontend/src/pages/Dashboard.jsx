@@ -1,5 +1,7 @@
 import { useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { ArrowRight, Database } from 'lucide-react'
+import AnimatedNumber from '../components/AnimatedNumber'
 import { HowItWorksStrip } from '../components/HowItWorks'
 import { useApi } from '../lib/useApi'
 import { getDashboard, getCases } from '../lib/api'
@@ -31,15 +33,18 @@ function LogDashboard({ log }) {
   const recentCases = (casesApi.data?.cases || []).slice(0, 5)
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#e2e6ea] bg-white px-4 py-2.5 shadow-card" data-testid="active-log">
-        <span className="min-w-0 truncate text-[13px] text-[#5c6b7a]">Event log: <b className="text-[#101828]">{log.label}</b></span>
-        <Link to="/profile" className="text-[12.5px] font-semibold text-teal-600 hover:underline">Change log</Link>
+    <div className="rs-stagger flex flex-col gap-5">
+      <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-[#e3e7ec] bg-white px-4 py-3 shadow-card" data-testid="active-log">
+        <span className="flex min-w-0 items-center gap-2.5 text-[13px] text-[#5c6b7a]">
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-teal-500/10 text-teal-500"><Database size={14} /></span>
+          <span className="truncate">Event log: <b className="text-[#101828]">{log.label}</b></span>
+        </span>
+        <Link to="/profile" className="rounded-lg px-2.5 py-1 text-[12.5px] font-semibold text-teal-600 transition-colors hover:bg-teal-500/10">Change log</Link>
       </div>
       <div className="flex flex-wrap gap-4">
         <StatCard
           label="Total Cases"
-          value={formatNum(dash.available_cases)}
+          value={<AnimatedNumber value={dash.available_cases ?? 0} format={(n) => formatNum(Math.round(Number(n)))} from={0} ms={1100} />}
           sublabel={`From ${log.label}`}
         />
         <StatCard
@@ -69,18 +74,18 @@ function LogDashboard({ log }) {
       </div>
 
       <Card>
-        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div>
             <div className="text-[15px] font-bold text-[#101828]">How ReplaySemantics works</div>
-            <div className="text-[12px] text-[#8a97a3]">
+            <div className="mt-0.5 text-[12px] text-[#5c6b7a]">
               It replays corrections on a realised ERP loss and refuses to give a number when the order of events makes it ambiguous.
             </div>
           </div>
           <Link
             to="/replay-console"
-            className="rounded-lg bg-navy-900 px-3.5 py-2 text-[12.5px] font-semibold text-white hover:bg-navy-800"
+            className="rs-press group inline-flex items-center gap-2 rounded-xl bg-navy-900 px-4 py-2.5 text-[12.5px] font-bold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_10px_20px_-10px_rgba(13,27,41,0.7)] hover:bg-navy-800"
           >
-            Open Replay Console →
+            Open Replay Console <ArrowRight size={14} className="transition-transform duration-300 ease-out group-hover:translate-x-1" />
           </Link>
         </div>
         <HowItWorksStrip />
@@ -91,15 +96,15 @@ function LogDashboard({ log }) {
           <div className="text-[15px] font-bold text-[#101828]">Recent Cases</div>
           <button
             onClick={() => navigate('/cases')}
-            className="text-[13px] font-semibold text-teal-500 hover:underline"
+            className="group inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[13px] font-semibold text-teal-600 hover:bg-teal-500/10"
           >
-            View all →
+            View all <ArrowRight size={14} className="transition-transform duration-300 ease-out group-hover:translate-x-0.5" />
           </button>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-[13px]">
             <thead>
-              <tr className="border-b border-[#e2e6ea] text-[11px] uppercase tracking-wide text-[#8a97a3]">
+              <tr className="border-b border-[#e2e6ea] text-[11px] uppercase tracking-wide text-[#667585]">
                 <th className="px-5 py-3 font-semibold">Case ID</th>
                 <th className="px-5 py-3 font-semibold">Realized Loss</th>
                 <th className="px-5 py-3 font-semibold">Candidate Events</th>
@@ -107,14 +112,16 @@ function LogDashboard({ log }) {
                 <th className="px-5 py-3 font-semibold">Updated</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="rs-rows">
               {recentCases.map((c) => (
                 <tr
                   key={c.case_id}
-                  className="cursor-pointer border-b border-[#eef1f4] last:border-0 hover:bg-[#f7f9fa]"
+                  className="cursor-pointer border-b border-[#eef1f4] last:border-0 hover:bg-[#edf1f5]"
                   onClick={() => navigate('/replay-console', { state: { caseId: c.case_id } })}
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter') navigate('/replay-console', { state: { caseId: c.case_id } }) }}
                 >
-                  <td className="px-5 py-3 font-semibold text-[#101828]">{c.case_id}</td>
+                  <td className="whitespace-nowrap px-5 py-3 font-semibold text-[#101828]">{c.case_id}</td>
                   <td className="px-5 py-3">{c.realized_loss != null ? formatAmount(c.realized_loss) : formatEur(c.value_eur)}</td>
                   <td className="px-5 py-3">{c.max_candidates_at_default_hops ?? '—'}</td>
                   <td className="px-5 py-3">

@@ -46,9 +46,9 @@ export default function ConstraintSummaryCard({ constraintData, eventLookup = {}
     <Card>
       <div className="mb-1 flex items-center justify-between">
         <div className="text-[13px] font-bold text-[#101828]">Order Constraints</div>
-        <div className="text-[11px] font-semibold text-[#8a97a3]">stage 2b · live</div>
+        <div className="text-[11px] font-semibold text-[#667585]">stage 2b · live</div>
       </div>
-      <p className="mb-3 text-[11.5px] leading-relaxed text-[#8a97a3]">
+      <p className="mb-3 text-[11.5px] leading-relaxed text-[#667585]">
         Structural pre-check only, from the candidate graph itself &mdash; narrows what
         the confluence checker (stage 3) needs to test. A pair listed as permutable can
         still turn out order-sensitive there if its correction math doesn&apos;t commute.
@@ -61,7 +61,7 @@ export default function ConstraintSummaryCard({ constraintData, eventLookup = {}
             Locked by process ({num_constraints})
           </div>
           {given_constraints.length === 0 ? (
-            <p className="text-[11.5px] text-[#8a97a3]">
+            <p className="text-[11.5px] text-[#667585]">
               No shared-object order-locks in this candidate set.
             </p>
           ) : (
@@ -98,7 +98,7 @@ export default function ConstraintSummaryCard({ constraintData, eventLookup = {}
             Order not fixed ({num_permutable_pairs})
           </div>
           {permutable_pairs.length === 0 ? (
-            <p className="text-[11.5px] text-[#8a97a3]">
+            <p className="text-[11.5px] text-[#667585]">
               Every pair is structurally ordered &mdash; nothing left to test for
               order-sensitivity.
             </p>

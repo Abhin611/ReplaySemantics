@@ -164,6 +164,18 @@ def list_actions(uid: str) -> list[dict]:
         return [_public_action(r) for r in con.execute("SELECT * FROM actions WHERE uid = ? ORDER BY seq DESC", (uid,))]
 
 
+def delete_actions(uid: str, ids: list[int] | None = None) -> int:
+    """Delete the user's own actions among `ids`, or all of them when `ids` is None. Returns how many went.
+    The others keep their numbers; numbering carries on from the highest one left (so it starts at 1 again once all are gone)."""
+    with _db() as con:
+        if ids is None:
+            return con.execute("DELETE FROM actions WHERE uid = ?", (uid,)).rowcount
+        if not ids:
+            return 0
+        marks = ",".join("?" * len(ids))
+        return con.execute(f"DELETE FROM actions WHERE uid = ? AND id IN ({marks})", (uid, *ids)).rowcount
+
+
 def get_actions(uid: str, ids: list[int]) -> list[dict]:
     """The user's own actions among `ids`, oldest first."""
     marks = ",".join("?" * len(ids))

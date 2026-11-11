@@ -13,7 +13,7 @@ const REL_STYLE = {
 }
 
 const Th = ({ children, right }) => (
-  <th className={`pb-1.5 pr-3 text-[10.5px] font-semibold uppercase tracking-wide text-[#8a97a3] ${right ? 'text-right' : 'text-left'}`}>{children}</th>
+  <th className={`pb-1.5 pr-3 text-[10.5px] font-semibold uppercase tracking-wide text-[#667585] ${right ? 'text-right' : 'text-left'}`}>{children}</th>
 )
 const hopText = (h) => (h === null || h === undefined ? 'target' : `hop ${h}`)
 
@@ -38,7 +38,7 @@ export default function PropagationReport({ scenario: s, caseId, onFocusNode }) 
       <div className="mb-1 flex flex-wrap items-start justify-between gap-2">
         <div>
           <div className="text-[15px] font-bold text-[#101828]">Change report</div>
-          <p className="mt-0.5 max-w-3xl text-[11.5px] leading-relaxed text-[#8a97a3]">
+          <p className="mt-0.5 max-w-3xl text-[11.5px] leading-relaxed text-[#667585]">
             What this order did. Every value stays as recorded unless the order makes a change necessary, so the order that was posted
             reproduces the original graph. Each figure comes from the real transfer functions, hop levels
             reached: {inf.hop_levels.length ? inf.hop_levels.map((h) => `hop ${h}`).join(' → ') : '—'} → invoice total.
@@ -46,7 +46,7 @@ export default function PropagationReport({ scenario: s, caseId, onFocusNode }) 
         </div>
         <button
           onClick={() => download(s, caseId)}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-[#e2e6ea] bg-white px-3 py-1.5 text-[12px] font-semibold text-[#101828] hover:bg-[#f2f4f6]"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-[#e2e6ea] bg-white px-3 py-1.5 text-[12px] font-semibold text-[#101828] hover:bg-[#e6ebf0]"
         >
           <Download size={13} /> Download report
         </button>
@@ -65,21 +65,21 @@ export default function PropagationReport({ scenario: s, caseId, onFocusNode }) 
                 <td className="py-2 pr-3 font-mono font-semibold">{st.index + 1}</td>
                 <td className="py-2 pr-3">
                   <button className="font-mono font-semibold text-teal-600 hover:underline" onClick={() => onFocusNode?.(st.node_id)}>{st.node_id}</button>
-                  <div className="text-[10.5px] text-[#8a97a3]">{st.activity} · {hopText(st.hop)}</div>
+                  <div className="text-[10.5px] text-[#667585]">{st.activity} · {hopText(st.hop)}</div>
                 </td>
                 <td className="py-2 pr-3 font-mono text-[11px] text-[#5c6b7a]">
                   {st.own_changes.length ? st.own_changes.map((c) => (
                     <div key={c.field}>{c.field}: {formatPrecise(c.before)} → <b className="text-[#101828]">{formatPrecise(c.after)}</b></div>
-                  )) : <span className="text-[#8a97a3]">no change: same as posted</span>}
+                  )) : <span className="text-[#667585]">no change: same as posted</span>}
                 </td>
                 <td className="py-2 pr-3 text-right font-mono font-semibold">{formatSigned(st.delta_net)}</td>
                 <td className="py-2">
-                  {st.affects.length === 0 ? <span className="text-[#8a97a3]">none</span> : (
+                  {st.affects.length === 0 ? <span className="text-[#667585]">none</span> : (
                     <ul className="flex flex-col gap-1">
                       {st.affects.map((a) => (
                         <li key={a.node_id} className="flex flex-wrap items-center gap-1.5">
                           <span className="font-mono font-semibold">{a.node_id}</span>
-                          <span className="text-[10.5px] text-[#8a97a3]">{a.activity} · {hopText(a.hop)}</span>
+                          <span className="text-[10.5px] text-[#667585]">{a.activity} · {hopText(a.hop)}</span>
                           <span className="font-mono">{a.field} {formatSignedFine(a.gap)}</span>
                           <span className={`rounded px-1.5 py-0.5 text-[10px] font-semibold ${REL_STYLE[a.relation]}`}>{relationText(a.relation)}</span>
                         </li>
@@ -92,7 +92,7 @@ export default function PropagationReport({ scenario: s, caseId, onFocusNode }) 
           </tbody>
         </table>
       </div>
-      <p className="mt-1 text-[10.5px] leading-snug text-[#8a97a3]">
+      <p className="mt-1 text-[10.5px] leading-snug text-[#667585]">
         A node that runs before something it reads keeps its recorded value. When a value does move, any node that reads it and did not see the new value
         differs by the figure shown (what its own formula would give now, minus what it stores). That gap is how the order travels between hops.
       </p>
@@ -109,7 +109,7 @@ export default function PropagationReport({ scenario: s, caseId, onFocusNode }) 
               {orderNonZero.map((i) => (
                 <tr key={`${i.from}-${i.to}`} className="border-t border-[#eef1f4]">
                   <td className="py-1.5 pr-3 font-semibold">{i.from}</td>
-                  <td className="py-1.5 pr-3 font-semibold">{i.to} <span className="font-sans text-[10px] text-[#8a97a3]">({i.field})</span></td>
+                  <td className="py-1.5 pr-3 font-semibold">{i.to} <span className="font-sans text-[10px] text-[#667585]">({i.field})</span></td>
                   <td className="py-1.5 pr-3 text-right">{formatPrecise(i.alone)}</td>
                   <td className="py-1.5 pr-3 text-right">{formatPrecise(i.after_upstream)}</td>
                   <td className="py-1.5 text-right font-semibold">{formatSignedFine(i.delta)}</td>
@@ -119,7 +119,7 @@ export default function PropagationReport({ scenario: s, caseId, onFocusNode }) 
           </table>
         </div>
       )}
-      <p className="mt-1 text-[10.5px] leading-snug text-[#8a97a3]">
+      <p className="mt-1 text-[10.5px] leading-snug text-[#667585]">
         Difference ≠ 0 means the node ends at a different value depending on which of the two runs first: a discount applied after tax is
         taken on gross + tax. A node with no reason to move keeps its recorded value.
       </p>
@@ -136,7 +136,7 @@ export default function PropagationReport({ scenario: s, caseId, onFocusNode }) 
               <tr key={n.node_id} className="border-t border-[#eef1f4] align-top">
                 <td className="py-1.5 pr-3">
                   <button className="font-mono font-semibold text-teal-600 hover:underline" onClick={() => onFocusNode?.(n.node_id)}>{n.node_id}</button>
-                  <div className="text-[10.5px] text-[#8a97a3]">{n.activity}</div>
+                  <div className="text-[10.5px] text-[#667585]">{n.activity}</div>
                 </td>
                 <td className="py-1.5 pr-3 font-mono">{n.hop ?? '—'}</td>
                 <td className="py-1.5 pr-3">{n.role === 'corrected' ? `applied · step ${n.step}` : 'affected (not in this swap)'}</td>

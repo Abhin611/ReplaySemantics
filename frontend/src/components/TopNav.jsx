@@ -36,11 +36,11 @@ function UserMenu({ compact }) {
   }, [open])
   const initials = (profile?.name || profile?.email || '?').split(/\s+/).map((w) => w[0]).slice(0, 2).join('').toUpperCase()
   const go = (to) => { setOpen(false); navigate(to) }
-  const item = 'flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-[13px] text-[#9fb0bf] transition-colors hover:bg-white/5 hover:text-white'
+  const item = 'flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-[13px] text-[#a9b8c5] transition-colors hover:bg-white/5 hover:text-white'
   return (
     <div className="relative ml-1" data-user-menu>
       <button type="button" onClick={() => setOpen((o) => !o)} aria-haspopup="menu" aria-expanded={open} data-testid="user-menu" title={profile?.name}
-        className="flex items-center gap-2.5 rounded-lg py-1 pl-1 pr-2 text-left transition-colors hover:bg-white/10">
+        className="flex items-center gap-2.5 rounded-xl py-1 pl-1 pr-2 text-left transition-colors hover:bg-white/10">
         {profile?.photo_url
           ? <img src={profile.photo_url} alt="" referrerPolicy="no-referrer" className="h-8 w-8 rounded-full" />
           : <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-teal-400 to-teal-500 text-[11px] font-bold text-white">{initials}</span>}
@@ -50,8 +50,8 @@ function UserMenu({ compact }) {
         </span>
       </button>
       {open && (
-        <div role="menu" className="rs-menu-in absolute right-0 top-[calc(100%+10px)] w-60 overflow-hidden rounded-xl border border-white/10 bg-navy-900 p-1 shadow-2xl">
-          {activeLog && <div className="truncate border-b border-white/10 px-3 py-2 text-[11.5px] text-[#7f93a3]" title={activeLog.label}>Working on: <span className="text-white">{activeLog.label}</span></div>}
+        <div role="menu" className="rs-menu-surface rs-menu-in absolute right-0 top-[calc(100%+14px)] w-60 origin-top-right overflow-hidden rounded-2xl p-1.5" style={{ transformOrigin: 'top right' }}>
+          {activeLog && <div className="truncate border-b border-white/10 px-3 py-2 text-[11.5px] text-[#a9b8c5]" title={activeLog.label}>Working on: <span className="text-white">{activeLog.label}</span></div>}
           <button role="menuitem" className={item} onClick={() => go('/profile')}><UserRound size={15} /> Your profile</button>
           <button role="menuitem" className={item} onClick={() => go('/load-log')}><Database size={15} /> Load another log</button>
           <button role="menuitem" className={item} onClick={() => { setOpen(false); signOut().then(() => navigate('/')) }} data-testid="sign-out"><LogOut size={15} /> Sign out</button>
@@ -111,12 +111,12 @@ export default function TopNav() {
   }, [menuOpen])
 
   return (
-    <header className="relative z-30 shrink-0 border-b border-white/5 bg-navy-950/95 text-white shadow-[0_8px_24px_-12px_rgba(10,20,31,0.6)] backdrop-blur">
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-teal-400/50 to-transparent" />
-      <div className="flex h-14 items-center gap-4 px-4 lg:px-6">
+    <header className="rs-glass-dark rs-nav-in absolute inset-x-3 top-3 z-40 rounded-[20px] text-white lg:inset-x-5">
+      <span aria-hidden="true" className="rs-nav-beam" />
+      <div className="flex h-[52px] items-center gap-3.5 px-3 lg:px-4">
         {/* Brand */}
         <NavLink to="/dashboard" className="group flex shrink-0 items-center gap-2.5" aria-label="ReplaySemantics home">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-teal-400 to-teal-500 shadow-[0_0_0_0_rgba(69,179,165,0.6)] transition-shadow duration-300 group-hover:shadow-[0_0_0_5px_rgba(69,179,165,0.18)]">
+          <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-gradient-to-br from-teal-400 to-teal-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_4px_10px_-4px_rgba(42,157,143,0.8)] transition-transform duration-500 ease-spring group-hover:rotate-[-8deg] group-hover:scale-105">
             <GitBranch size={17} strokeWidth={2.5} />
           </span>
           <span className={`hidden text-[15px] font-bold tracking-tight ${fit.stage >= 2 ? '' : 'min-[1100px]:inline'}`}>ReplaySemantics</span>
@@ -129,10 +129,10 @@ export default function TopNav() {
           <div ref={trackRef} className="relative flex w-fit items-center gap-0.5">
             <span
               aria-hidden="true"
-              className="absolute inset-y-0 rounded-lg bg-white/10 ring-1 ring-inset ring-white/10 transition-[left,width,opacity] duration-500 ease-[cubic-bezier(0.34,1.4,0.5,1)]"
+              className="absolute inset-y-0 rounded-xl bg-white/[0.12] shadow-[inset_0_1px_0_rgba(255,255,255,0.14)] ring-1 ring-inset ring-white/10 transition-[left,width,opacity] duration-500 ease-spring"
               style={pill ? { left: pill.left, width: pill.width, opacity: 1 } : { left: 0, width: 0, opacity: 0 }}
             >
-              <span className="absolute inset-x-3 -bottom-[9px] h-[3px] rounded-full bg-teal-400 shadow-[0_0_10px_rgba(69,179,165,0.9)]" />
+              <span className="absolute inset-x-4 bottom-[3px] h-[2px] rounded-full bg-teal-400" />
             </span>
             {MAIN.map((l) => {
               const Icon = l.icon
@@ -144,11 +144,11 @@ export default function TopNav() {
                   end={l.end}
                   ref={(el) => { itemRefs.current[l.to] = el }}
                   title={l.label}
-                  className={`relative z-10 flex items-center gap-2 whitespace-nowrap rounded-lg px-2.5 py-2 text-[13px] transition-colors duration-200 ${
-                    active ? 'font-semibold text-white' : 'text-[#9fb0bf] hover:text-white'
+                  className={`group/link relative z-10 flex items-center gap-2 whitespace-nowrap rounded-xl px-2.5 py-2 text-[13px] transition-colors duration-200 ${
+                    active ? 'font-semibold text-white' : 'text-[#a9b8c5] hover:bg-white/[0.06] hover:text-white'
                   }`}
                 >
-                  <Icon size={15} strokeWidth={2} className={active ? 'text-teal-300' : ''} />
+                  <Icon size={15} strokeWidth={2} className={`transition-transform duration-300 ease-spring group-hover/link:scale-110 ${active ? 'text-teal-300' : ''}`} />
                   <span className={active || fit.stage < 3 ? '' : 'hidden'}>{l.label}</span>
                 </NavLink>
               )
@@ -161,8 +161,8 @@ export default function TopNav() {
                 onClick={() => setMenuOpen((o) => !o)}
                 aria-haspopup="menu"
                 aria-expanded={menuOpen}
-                className={`relative z-10 flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-2 text-[13px] transition-colors duration-200 ${
-                  systemActive ? 'bg-white/10 font-semibold text-white' : 'text-[#9fb0bf] hover:text-white'
+                className={`relative z-10 flex items-center gap-1.5 whitespace-nowrap rounded-xl px-2.5 py-2 text-[13px] transition-colors duration-200 ${
+                  systemActive ? 'bg-white/[0.12] font-semibold text-white' : 'text-[#a9b8c5] hover:bg-white/[0.06] hover:text-white'
                 }`}
               >
                 <SlidersHorizontal size={15} />
@@ -172,7 +172,7 @@ export default function TopNav() {
               {menuOpen && (
                 <div
                   role="menu"
-                  className="rs-menu-in absolute left-0 top-[calc(100%+10px)] w-48 overflow-hidden rounded-xl border border-white/10 bg-navy-900 p-1 shadow-2xl"
+                  className="rs-menu-surface rs-menu-in absolute left-0 top-[calc(100%+14px)] w-48 overflow-hidden rounded-2xl p-1.5"
                 >
                   {SYSTEM.map((l) => {
                     const Icon = l.icon
@@ -182,7 +182,7 @@ export default function TopNav() {
                         to={l.to}
                         role="menuitem"
                         className={({ isActive }) =>
-                          `flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] transition-colors ${
+                          `flex items-center gap-2.5 rounded-xl px-3 py-2 text-[13px] transition-colors ${
                             isActive ? 'bg-white/10 font-semibold text-white' : 'text-[#9fb0bf] hover:bg-white/5 hover:text-white'
                           }`
                         }
@@ -205,13 +205,13 @@ export default function TopNav() {
             <input
               type="text"
               placeholder="Search cases, events..."
-              className="w-52 rounded-lg border border-white/10 bg-white/5 py-1.5 pl-8 pr-3 text-[12.5px] text-white placeholder:text-[#7f93a3] transition-all duration-300 focus:w-64 focus:bg-white/10"
+              className="w-52 rounded-xl border border-white/10 bg-white/5 py-1.5 pl-8 pr-3 text-[12.5px] text-white placeholder:text-[#8fa3b5] transition-all duration-500 ease-out focus:w-64 focus:bg-white/10"
             />
           </div>
-          <button aria-label="Search" className={`flex h-9 w-9 items-center justify-center rounded-lg text-[#9fb0bf] transition-colors hover:bg-white/10 hover:text-white ${fit.stage >= 1 ? '' : '2xl:hidden'}`}>
+          <button aria-label="Search" className={`flex h-9 w-9 items-center justify-center rounded-xl text-[#a9b8c5] transition-colors hover:bg-white/10 hover:text-white ${fit.stage >= 1 ? '' : '2xl:hidden'}`}>
             <Search size={16} />
           </button>
-          <button aria-label="Notifications" className="relative flex h-9 w-9 items-center justify-center rounded-lg text-[#9fb0bf] transition-colors hover:bg-white/10 hover:text-white">
+          <button aria-label="Notifications" className="relative flex h-9 w-9 items-center justify-center rounded-xl text-[#a9b8c5] transition-colors hover:bg-white/10 hover:text-white">
             <Bell size={16} />
             <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-status-blocked ring-2 ring-navy-950" />
           </button>
@@ -220,7 +220,7 @@ export default function TopNav() {
             type="button"
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             onClick={() => setMobileOpen((o) => !o)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-[#9fb0bf] hover:bg-white/10 hover:text-white md:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-xl text-[#a9b8c5] hover:bg-white/10 hover:text-white md:hidden"
           >
             {mobileOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
@@ -229,7 +229,7 @@ export default function TopNav() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <nav aria-label="Mobile" className="rs-menu-in grid gap-0.5 border-t border-white/10 bg-navy-900 p-2 md:hidden">
+        <nav aria-label="Mobile" className="rs-menu-in grid max-h-[70vh] gap-0.5 overflow-y-auto border-t border-white/10 p-2 md:hidden">
           {[...MAIN, ...SYSTEM].map((l) => {
             const Icon = l.icon
             return (

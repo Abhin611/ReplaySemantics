@@ -64,11 +64,11 @@ export default function VerdictCard({ result }) {
             <div className="text-[17px] font-bold" style={{ color: n ? color : '#c2cad2' }}>
               {n}
             </div>
-            <div className="text-[9.5px] font-semibold uppercase tracking-wide text-[#8a97a3]">{label}</div>
+            <div className="text-[9.5px] font-semibold uppercase tracking-wide text-[#667585]">{label}</div>
           </div>
         ))}
       </div>
-      <div className="mt-1 text-center text-[10.5px] text-[#8a97a3]">
+      <div className="mt-1 text-center text-[10.5px] text-[#667585]">
         subsets of the {s3.players.length} correctable events ({s3.num_subsets} in total)
       </div>
 
@@ -81,9 +81,9 @@ export default function VerdictCard({ result }) {
           valueClass={v.attribution_allowed ? 'text-status-pass' : 'text-status-blocked'}
         />
       </div>
-      <p className="mt-1 text-[11px] leading-snug text-[#8a97a3]">{v.shapley_status}</p>
+      <p className="mt-1 text-[11px] leading-snug text-[#667585]">{v.shapley_status}</p>
 
-      <div className="mt-3 rounded-lg bg-[#f4f6f8] px-3 py-2 text-[11.5px] leading-relaxed text-[#5c6b7a]">
+      <div className="mt-3 rounded-lg bg-[#e6ebf0] px-3 py-2 text-[11.5px] leading-relaxed text-[#5c6b7a]">
         <span className="font-semibold text-[#101828]">Structure is not the verdict.</span>{' '}
         <span className="font-semibold">{s3.distinct_pairs_unlocked}</span> pair
         {s3.distinct_pairs_unlocked === 1 ? '' : 's'} of correctable events had no fixed order in the log; the
@@ -102,7 +102,7 @@ export default function VerdictCard({ result }) {
       )}
 
       {rep?.order_is_authoritative === false && (
-        <p className="mt-2 text-[11px] leading-snug text-[#8a97a3]">
+        <p className="mt-2 text-[11px] leading-snug text-[#667585]">
           The replay above uses an illustrative order only. It is not an authoritative outcome.
         </p>
       )}
@@ -123,7 +123,7 @@ export default function VerdictCard({ result }) {
       {showTable && (
         <div className="mt-2 max-h-[300px] overflow-auto rounded-lg border border-[#e2e6ea]">
           <table className="w-full text-left text-[11.5px]">
-            <thead className="sticky top-0 bg-[#f7f9fa] text-[10px] uppercase tracking-wide text-[#8a97a3]">
+            <thead className="sticky top-0 bg-[#edf1f5] text-[10px] uppercase tracking-wide text-[#667585]">
               <tr>
                 <th className="px-2 py-1.5 font-semibold">Subset S</th>
                 <th className="px-2 py-1.5 font-semibold">Verdict</th>
@@ -153,7 +153,7 @@ export default function VerdictCard({ result }) {
 function Row({ label, value, valueClass = 'text-[#101828]' }) {
   return (
     <div className="flex items-center justify-between border-b border-[#eef1f4] py-1 last:border-0">
-      <span className="text-[#8a97a3]">{label}</span>
+      <span className="text-[#667585]">{label}</span>
       <span className={`font-semibold ${valueClass}`}>{value}</span>
     </div>
   )

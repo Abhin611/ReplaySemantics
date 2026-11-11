@@ -2,15 +2,15 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import ReactFlow, { Background, Controls } from 'reactflow'
 import 'reactflow/dist/style.css'
-import { AlertTriangle, ArrowRight, FlaskConical, TrendingDown, TrendingUp } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, ArrowRight, FlaskConical, TrendingDown, TrendingUp } from 'lucide-react'
 import { useApi } from '../lib/useApi'
 import { clearApiCache, getAnalysis, getHops, getScenario, recordAction, runReplay } from '../lib/api'
 import { limitsBody } from '../lib/history'
-import ReplayFlow from '../components/ReplayFlow'
 import ChangePanel from '../components/ChangePanel'
 import { fullGraphLimits } from '../lib/flow'
 import { useSelectedCase, usePersistentState } from '../lib/SelectedCaseContext'
 import Card from '../components/Card'
+import AnimatedNumber from '../components/AnimatedNumber'
 import StatusBadge from '../components/StatusBadge'
 import EventNode from '../components/graph/EventNode'
 import ReplayTraceCard from '../components/ReplayTraceCard'
@@ -18,6 +18,7 @@ import PropagationReport from '../components/PropagationReport'
 import RefreshButton from '../components/RefreshButton'
 import { LoadingState, ErrorState } from '../components/StatusStates'
 import { layoutGraph } from '../lib/graphLayout'
+import { useGraphBuild } from '../lib/useGraphBuild'
 import { buildNodeStatus, badgeStatus, correctionLabel } from '../lib/verdict'
 import {
   buildFlow, direction, formatPrecise, formatSigned, nodeEffects, orderLabel, parseScenarioParams, scenarioPath,
@@ -101,10 +102,13 @@ export default function Scenario() {
   const nodeStatus = useMemo(() => buildNodeStatus(replay), [replay])
   const targetId = replay?.replay_graph?.nodes?.find((n) => n.is_target)?.id ?? null
   const flow = useMemo(() => buildFlow(s?.influence, traceNode, targetId), [s, traceNode, targetId])
-  const { nodes, edges } = useMemo(
+  const laid = useMemo(
     () => layoutGraph(replay?.replay_graph, null, nodeStatus, effects, flow),
     [replay, nodeStatus, effects, flow] // eslint-disable-line react-hooks/exhaustive-deps
   )
+  // the graph builds itself node by node whenever a new change (case, events or order) opens
+  const graph = useGraphBuild({ nodes: laid.nodes, edges: laid.edges, runKey: s && replay ? `|${subsetKey}|${orderKey}` : null })
+  const { nodes, edges } = graph
 
   if (!hasParams && last) return <Navigate replace to={scenarioPath(last.caseId, last.subset, last.order, last.limits)} />
   if (!hasParams) {
@@ -122,13 +126,10 @@ export default function Scenario() {
             <b>Pairs</b> tab and press <b>Run change</b>. This page then shows each order on the recorded values, step by step, with the new total and
             realised loss against the original graph.
           </p>
-          <Link
-            to="/replay-console"
-            className="rounded-lg bg-navy-900 px-4 py-2 text-[13px] font-semibold text-white hover:bg-navy-800"
-          >
-            Go to Replay Console
+          <Link to="/replay-console" className="rs-btn rs-btn-primary rs-press group">
+            Go to Replay Console <ArrowRight size={14} className="transition-transform duration-300 ease-out group-hover:translate-x-1" />
           </Link>
-          {selectedCaseId && <span className="text-[11.5px] text-[#8a97a3]">Selected case: {selectedCaseId}</span>}
+          {selectedCaseId && <span className="text-[11.5px] text-[#667585]">Selected case: {selectedCaseId}</span>}
         </div>
       </Card>
     )
@@ -161,10 +162,8 @@ export default function Scenario() {
   const pickOrder = (o) => setParams(new URLSearchParams(scenarioPath(caseId, subset, o, limits).split('?')[1]))
   const nodeInfo = selectedNode && effects?.[selectedNode.id]
 
-  const goEdit = () => document.getElementById('scenario-edit')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   return (
-    <ReplayFlow fixed={{ caseId, limits }} highlightIds={subset} onEdit={goEdit}>
-    <div className="flex flex-col gap-4">
+    <div className="rs-stagger flex flex-col gap-4">
       {/* Header: what was changed, and which order */}
       <Card className="!p-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
@@ -178,15 +177,15 @@ export default function Scenario() {
               </span>
               {badge && <StatusBadge status={badge} />}
             </div>
-            <div className="mt-1 text-[12px] text-[#8a97a3]">
+            <div className="mt-1 text-[12px] text-[#667585]">
               policy {s.policy_version} · synthetic benchmark case · {s.subset.length} events in this swap ·{' '}
               {s.legit_order_count} legitimate order{s.legit_order_count === 1 ? '' : 's'} · the previous case is the original graph
               (every value as recorded); only an edit or a different order can change a value
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <Link to="/replay-console" className="text-[12px] font-semibold text-teal-500 hover:underline">
-              ← back to Pairs
+          <div className="flex items-center gap-2">
+            <Link to="/replay-console" className="group inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[12px] font-semibold text-teal-600 hover:bg-teal-500/10">
+              <ArrowLeft size={13} className="transition-transform duration-300 ease-out group-hover:-translate-x-0.5" /> back to Pairs
             </Link>
             <RefreshButton onClick={handleRefresh} />
           </div>
@@ -203,8 +202,9 @@ export default function Scenario() {
                 key={o.order.join(',')}
                 onClick={() => pickOrder(o.order)}
                 title={o.order_count > 1 ? `${o.order_count} legitimate orders give this total` : undefined}
-                className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 font-mono text-[12px] ${
-                  on ? 'border-navy-900 bg-navy-900 text-white' : 'border-[#e2e6ea] bg-white text-[#101828] hover:bg-[#f2f4f6]'
+                aria-pressed={on}
+                className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 font-mono text-[12px] font-semibold ${
+                  on ? 'border-navy-900 bg-navy-900 text-white shadow-[0_6px_14px_-6px_rgba(13,27,41,0.6)]' : 'border-[#dfe4e9] bg-white text-[#101828] hover:border-[#cbd3da] hover:bg-[#e6ebf0]'
                 }`}
               >
                 {on ? orderLabel(s.selected_order) : orderLabel(o.order)}
@@ -232,7 +232,7 @@ export default function Scenario() {
           </div>
         )}
         {s.groups_truncated && (
-          <div className="mt-2 text-[11px] text-[#8a97a3]">
+          <div className="mt-2 text-[11px] text-[#667585]">
             {s.order_groups_total} distinct outcomes exist; the {s.orders.length} most common are listed.
           </div>
         )}
@@ -267,8 +267,10 @@ export default function Scenario() {
               foot={s.exploratory ? 'exploratory — not an authoritative loss' : 'loss after this change'}
             />
             <Card className="!p-4">
-              <div className="text-[11px] font-semibold uppercase tracking-wide text-[#8a97a3]">Loss removed by this order</div>
-              <div className="mt-1 font-mono text-[20px] font-bold text-[#101828]">{formatPrecise(sel.value)}</div>
+              <div className="text-[11px] font-semibold uppercase tracking-wide text-[#667585]">Loss removed by this order</div>
+              <div className="mt-1.5 font-mono text-[22px] font-extrabold tracking-[-0.02em] text-[#101828]">
+                <AnimatedNumber value={sel.value} from={0} format={formatPrecise} ms={Number(sel.value) === 0 ? 0 : 900} />
+              </div>
               <div className="mt-1 text-[11.5px] text-[#5c6b7a]">
                 v({s.subset.join(', ')}) = previous loss − new loss
                 {s.exploratory ? ' (exploratory)' : ''}
@@ -281,7 +283,7 @@ export default function Scenario() {
             <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-b border-[#e2e6ea] px-5 py-2.5">
               <div className="text-[14px] font-bold">
                 Graph after this order
-                <span className="ml-2 text-[11px] font-normal text-[#8a97a3]">
+                <span className="ml-2 text-[11px] font-normal text-[#667585]">
                   columns = hops (furthest on the left){flow ? ' · press Play to follow the change' : ''}
                 </span>
               </div>
@@ -294,32 +296,44 @@ export default function Scenario() {
                 ))}
               </div>
             </div>
-            <div style={{ height: 'clamp(300px, calc(100vh - 470px), 520px)' }}>
+            <div ref={graph.wrapRef} className={`rs-stage relative !rounded-none ${graph.building ? 'is-building' : ''}`} style={{ height: 'clamp(380px, calc(100vh - 330px), 620px)' }}>
               {replay?.replay_graph ? (
-                <ReactFlow
-                  key={`${caseId}-${subsetKey}-${nodes.length}`}
-                  nodes={nodes}
-                  edges={edges}
-                  nodeTypes={NODE_TYPES}
-                  onNodeClick={(_e, node) => setSelectedNode(node.data.node)}
-                  fitView
-                  fitViewOptions={{ padding: 0.25 }}
-                  minZoom={0.05}
-                  maxZoom={1.5}
-                  proOptions={{ hideAttribution: true }}
-                >
-                  <Background color="#eef1f4" gap={20} />
-                  <Controls showInteractive={false} />
-                </ReactFlow>
+                <>
+                  <ReactFlow
+                    key={`${caseId}-${subsetKey}-${nodes.length}`}
+                    nodes={nodes}
+                    edges={edges}
+                    nodeTypes={NODE_TYPES}
+                    onNodeClick={(_e, node) => setSelectedNode(node.data.node)}
+                    onInit={graph.onInit}
+                    fitView
+                    fitViewOptions={graph.fitViewOptions}
+                    minZoom={0.05}
+                    maxZoom={1.5}
+                    proOptions={{ hideAttribution: true }}
+                  >
+                    <Background color="#cfd8e0" gap={22} />
+                    <Controls showInteractive={false} />
+                  </ReactFlow>
+                  {graph.building && (
+                    <>
+                      <div aria-hidden="true" className="rs-scan pointer-events-none absolute inset-0 z-[5]" />
+                      <div className="rs-legend-in pointer-events-none absolute left-4 top-3 z-10 flex items-center gap-2 rounded-full bg-navy-950/85 px-3 py-1.5 font-mono text-[11px] font-semibold text-teal-200 shadow-lg backdrop-blur">
+                        <span className="rs-live-dot h-1.5 w-1.5 rounded-full bg-teal-400" />
+                        building the changed graph · {Math.round(graph.progress * 100)}%
+                      </div>
+                    </>
+                  )}
+                </>
               ) : (
-                <div className="flex h-full items-center justify-center text-[13px] text-[#8a97a3]">
+                <div className="flex h-full items-center justify-center text-[13px] text-[#667585]">
                   {replayApi.error ? replayApi.error.message : 'Graph unavailable.'}
                 </div>
               )}
             </div>
             <div className="border-t border-[#e2e6ea] px-5 py-2.5 text-[12.5px]">
               {!selectedNode ? (
-                <span className="text-[#8a97a3]">
+                <span className="text-[#667585]">
                   {flow
                     ? `Step ${flow.step + 1}: the green pulsing node is being applied; amber nodes are the dependents that differ because of the order, with the amount.`
                     : 'Click an event to see what the change did to it, or press Play on the right to watch the change travel through the graph.'}
@@ -327,7 +341,7 @@ export default function Scenario() {
               ) : (
                 <div>
                   <span className="font-semibold text-[#101828]">{selectedNode.id}</span>
-                  <span className="text-[#8a97a3]"> · {selectedNode.activity} · </span>
+                  <span className="text-[#667585]"> · {selectedNode.activity} · </span>
                   <span className="text-[#5c6b7a]">
                     {nodeInfo?.role === 'corrected' ? `applied at step ${nodeInfo.step}` : nodeInfo?.role ?? 'target'}
                   </span>
@@ -340,7 +354,7 @@ export default function Scenario() {
                       ))}
                     </ul>
                   ) : (
-                    <span className="text-[#8a97a3]"> · same as posted</span>
+                    <span className="text-[#667585]"> · same as posted</span>
                   )}
                 </div>
               )}
@@ -349,7 +363,7 @@ export default function Scenario() {
         </div>
 
         {/* Right column */}
-        <div className="flex flex-col gap-4 lg:sticky lg:top-2 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto lg:pr-1">
+        <div className="flex flex-col gap-4 lg:sticky lg:top-[calc(var(--nav-h)+4px)] lg:max-h-[calc(100vh-var(--nav-h)-1.5rem)] lg:self-start lg:overflow-y-auto lg:pr-1 lg:[--sticky-top:0px]">
           <ReplayTraceCard
             key={orderKey + subsetKey}
             replay={sel}
@@ -364,7 +378,7 @@ export default function Scenario() {
 
           <Card>
             <div className="mb-1 text-[13px] font-bold text-[#101828]">Order comparison</div>
-            <p className="mb-2 text-[11.5px] leading-relaxed text-[#8a97a3]">
+            <p className="mb-2 text-[11.5px] leading-relaxed text-[#667585]">
               {s.orders_agree
                 ? `All ${s.legit_order_count} legitimate order${s.legit_order_count === 1 ? '' : 's'} give the same total.`
                 : `${s.legit_order_count} legitimate orders give ${s.order_groups_total} distinct totals, spread over ${formatPrecise(
@@ -374,19 +388,19 @@ export default function Scenario() {
             <div className="overflow-x-auto">
               <table className="w-full text-[11.5px]">
                 <thead>
-                  <tr className="text-left text-[10.5px] uppercase tracking-wide text-[#8a97a3]">
+                  <tr className="text-left text-[10.5px] uppercase tracking-wide text-[#667585]">
                     <th className="pb-1 pr-2 font-semibold">Order</th>
                     <th className="pb-1 pr-2 text-right font-semibold">Total</th>
                     <th className="pb-1 text-right font-semibold">Loss</th>
                   </tr>
                 </thead>
-                <tbody className="font-mono">
+                <tbody className="rs-rows font-mono">
                   {s.orders.map((o) => (
-                    <tr key={o.order.join(',')} className="border-t border-[#eef1f4] align-top">
-                      <td className="py-1.5 pr-2">
+                    <tr key={o.order.join(',')} className={`border-t border-[#eef1f4] align-top ${o.contains_selected ? 'bg-teal-500/[0.06]' : ''}`}>
+                      <td className="py-1.5 pl-2 pr-2">
                         {orderLabel(o.order)}
                         {o.order_count > 1 && (
-                          <div className="font-sans text-[10px] text-[#8a97a3]">
+                          <div className="font-sans text-[10px] text-[#667585]">
                             +{o.order_count - 1} more order{o.order_count - 1 === 1 ? '' : 's'}, same total
                           </div>
                         )}
@@ -394,18 +408,18 @@ export default function Scenario() {
                       </td>
                       <td className="py-1.5 pr-2 text-right">
                         {formatPrecise(o.net)}
-                        <div className="text-[10px] text-[#8a97a3]">{formatSigned(o.delta_net)}</div>
+                        <div className="text-[10px] text-[#667585]">{formatSigned(o.delta_net)}</div>
                       </td>
                       <td className="py-1.5 text-right">
                         {formatPrecise(o.loss)}
-                        <div className="text-[10px] text-[#8a97a3]">{formatSigned(o.delta_loss)}</div>
+                        <div className="text-[10px] text-[#667585]">{formatSigned(o.delta_loss)}</div>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <p className="mt-2 text-[10.5px] text-[#8a97a3]">Small figures under each value are the change against the previous case.</p>
+            <p className="mt-2 text-[10.5px] text-[#667585]">Small figures under each value are the change against the previous case.</p>
           </Card>
         </div>
       </div>
@@ -413,7 +427,6 @@ export default function Scenario() {
       <PropagationReport scenario={s} caseId={caseId} onFocusNode={setTraceNode} />
       <ChangePanel caseId={caseId} limits={limits} analysis={analysisApi.data} defaultSwap={s.selected_order} panelId="scenario-edit" />
     </div>
-    </ReplayFlow>
   )
 }
 
@@ -423,17 +436,20 @@ function Stat({ title, now, was, delta, goodWhen, foot }) {
   const Icon = dir === 'down' ? TrendingDown : TrendingUp
   return (
     <Card className="!p-4">
-      <div className="text-[11px] font-semibold uppercase tracking-wide text-[#8a97a3]">{title}</div>
-      <div className="mt-1 flex items-center gap-2 font-mono text-[12px] text-[#8a97a3]">
-        <span className="line-through decoration-[#c2cad2]">{formatPrecise(was)}</span>
+      <div className="text-[11px] font-semibold uppercase tracking-wide text-[#667585]">{title}</div>
+      <div className="mt-1.5 flex items-center gap-2 font-mono text-[12px] text-[#667585]">
+        <span className="line-through decoration-[#b9c2cb]">{formatPrecise(was)}</span>
         <ArrowRight size={12} />
       </div>
-      <div className="font-mono text-[20px] font-bold text-[#101828]">{formatPrecise(now)}</div>
-      <div className={`mt-1 flex items-center gap-1 font-mono text-[12px] font-semibold ${good === null ? 'text-[#5c6b7a]' : good ? 'text-status-pass' : 'text-status-blocked'}`}>
+      {/* the figure counts from the previous case to this one */}
+      <div className="font-mono text-[22px] font-extrabold tracking-[-0.02em] text-[#101828]">
+        <AnimatedNumber value={now} from={was} format={formatPrecise} ms={dir === 'flat' ? 0 : 900} />
+      </div>
+      <div className={`mt-1.5 inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-mono text-[12px] font-bold ${good === null ? 'bg-[#eef1f4] text-[#5c6b7a]' : good ? 'bg-status-passBg text-status-pass' : 'bg-status-blockedBg text-status-blocked'}`}>
         {dir !== 'flat' && <Icon size={13} />}
         {formatSigned(delta)} vs previous
       </div>
-      <div className="mt-1 text-[11px] text-[#8a97a3]">{foot}</div>
+      <div className="mt-2 text-[11px] leading-snug text-[#667585]">{foot}</div>
     </Card>
   )
 }

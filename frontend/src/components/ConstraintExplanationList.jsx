@@ -26,7 +26,7 @@ export default function ConstraintExplanationList({
     return (
       <Card>
         <div className="mb-1 text-[13px] font-bold text-[#101828]">Constraint Explanations</div>
-        <p className="text-[11.5px] text-[#8a97a3]">
+        <p className="text-[11.5px] text-[#667585]">
           No structural constraints in this candidate set yet -- run a replay first.
         </p>
       </Card>
@@ -41,7 +41,7 @@ export default function ConstraintExplanationList({
         <Link2 size={13} />
         Constraint Explanations
       </div>
-      <p className="mb-3 text-[11.5px] leading-relaxed text-[#8a97a3]">
+      <p className="mb-3 text-[11.5px] leading-relaxed text-[#667585]">
         Click any line to highlight the two events involved on the graph.
       </p>
       <ul className="flex max-h-[420px] flex-col gap-1.5 overflow-y-auto pr-1">
@@ -61,11 +61,11 @@ export default function ConstraintExplanationList({
                 <span className="font-semibold">{label(c.after)}</span> cannot happen before{' '}
                 <span className="font-semibold">{label(c.before)}</span>
                 {c.shared_object ? (
-                  <div className="mt-0.5 text-[10.5px] text-[#8a97a3]">
+                  <div className="mt-0.5 text-[10.5px] text-[#667585]">
                     via shared object {c.shared_object}
                   </div>
                 ) : c.reason === 'target_precedence' ? (
-                  <div className="mt-0.5 text-[10.5px] text-[#8a97a3]">
+                  <div className="mt-0.5 text-[10.5px] text-[#667585]">
                     {label(c.after)} is this case&apos;s target event
                   </div>
                 ) : null}

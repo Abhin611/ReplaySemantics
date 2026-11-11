@@ -56,7 +56,7 @@ const SUBTITLES = {
 function Page({ path, needsLog = true, children }) {
   const { profile, activeLog, loading } = useSession()
   const location = useLocation()
-  if (loading) return <div className="flex h-screen items-center justify-center bg-[#f4f6f8]"><LoadingState label="Signing you in…" /></div>
+  if (loading) return <div className="flex h-screen items-center justify-center bg-[#e6ebf0]"><LoadingState label="Signing you in…" /></div>
   if (!profile) return <Navigate replace to="/login" state={{ from: location.pathname + location.search }} />
   if (needsLog && !activeLog) return <Navigate replace to="/dashboard" />
   return (

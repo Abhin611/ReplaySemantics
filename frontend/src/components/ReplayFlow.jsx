@@ -200,19 +200,19 @@ export default function ReplayFlow({ fixed = null, highlightIds = null, onEdit, 
             <RefreshButton onClick={refresh} disabled={running} className="!py-2.5" />
             <SpeedControl value={speedKey} onChange={setSpeedKey} />
             {result && delay > 0 && (
-              <button onClick={watchAgain} className="inline-flex items-center gap-1.5 rounded-lg border border-[#e2e6ea] bg-white px-3 py-2 text-[12.5px] font-semibold hover:bg-[#f2f4f6]">
+              <button onClick={watchAgain} className="inline-flex items-center gap-1.5 rounded-lg border border-[#e2e6ea] bg-white px-3 py-2 text-[12.5px] font-semibold hover:bg-[#e6ebf0]">
                 <RotateCcw size={13} /> Watch again
               </button>
             )}
           </div>
-          <div className="mt-2 text-[11.5px] text-[#8a97a3]">
+          <div className="mt-2 text-[11.5px] text-[#667585]">
             The first run of a case draws the whole graph (every reachable event). Narrow it with the three limits and run again.
           </div>
           {runError && <div className="mt-2 rounded-lg bg-status-blockedBg px-3 py-2 text-[13px] text-status-blocked">{runError.message}</div>}
         </Card>
       )}
       {animating && (
-        <div className="sticky top-2 z-30 flex items-center justify-between gap-3 rounded-xl border border-[#e2e6ea] bg-white/90 px-4 py-2 shadow-card backdrop-blur" data-testid="anim-bar">
+        <div className="rs-glass-light sticky top-[calc(var(--nav-h)+4px)] z-30 flex items-center justify-between gap-3 rounded-2xl px-4 py-2" data-testid="anim-bar">
           <span className="flex items-center gap-2 text-[12.5px] font-semibold text-[#344054]">
             <span className="rs-live-dot h-2 w-2 rounded-full bg-teal-500" />
             {phase === 'build' ? 'Building the graph from the OCEL log' : phase === 'stages' ? 'Running the stages' : 'Replaying the events'}
@@ -220,7 +220,7 @@ export default function ReplayFlow({ fixed = null, highlightIds = null, onEdit, 
           <div className="flex items-center gap-3">
             <SpeedControl value={speedKey} onChange={setSpeedKey} />
             <RefreshButton onClick={refresh} />
-            <button onClick={skip} className="inline-flex items-center gap-1.5 rounded-lg border border-[#e2e6ea] bg-white px-3 py-1.5 text-[12.5px] font-semibold hover:bg-[#f2f4f6]">
+            <button onClick={skip} className="inline-flex items-center gap-1.5 rounded-lg border border-[#e2e6ea] bg-white px-3 py-1.5 text-[12.5px] font-semibold hover:bg-[#e6ebf0]">
               <FastForward size={13} /> Skip animation
             </button>
           </div>
@@ -262,7 +262,7 @@ export default function ReplayFlow({ fixed = null, highlightIds = null, onEdit, 
               return (
                 <div key={s.key} className="flex items-center gap-1">
                   <div title={`${s.hint}${sr?.message ? ` — ${sr.message}` : ''}`}
-                    className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11.5px] font-semibold transition-all duration-500 ${done ? 'bg-status-passBg text-status-pass' : active ? 'rs-ring scale-105 bg-teal-50 text-teal-700 ring-1 ring-teal-300' : 'bg-[#eef1f4] text-[#8a97a3]'}`}>
+                    className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11.5px] font-semibold transition-all duration-500 ${done ? 'bg-status-passBg text-status-pass' : active ? 'rs-ring rs-shimmer scale-105 bg-teal-50 text-teal-700 ring-1 ring-teal-300' : 'bg-[#eef1f4] text-[#667585]'}`}>
                     {done ? <CheckCircle2 size={13} /> : active ? <Loader2 size={13} className="animate-spin" /> : na ? <Minus size={13} /> :
                       <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-current text-[9px]">{i + 1}</span>}
                     {s.label}
@@ -291,7 +291,7 @@ export default function ReplayFlow({ fixed = null, highlightIds = null, onEdit, 
           <Card>
             <div className="mb-3 flex flex-wrap items-baseline gap-2">
               <div className="text-[13px] font-bold text-[#101828]">Replay</div>
-              <div className="text-[11.5px] text-[#8a97a3]">
+              <div className="text-[11.5px] text-[#667585]">
                 {result.starts_from ? `starts from the ${result.starts_from}; ` : ''}each card is the total after one more event is applied, in the order that was posted
               </div>
             </div>

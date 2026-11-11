@@ -5,7 +5,7 @@ import { SPEEDS } from '../lib/useReplaySpeed'
 export default function SpeedControl({ value, onChange, className = '' }) {
   return (
     <div className={`inline-flex items-center gap-1.5 ${className}`} role="radiogroup" aria-label="Replay speed">
-      <Gauge size={13} className="text-[#8a97a3]" aria-hidden="true" />
+      <Gauge size={13} className="text-[#667585]" aria-hidden="true" />
       <div className="inline-flex rounded-lg border border-[#e2e6ea] bg-[#f7f8fa] p-0.5">
         {SPEEDS.map((s) => {
           const on = s.key === value

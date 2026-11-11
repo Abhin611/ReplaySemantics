@@ -16,10 +16,10 @@ export default function CalcTable({ rows, prevRows, animate = false, dense = fal
             key={r.key}
             style={animate ? { animationDelay: `${0.45 + idx * 0.09}s` } : undefined}
             className={`${animate ? (changed ? 'rs-row-in rs-flash' : 'rs-row-in') : ''} grid grid-cols-[1rem_1fr_auto] items-baseline gap-x-2 border-b border-[#eef1f4] px-2 ${dense ? 'py-0.5' : 'py-1'} last:border-b-0 ${
-              changed ? 'bg-amber-50' : total ? 'bg-[#f4f6f8]' : ''
+              changed ? 'bg-amber-50' : total ? 'bg-[#e6ebf0]' : ''
             }`}
           >
-            <span className="text-center font-mono text-[12px] font-bold text-[#8a97a3]">{r.op}</span>
+            <span className="text-center font-mono text-[12px] font-bold text-[#667585]">{r.op}</span>
             {dense ? (
               <>
                 {/* one line per step: label, then the arithmetic in grey (full text on hover) */}
@@ -28,7 +28,7 @@ export default function CalcTable({ rows, prevRows, animate = false, dense = fal
                   {r.expr && <span className="ml-2 font-mono text-[10px] text-[#a0abb6]">{r.expr}</span>}
                 </div>
                 <div className="whitespace-nowrap text-right">
-                  {changed && <span className="mr-1.5 font-mono text-[10px] text-[#8a97a3] line-through">{before.text}</span>}
+                  {changed && <span className="mr-1.5 font-mono text-[10px] text-[#667585] line-through">{before.text}</span>}
                   <span className={`font-mono text-[12px] ${total ? 'font-bold' : 'font-semibold'} ${changed ? 'text-amber-900' : 'text-[#101828]'}`}>{r.text}</span>
                 </div>
               </>
@@ -36,13 +36,13 @@ export default function CalcTable({ rows, prevRows, animate = false, dense = fal
               <>
                 <div className="min-w-0">
                   <div className={`text-[11.5px] ${total ? 'font-bold text-[#101828]' : 'font-semibold text-[#344054]'}`}>{r.label}</div>
-                  {r.expr && <div className="break-words font-mono text-[10.5px] leading-snug text-[#8a97a3]">{r.expr}</div>}
+                  {r.expr && <div className="break-words font-mono text-[10.5px] leading-snug text-[#667585]">{r.expr}</div>}
                 </div>
                 <div className="text-right">
                   <div className={`font-mono text-[12px] ${total ? 'font-bold' : 'font-semibold'} ${changed ? 'text-amber-900' : 'text-[#101828]'}`}>
                     {r.text}
                   </div>
-                  {changed && <div className="font-mono text-[10px] text-[#8a97a3]">was {before.text}</div>}
+                  {changed && <div className="font-mono text-[10px] text-[#667585]">was {before.text}</div>}
                 </div>
               </>
             )}

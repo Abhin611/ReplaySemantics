@@ -11,7 +11,7 @@ export default function RefreshButton({ onClick, disabled = false, busy = false,
       disabled={inactive}
       aria-label="Refresh page"
       title={title || (disabled ? 'Refresh is not available on this page yet' : 'Clear this page so a new case can be run')}
-      className={`inline-flex items-center gap-1.5 rounded-lg border border-[#e2e6ea] bg-white px-3 py-1.5 text-[12.5px] font-semibold text-[#101828] transition-colors hover:bg-[#f2f4f6] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-lg border border-[#e2e6ea] bg-white px-3 py-1.5 text-[12.5px] font-semibold text-[#101828] transition-colors hover:bg-[#e6ebf0] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white ${className}`}
     >
       <RotateCw size={13} className={busy ? 'animate-spin' : ''} />
       Refresh

@@ -31,7 +31,12 @@ export default {
         },
       },
       boxShadow: {
-        card: '0 1px 2px 0 rgba(16, 24, 40, 0.04), 0 1px 3px 0 rgba(16, 24, 40, 0.06)',
+        card: 'inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 1px 2px rgba(16, 24, 40, 0.04), 0 10px 24px -14px rgba(16, 24, 40, 0.14)',
+        float: '0 2px 6px rgba(16, 24, 40, 0.06), 0 24px 48px -20px rgba(16, 24, 40, 0.28)',
+      },
+      transitionTimingFunction: {
+        out: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        spring: 'cubic-bezier(0.34, 1.4, 0.5, 1)',
       },
     },
   },

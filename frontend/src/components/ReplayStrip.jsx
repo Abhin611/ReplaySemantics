@@ -40,7 +40,7 @@ export default function ReplayStrip({ replay, labels = {}, playKey, finishKey, d
           <div key={s.index} className="flex items-center">
             {i > 0 && <ArrowRight size={22} className="mx-2 shrink-0 text-teal-600" />}
             <div className={`rs-step w-[190px] rounded-xl border px-3 py-2.5 transition-all ${on ? 'border-teal-500 bg-teal-50 shadow-lg ring-2 ring-teal-200' : 'border-[#e2e6ea] bg-white shadow-sm'}`}>
-              <div className="text-[10.5px] font-semibold uppercase tracking-wide text-[#8a97a3]">
+              <div className="text-[10.5px] font-semibold uppercase tracking-wide text-[#667585]">
                 {i === 0 ? 'Start · as posted' : `Step ${s.index}`}
               </div>
               <div className="truncate text-[12.5px] font-bold text-[#101828]">
@@ -50,12 +50,12 @@ export default function ReplayStrip({ replay, labels = {}, playKey, finishKey, d
                 {on && prev ? <AnimatedNumber from={prev.net} value={s.net} format={formatAmount} ms={900} /> : formatAmount(s.net)}
               </div>
               {delta != null && (
-                <div className={`font-mono text-[11px] font-semibold ${delta === 0 ? 'text-[#8a97a3]' : delta > 0 ? 'text-status-pass' : 'text-status-blocked'}`}>
+                <div className={`font-mono text-[11px] font-semibold ${delta === 0 ? 'text-[#667585]' : delta > 0 ? 'text-status-pass' : 'text-status-blocked'}`}>
                   {delta === 0 ? 'no change' : `${delta > 0 ? '+' : '−'}${formatAmount(Math.abs(delta))}`}
                 </div>
               )}
-              {s.loss != null && <div className="text-[10.5px] text-[#8a97a3]">loss {formatAmount(s.loss)}</div>}
-              {s.applied === false && <div className="text-[10.5px] text-[#8a97a3]">{s.reason === 'exempt' ? 'approved exception: skipped' : 'nothing to correct'}</div>}
+              {s.loss != null && <div className="text-[10.5px] text-[#667585]">loss {formatAmount(s.loss)}</div>}
+              {s.applied === false && <div className="text-[10.5px] text-[#667585]">{s.reason === 'exempt' ? 'approved exception: skipped' : 'nothing to correct'}</div>}
             </div>
           </div>
         )

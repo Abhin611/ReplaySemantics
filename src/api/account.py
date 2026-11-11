@@ -217,6 +217,21 @@ class CompareRequest(BaseModel):
     ids: list[int]
 
 
+class DeleteRequest(BaseModel):
+    ids: list[int] = Field(min_length=1)
+
+
+@router.post("/history/delete")
+def delete_actions(body: DeleteRequest, user: dict = Depends(current_user)):
+    """Delete the chosen actions. Ids that are not the user's own are left alone, so nobody can delete another's history."""
+    return {"deleted": store.delete_actions(user["uid"], sorted(set(body.ids)))}
+
+
+@router.delete("/history")
+def delete_all_actions(user: dict = Depends(current_user)):
+    return {"deleted": store.delete_actions(user["uid"])}
+
+
 @router.post("/history/compare")
 def compare_actions(body: CompareRequest, user: dict = Depends(current_user)):
     ids = sorted(set(body.ids))

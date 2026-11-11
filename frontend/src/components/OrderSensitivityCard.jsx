@@ -36,7 +36,7 @@ export default function OrderSensitivityCard({
               select all
             </button>
             {chosen.length > 0 && (
-              <button onClick={() => onClear?.()} className="text-[#8a97a3] hover:underline">
+              <button onClick={() => onClear?.()} className="text-[#667585] hover:underline">
                 clear
               </button>
             )}
@@ -49,7 +49,7 @@ export default function OrderSensitivityCard({
         </p>
       ) : (
         <>
-          <p className="mb-3 text-[11.5px] leading-relaxed text-[#8a97a3]">
+          <p className="mb-3 text-[11.5px] leading-relaxed text-[#667585]">
             The corrections check finds the order of these pairs matters; each line says what a swap itself does. Click a line to select it; select more than
             one to see their combined effect.
           </p>
@@ -84,7 +84,7 @@ export default function OrderSensitivityCard({
                       />
                     </div>
                     <div className="text-[11px] text-[#5c6b7a]">{pairSentence(p, nodeStatus, eventLookup)}</div>
-                    <div className="mt-0.5 text-[10.5px] text-[#8a97a3]">
+                    <div className="mt-0.5 text-[10.5px] text-[#667585]">
                       order matters for corrections in {p.subsets_order_sensitive} subset
                       {p.subsets_order_sensitive === 1 ? '' : 's'}
                     </div>
@@ -96,7 +96,7 @@ export default function OrderSensitivityCard({
           {onRun && (
             <div className="mt-3 border-t border-[#eef1f4] pt-3">
               {chosen.length === 0 ? (
-                <p className="text-[11px] text-[#8a97a3]">Select one or more pairs above to run their change.</p>
+                <p className="text-[11px] text-[#667585]">Select one or more pairs above to run their change.</p>
               ) : (
                 <>
                   <button
@@ -109,7 +109,7 @@ export default function OrderSensitivityCard({
                       ? `Run change · ${chosen[0].a} ⇄ ${chosen[0].b}`
                       : `Run change · ${chosen.length} pairs (${events.join(', ')})`}
                   </button>
-                  <p className="mt-1.5 text-[11px] leading-snug text-[#8a97a3]">
+                  <p className="mt-1.5 text-[11px] leading-snug text-[#667585]">
                     {tooMany
                       ? `These pairs involve ${events.length} events; one swap can hold at most ${MAX_SCENARIO_EVENTS}. Deselect a pair.`
                       : chosen.length > 1
