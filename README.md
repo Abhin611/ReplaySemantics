@@ -40,43 +40,209 @@ ReplaySemantics takes a financial loss found in an ERP event log (OCEL 2.0), fin
 
 ## Run it
 
-You need Python, Node.js and a Firebase project (see [Sign-in setup](#sign-in-setup-firebase)). The backend serves the API only, and the site runs separately.
+This section assumes you have never run a coding project before. Follow the steps in order and copy each command exactly. The guide is written for **Windows** with **Visual Studio Code**; macOS and Linux differences are at the end.
 
-**Backend, from the repo root (PowerShell):**
+### How the project is put together
+
+The project has two parts, and **both must be running at the same time**:
+
+- **The backend** (Python) does the calculations. It runs at `http://localhost:8000`, but you never open that address yourself.
+- **The website** (the "frontend") is what you see and click. It runs at `http://localhost:5173`.
+
+"localhost" means "this computer". Nothing is put on the internet: both parts run only on your PC, and each one runs in its own **terminal** (a window where you type commands).
+
+Sign-in is handled by **Firebase**, a free Google service that manages accounts and passwords. You don't have to install or run Firebase, but the website needs a small settings file that tells it which Firebase project to use (step 4).
+
+### Step 1: Install the tools (once per computer)
+
+Install these three programs, accepting the default options unless a step below says otherwise:
+
+1. **Python 3.10 or newer** from https://www.python.org/downloads/. On the first installer screen, **tick "Add python.exe to PATH"** before clicking *Install Now*. Without this, the commands below will not find Python.
+2. **Node.js (the "LTS" version)** from https://nodejs.org. This also installs `npm`, which downloads the website's building blocks.
+3. **Visual Studio Code** from https://code.visualstudio.com. This is the editor you will run everything from.
+
+Restart your computer after installing, so the new programs are found.
+
+### Step 2: Get the project and open it
+
+1. On the project's GitHub page, click the green **Code** button, then **Download ZIP**. (If you know Git, `git clone` works too.)
+2. Right-click the downloaded ZIP and choose **Extract All**.
+3. Open Visual Studio Code, choose **File > Open Folder**, and pick the extracted project folder (usually `ReplaySemantics-main`): the one that directly contains `README.md`, `src` and `frontend`. If VS Code asks whether you trust the authors, click **Yes**.
+4. Open a terminal with **Terminal > New Terminal** in the top menu. A panel opens at the bottom of the window. That is where you type the commands. To run a command, paste it there and press **Enter**.
+
+### Step 3: Download what the project needs (once)
+
+These commands download the libraries the project uses. They can take a few minutes; wait until the blinking cursor comes back before typing the next one. Some warnings in yellow are normal.
+
+In the terminal, run these one at a time:
 
 ```powershell
 python -m venv .venv
+```
+
+```powershell
 .venv\Scripts\python -m pip install -r requirements.txt
-$env:FIREBASE_PROJECT_ID="your-project-id"; $env:PYTHONPATH="src"; .venv\Scripts\python -m uvicorn api.app:app --reload --port 8000
 ```
 
-On macOS or Linux:
-
-```bash
-pip install -r requirements.txt
-FIREBASE_PROJECT_ID=your-project-id PYTHONPATH=src uvicorn api.app:app --reload --port 8000
-```
-
-**Frontend, in a second terminal:**
-
-```bash
+```powershell
 cd frontend
+```
+
+```powershell
 npm install
+```
+
+```powershell
+cd ..
+```
+
+The first command creates a `.venv` folder, a private Python just for this project. The second fills it with the Python libraries. `npm install` creates `frontend\node_modules` with the website's libraries. The last command takes the terminal back to the main folder.
+
+### Step 4: Add the sign-in settings file (once)
+
+The website needs a small text file called `.env.local`, inside the `frontend` folder. It tells the website which Firebase project handles sign-in. The file is not included in the download, so you have to add it yourself.
+
+There are two ways to do this. **Choose only one:**
+
+- **Option A** uses the project team's existing Firebase project. It is quicker, and you only need the file from the team.
+- **Option B** sets up your own free Firebase project. Use it if you can't get the file from the team, or want your own separate accounts.
+
+The values in this file are the website's public Firebase settings, not passwords, so they are safe to share with teammates.
+
+#### Option A: Use the team's Firebase project
+
+1. **Ask the team for the settings.** Ask the project team (Abhin Anoop) for the `.env.local` file. They may send the file itself, or its contents as text (for example in a chat or an email).
+2. **If you were sent the file**, save it into the `frontend` folder of the project. Make sure it is named exactly `.env.local`:
+   - Windows may hide the name or add `.txt` to the end. In VS Code's file list on the left, open the `frontend` folder and check that it shows `.env.local`, not `.env.local.txt` and not `env.local`.
+   - If the name is wrong, right-click it, choose **Rename**, and fix it.
+3. **If you were sent the contents as text**, create the file in VS Code instead:
+   1. In the file list on the left, right-click the `frontend` folder and choose **New File...**.
+   2. Type `.env.local` as the name (with the dot at the start) and press **Enter**. An empty file opens.
+   3. Paste the text you were sent into it. It should look like this, with real values after each `=`:
+
+      ```
+      VITE_API_BASE_URL=http://localhost:8000
+      VITE_FIREBASE_API_KEY=...
+      VITE_FIREBASE_AUTH_DOMAIN=replaysemantics.firebaseapp.com
+      VITE_FIREBASE_PROJECT_ID=replaysemantics
+      VITE_FIREBASE_APP_ID=...
+      ```
+
+   4. Press **Ctrl + S** to save.
+4. **Remember the project ID.** With this option, the project ID is `replaysemantics`. That is already the value used in the step 5 commands, so you don't need to change anything there.
+5. **About accounts.** Your accounts will be stored in the team's Firebase project. Signing up with email and password, or with Google, both work straight away.
+
+#### Option B: Set up your own Firebase project
+
+You need a Google account for this, and it is free. Firebase handles the passwords, verification emails and Google sign-in. The backend only checks Firebase's sign-in tickets, so it needs no secret key.
+
+1. **Create the project.**
+   1. Go to https://console.firebase.google.com and sign in with your Google account.
+   2. Click **Create a project** (or **Add project**), and type any name, such as `my-replay`.
+   3. Accept the terms. When asked about Google Analytics, turn it **off** (it isn't needed), and click **Create project**. Wait for it to finish, then click **Continue**.
+2. **Find the project ID.** Click the gear icon next to **Project Overview** at the top left, then **Project settings**. On the **General** tab, find **Project ID**, for example `my-replay-1a2b3`. It can differ from the name you typed. Copy it somewhere, because you need it in step 5.
+3. **Register the website with Firebase.**
+   1. On the same **Project settings** page, scroll down to **Your apps** and click the **Web** icon, which looks like `</>`.
+   2. Type any nickname, such as `replay-web`, and leave "Firebase Hosting" unticked. Click **Register app**.
+   3. Firebase shows a block of code with a section called `firebaseConfig`, containing `apiKey`, `authDomain`, `projectId` and `appId`. Keep this page open; you'll copy these four values next. (You can always find them again under **Project settings > Your apps**.)
+4. **Turn on sign-in.**
+   1. In the left menu, open **Build > Authentication** (or **Security > Authentication**) and click **Get started**.
+   2. On the **Sign-in method** tab, click **Email/Password**, switch on the first **Enable** toggle, and click **Save**.
+   3. Click **Add new provider**, then **Google**. Switch **Enable** on, choose your email as the "Project support email", and click **Save**.
+   4. You don't need to change anything else. `localhost`, which is where this project runs, is allowed by default under **Settings > Authorized domains**.
+5. **Create the settings file.**
+   1. In VS Code's file list on the left, open the `frontend` folder. Right-click `.env.example`, choose **Copy**, then right-click the `frontend` folder and choose **Paste**. This creates `.env copy.example`.
+   2. Right-click that copy, choose **Rename**, and name it exactly `.env.local`.
+   3. Open `.env.local` and type each value from the Firebase page after its `=` sign. Leave out the quote marks and don't add spaces:
+
+      ```
+      VITE_API_BASE_URL=http://localhost:8000
+      VITE_FIREBASE_API_KEY=the apiKey value, e.g. AIzaSyB...
+      VITE_FIREBASE_AUTH_DOMAIN=the authDomain value, e.g. my-replay-1a2b3.firebaseapp.com
+      VITE_FIREBASE_PROJECT_ID=the projectId value, e.g. my-replay-1a2b3
+      VITE_FIREBASE_APP_ID=the appId value, e.g. 1:123456789:web:abc123
+      ```
+
+   4. Leave the last two lines (starting with `#`) as they are, and press **Ctrl + S** to save.
+6. **Use your project ID in step 5.** In the backend command in step 5, replace `replaysemantics` with your own project ID. The two must match, or sign-in will work but the website won't be able to load anything.
+
+**Check, for either option:** the `frontend` folder should now contain a file named exactly `.env.local`, next to `.env.example`. If you change this file later, stop the website (Terminal 2) and start it again, because it only reads the file when it starts.
+
+### Step 5: Start the project (every time)
+
+You need **two terminals**: one for the backend and one for the website.
+
+**Terminal 1, the backend.** In the terminal you already have, make sure you are in the main project folder (the line before the cursor should end in the project folder name, such as `ReplaySemantics-main>`, not `frontend>`). Then run:
+
+```powershell
+$env:FIREBASE_PROJECT_ID="replaysemantics"; $env:PYTHONPATH="src"; .venv\Scripts\python -m uvicorn api.app:app --port 8000
+```
+
+If you chose Option B in step 4, replace `replaysemantics` with your project's ID. The backend is ready when it prints **`Application startup complete`**. Leave this terminal alone: it has to keep running.
+
+**Terminal 2, the website.** Open a second terminal by clicking the **+** button at the top right of the terminal panel. Then run:
+
+```powershell
+cd frontend
+```
+
+```powershell
 npm run dev
 ```
 
-Open **http://localhost:5173**, sign in and load an event log. To see every stage, choose the **ReplaySemantics benchmark**.
+When it shows `Local: http://localhost:5173/`, the website is ready.
 
-## Sign-in setup (Firebase)
+### Step 6: Use the website
 
-Passwords, verification emails and Google sign-in are handled by Firebase. The server only checks Firebase's tokens, so it needs no service account key.
+1. Open a web browser (Chrome, Edge or Firefox) and go to **http://localhost:5173**.
+2. Click **Get started** and create an account, or sign in with Google. If you sign up with an email and password, Firebase sends you a verification email. Click its link before you sign in.
+3. When asked to load an event log, choose the **ReplaySemantics benchmark**. It is the sample that shows every stage of the project.
 
-1. Create a project at https://console.firebase.google.com and add a **Web app**.
-2. Under **Authentication > Sign-in method**, enable **Email/Password** and **Google**.
-3. Copy `frontend/.env.example` to `frontend/.env.local` and fill in the values from the web app's config.
-4. Start the backend with `FIREBASE_PROJECT_ID` set to your project id, as shown above.
+### Stopping and starting again
 
-Email/password accounts must verify their address before they can use the app.
+- **To stop:** click inside each terminal and press **Ctrl + C**. Closing VS Code also stops both.
+- **To start again later:** open the folder in VS Code and repeat **step 5** only. Steps 1 to 4 are one-time setup.
+
+### If something goes wrong
+
+| What you see | What to do |
+|---|---|
+| `'python' is not recognized` | Python is not on PATH. Run the Python installer again, choose *Modify*, and make sure "Add Python to environment variables" is ticked. Then restart VS Code. |
+| `npm.ps1 cannot be loaded because running scripts is disabled` | Type `npm.cmd` instead of `npm` (for example `npm.cmd install` and `npm.cmd run dev`). |
+| `No module named uvicorn` or `No module named api` | Terminal 1 is in the wrong folder, or step 3 was skipped. Run `cd ..` until you are in the main folder, and redo step 3 if needed. |
+| `Port 5173 is in use` or `address already in use` | The project (or another program) is already running. Stop the old terminals with Ctrl + C, or close VS Code and open it again. |
+| The page is blank, or sign-in fails with an "api-key" error | `frontend\.env.local` is missing or has the wrong values (step 4). Stop Terminal 2 with Ctrl + C and run `npm run dev` again after fixing it. |
+| Sign-in works, but the site says it cannot reach the server | Terminal 1 is not running, or `FIREBASE_PROJECT_ID` doesn't match the project in `.env.local`. Restart Terminal 1 with the step 5 command. |
+| A `UserWarning` about ISO8601 appears in Terminal 1 | Harmless. Ignore it. |
+
+### On macOS or Linux
+
+Use the built-in Terminal app (or VS Code's terminal) and these commands instead of the PowerShell ones above. Your Python may be called `python3`.
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+cd frontend && npm install && cd ..
+```
+
+Start the backend:
+
+```bash
+FIREBASE_PROJECT_ID=replaysemantics PYTHONPATH=src .venv/bin/python -m uvicorn api.app:app --port 8000
+```
+
+Start the website in a second terminal:
+
+```bash
+cd frontend
+npm run dev
+```
+
+### Advanced options
+
+- To run the backend on another address, set `VITE_API_BASE_URL` in `frontend\.env.local`.
+- If the website runs on a port other than 5173, start the backend with `$env:REPLAY_CORS_ORIGINS="http://localhost:<port>"` added to the step 5 command, so the backend accepts requests from it.
+- Adding `--reload` to the backend command restarts it automatically whenever you change the Python code.
 
 ## Using the site
 
